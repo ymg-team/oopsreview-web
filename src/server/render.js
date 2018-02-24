@@ -6,10 +6,16 @@ const html = `<!DOCTYPE html>
       <title>Oopsreview - Software Review Specialist</title>
   </head>
   <body>
-      <div id="app"></div>
+      <div id="app">oopsreview rendering...</div>
+      <script src="/build/vendor.js"></script>
       <script src="/build/app.js"></script>
   </body>
 </html>`
+
+function getScript()
+{
+
+}
 
 export default (req,res, next) => {
   res.writeHead(200, {
