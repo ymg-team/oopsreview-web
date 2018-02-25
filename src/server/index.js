@@ -18,16 +18,9 @@ server.use(mongo)
 
 // serve static file from public directory
 server.get(/\/?.*\//, restify.plugins.serveStatic({
-  directory: `${__dirname}/../../public`
+  directory: `${__dirname}/../../public`,
+  maxAge: 0
 }))
-
-// function respond(req, res, next) {
-//   res.writeHead(200, {
-//     'Content-Type': 'text/html'
-//   });
-//   res.write('<b>ready</b>')
-//   res.end()
-// }
 
 // routes for api
 

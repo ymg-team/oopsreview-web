@@ -65,6 +65,10 @@ module.exports = {
         options: {
           appendTsSuffixTo: [/\.vue$/]
         }
+      },
+      {
+        test: /\.css$/,
+        loader: "css-loader"
       }
     ]
   },
