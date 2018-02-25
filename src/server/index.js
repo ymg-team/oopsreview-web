@@ -14,17 +14,13 @@ const port = process.env.PORT || 19090
 // handlers initial
 server.use(mongo)
 
-// server.get(/\/build\/?.*/, restify.serveStatic({
-//   directory: '../public/build'
-// }))
+// api route
 
-// function respond(req, res, next) {
-//   res.writeHead(200, {
-//     'Content-Type': 'text/html'
-//   });
-//   res.write('<b>ready</b>')
-//   res.end()
-// }
+// serve static file from public directory
+server.get(/\/?.*\//, restify.plugins.serveStatic({
+  directory: `${__dirname}/../../public`,
+  maxAge: 0
+}))
 
 // routes for api
 
