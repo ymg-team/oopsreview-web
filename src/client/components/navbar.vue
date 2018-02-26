@@ -29,6 +29,14 @@
         search_text: ''
       }
     },
+
+    props: {
+      keyword: {
+        type: String,
+        default: ''
+      }
+    },
+
     methods: {
       toggleSearch() {
         this.search = !this.search
@@ -41,10 +49,17 @@
       },
 
       handleChangeSearch(e: Object={}) {
-        console.log(e.keyCode, this.search_text)
         if(e.keyCode == 13 && this.search_text != '') {
           router.push({path: `/search?q=${this.search_text}`})
         }
+      }
+    },
+
+    created() {
+      // user is doing search, and access /search page
+      if(this.keyword != '') {
+        this.search_text = this.keyword
+        this.search = true
       }
     }
   })
