@@ -11,6 +11,10 @@
   "files" : [
     "types/vue.d.ts"
   ],
+  "lib" : [
+    "es6",
+    "dom"
+  ],
   "include": [
     "./src/client/**/*"
   ]
