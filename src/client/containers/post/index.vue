@@ -45,7 +45,7 @@ export default Vue.extend({
   name: 'post-detail',
   data() {
     return {
-      link: `${host[process.env.NODE_ENV].front}/post/${this.title}-${this.id}`
+      link: `/post/${this.title}-${this.id}`
     }
   },
   props: ['title', 'id']

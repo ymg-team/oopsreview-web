@@ -9,7 +9,7 @@
     "moduleResolution": "node"
   },
   "files" : [
-    "typings/vue.d.ts"
+    "types/vue.d.ts"
   ],
   "include": [
     "./src/client/**/*"
