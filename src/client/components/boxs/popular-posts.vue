@@ -136,4 +136,5 @@ export default Vue.extend({
     font-size: 1.3em 
     text-transform: uppercase
     padding: 2em 0
+
 </style>
