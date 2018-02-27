@@ -25,7 +25,7 @@
             h2 Conclusion
             p Nunc tincidunt condimentum magna nec feugiat. Morbi in est at ipsum cursus pharetra. Integer porttitor posuere tortor ac sollicitudin. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vestibulum mauris et velit volutpat posuere id et odio. Nam finibus tristique justo, sit amet fermentum dolor laoreet vel. Quisque quis lectus eu leo eleifend tincidunt. Aliquam ultrices efficitur risus, in pellentesque erat tincidunt non. Nullam massa magna, semper tincidunt erat nec, feugiat molestie lectus. Donec orci tortor, iaculis at urna vel, consectetur placerat eros. Integer commodo pretium augue eget blandit. Mauris cursus metus et justo finibus scelerisque. Aliquam sollicitudin tellus ut libero volutpat, quis pretium libero iaculis. Etiam pharetra elit ex, non ornare tortor lobortis vitae. Fusce bibendum diam quis tortor fermentum, eget sagittis justo porta.
         
-        comment 
+        comment(:link='link') 
 
         .col-4_md-12
           sidebar(:link='link')
