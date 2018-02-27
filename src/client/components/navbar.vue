@@ -37,16 +37,28 @@
       }
     },
 
+    watch: {
+      keyword(nv, ov) {
+        if(nv == '') {
+          this.search = false 
+          this.search_text = ''
+        }
+      }
+    },
+
     methods: {
       toggleSearch() {
-        const search_input:HTMLElement | null = document.getElementById('search-input')
         this.search = !this.search
-        if(this.search === true)
+        if(this.search === true) {
           setTimeout(() => {
+            const search_input:HTMLElement | null = document.getElementById('search-input')
             if(search_input) search_input.focus()
           }, 300)
-        else 
+        } else {
           this.search_text = ''
+          // if close on route /search - redirect to home
+          if (this.$route.path == '/search') router.push({path: `/`})
+        }
       },
 
       handleChangeSearch(e: KeyboardEvent) {
@@ -55,6 +67,8 @@
         }
       }
     },
+
+
 
     created() {
       // user is doing search, and access /search page
