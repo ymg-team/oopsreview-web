@@ -12,6 +12,7 @@
             | Posted in 
             router-link(to='/tag/macos') MacOS 
             router-link(to='/tag/cloud') Cloud
+      
       .grid 
         .col-8_md-12
           article
