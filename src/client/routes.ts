@@ -12,7 +12,7 @@ export default [
     component: DefaultLayout, 
     children : [
       { path: '/', component: Home },
-      { path: '/post', component: Post },
+      { path: '/posts', component: Post },
       { path: '/search', component: Post },
       { path: '/tag/:tag_name', props: true, component: Post },
       { path: '/post/:title-:id', component: PostDetail }
