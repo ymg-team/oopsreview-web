@@ -15,9 +15,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
+
 export default Vue.extend({
-  
+  name: 'card-post'
 })
+
 </script>
 
 <style lang="sass" scoped>

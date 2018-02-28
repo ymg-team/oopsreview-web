@@ -15,69 +15,79 @@
       ul.search(v-if='search === true') 
         input#search-input(type='text' v-model='search_text' v-on:keydown='handleChangeSearch' placeholder='search here...')
         a.icono-cross(href='javascript:;' v-on:click='toggleSearch' style='position:absolute;margin-top:.5em;transform: translateX(-2em) rotate(45deg);')
+    .fixed.hide
+      | this is fixed
+
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import { router } from '../index'
+import Vue from 'vue'
+import { router } from '../index'
 
-  export default Vue.extend({
-    name: 'navbar',
-    data() {
-      return {
-        search: false,
-        search_text: ''
-      }
-    },
+export default Vue.extend({
+  name: 'navbar',
+  data() {
+    return {
+      search: false,
+      search_text: ''
+    }
+  },
 
-    props: {
-      keyword: {
-        type: String,
-        default: ''
-      }
-    },
+  props: {
+    keyword: {
+      type: String,
+      default: ''
+    }
+  },
 
-    watch: {
-      keyword(nv, ov) {
-        if(nv == '') {
-          this.search = false 
-          this.search_text = ''
-        }
-      }
-    },
-
-    methods: {
-      toggleSearch() {
-        this.search = !this.search
-        if(this.search === true) {
-          setTimeout(() => {
-            const search_input:HTMLElement | null = document.getElementById('search-input')
-            if(search_input) search_input.focus()
-          }, 300)
-        } else {
-          this.search_text = ''
-          // if close on route /search - redirect to home
-          if (this.$route.path == '/search') router.push({path: `/`})
-        }
-      },
-
-      handleChangeSearch(e: KeyboardEvent) {
-        if(e.keyCode == 13 && this.search_text != '') {
-          router.push({path: `/search?q=${this.search_text}`})
-        }
-      }
-    },
-
-
-
-    created() {
-      // user is doing search, and access /search page
-      if(this.keyword != '') {
-        this.search_text = this.keyword
-        this.search = true
+  watch: {
+    keyword(nv, ov) {
+      if(nv == '') {
+        this.search = false 
+        this.search_text = ''
       }
     }
-  })
+  },
+
+  methods: {
+    toggleSearch() {
+      this.search = !this.search
+      if(this.search === true) {
+        setTimeout(() => {
+          const search_input:HTMLElement | null = document.getElementById('search-input')
+          if(search_input) search_input.focus()
+        }, 300)
+      } else {
+        this.search_text = ''
+        // if close on route /search - redirect to home
+        if (this.$route.path == '/search') router.push({path: `/`})
+      }
+    },
+
+    handleChangeSearch(e: KeyboardEvent) {
+      if(e.keyCode == 13 && this.search_text != '') {
+        router.push({path: `/search?q=${this.search_text}`})
+      }
+    },
+
+    handleScroll() {
+      console.log('is scrolled')
+      document.addEventListener('scroll', (e) => {
+        console.log('this element is scrolled')
+      })
+    }
+  },
+
+  created() {
+    // user is doing search, and access /search page
+    if(this.keyword != '') {
+      this.search_text = this.keyword
+      this.search = true
+    }
+    // add scroll listener
+    this.handleScroll()
+  }
+})
 </script>
 
 <style lang="sass" scoped>
@@ -86,6 +96,16 @@
     background-color: #000
     border-top: 1px solid $color-gray-medium
     border-bottom: 1px solid $color-gray-medium
+    .fixed
+      &.hide
+        top: -150px  
+      transition: all .5s ease
+      position: fixed 
+      width: 100vw
+      padding: 1em .0
+      background: $color-white-transparent 
+      top: 0
+      z-index: 5
     ul.navbar 
       margin: 0
       padding: 1em 0
