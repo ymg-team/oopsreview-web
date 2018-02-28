@@ -15,7 +15,7 @@
       ul.search(v-if='search === true') 
         input#search-input(type='text' v-model='search_text' v-on:keydown='handleChangeSearch' placeholder='search here...')
         a.icono-cross(href='javascript:;' v-on:click='toggleSearch' style='position:absolute;margin-top:.5em;transform: translateX(-2em) rotate(45deg);')
-    .fixed.hide
+    .fixed(:class='!show_navbar ? "hide" : "" ')
       | this is fixed
 
 </template>
@@ -29,7 +29,8 @@ export default Vue.extend({
   data() {
     return {
       search: false,
-      search_text: ''
+      search_text: '',
+      show_navbar: false
     }
   },
 
@@ -71,9 +72,15 @@ export default Vue.extend({
     },
 
     handleScroll() {
-      console.log('is scrolled')
       document.addEventListener('scroll', (e) => {
-        console.log('this element is scrolled')
+        const position = window.scrollY
+        if(position > 218) {
+          // show navbar
+          this.show_navbar = true
+        }else {
+          // hide navbar
+          this.show_navbar = false
+        }
       })
     }
   },
