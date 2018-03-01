@@ -7,17 +7,17 @@ import DefaultLayout from './layouts/default.vue'
 import ErrorLayout from './layouts/error.vue'
 
 export default [
-  { 
-    path: '/', 
-    component: DefaultLayout, 
-    children : [
-      { path: '/', component: Home },
-      { path: '/posts', component: Post },
-      { path: '/search', name: 'search', component: Post },
-      { path: '/tag/:tag_name', props: true, component: Post },
-      { path: '/post/:title-:id', name: 'post-detail', component: PostDetail }
-    ]
-  },
+  // { 
+  //   path: '/', 
+  //   component: DefaultLayout, 
+  //   children : [
+  //     { path: '/', component: Home },
+  //     { path: '/posts', component: Post },
+  //     { path: '/search', name: 'search', component: Post },
+  //     { path: '/tag/:tag_name', props: true, component: Post },
+  //     { path: '/post/:title-:id', name: 'post-detail', component: PostDetail }
+  //   ]
+  // },
   { 
     path: '*', 
     component:  ErrorLayout,
