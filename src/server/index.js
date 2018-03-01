@@ -22,8 +22,6 @@ server.get(/\/?.*\//, restify.plugins.serveStatic({
   maxAge: 0
 }))
 
-// routes for api
-
 // render vuejs
 server.on('NotFound', render)
 

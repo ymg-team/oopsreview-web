@@ -1,8 +1,8 @@
 {
   "app": {
-    "js": "/app.07eb552ee3f639bc8adc.js"
+    "js": "/app.js"
   },
   "vendor": {
-    "js": "/vendor.07eb552ee3f639bc8adc.js"
+    "js": "/vendor.js"
   }
 }
