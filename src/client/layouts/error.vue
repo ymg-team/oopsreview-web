@@ -1,7 +1,7 @@
 <template lang='pug'>
   div 
     top-navbar(size='small')
-    navbar
+    navbar(:keyword='$route.query.q || \'\'')
     router-view
     bottom-navbar
 </template>
