@@ -33,6 +33,12 @@
         .col-8_md-12 
           comment(:link='link') 
 
+      .grid.p-t-2 
+        .col-8_md-12
+          h2.title-menu The Latest
+          box-post
+
+
 </template>
 
 <script lang="ts">
@@ -40,9 +46,11 @@ import Vue from 'vue'
 import sidebar from '../../components/sidebar.vue'
 import comment from '../../components/boxs/comment.vue'
 import host from '../../../config/host'
+import post from '../../components/boxs/post.vue'
 
 Vue.component('sidebar', sidebar)
 Vue.component('comment', comment)
+Vue.component('box-post', post)
 
 export default Vue.extend({
   name: 'post-detail',

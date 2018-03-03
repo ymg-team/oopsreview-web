@@ -58,4 +58,4 @@ typings/
 .env
 
 public/build
-public/webpack-assets.json
+internals/webpack-assets.json

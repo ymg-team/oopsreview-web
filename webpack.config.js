@@ -13,7 +13,7 @@ let plugins = [
     filename: process.env.NODE_ENV === 'production' ? 'vendor.[hash].js' : 'vendor.js',
     minChunks: Infinity
   }),
-  new AssetsPlugin({prettyPrint: true, path: path.join(__dirname, 'public')}),
+  new AssetsPlugin({prettyPrint: false, path: path.join(__dirname, 'internals')}),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV)

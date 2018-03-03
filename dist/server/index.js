@@ -38,8 +38,6 @@ server.get(/\/?.*\//, _restify2.default.plugins.serveStatic({
   maxAge: 0
 }));
 
-// routes for api
-
 // render vuejs
 server.on('NotFound', _render2.default);
 

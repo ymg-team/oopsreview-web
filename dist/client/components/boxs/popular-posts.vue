@@ -117,7 +117,7 @@ export default Vue.extend({
           font-size: 1em
       &.col-4_sm-12
         .thumb
-          height: 180px
+          height: 220px
           .thumb-image 
             height: 100%
         .title 
@@ -126,7 +126,7 @@ export default Vue.extend({
             font-size: 1em
       &.col-8_sm-12
         .thumb-image
-          height: 280px
+          height: 320px
 
   // popular-end style
   .popular-end 

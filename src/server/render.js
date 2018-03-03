@@ -23,7 +23,7 @@ const html = `<!DOCTYPE html>
 
 function getScript()
 {
-  const webpackAssets = require('../../public/webpack-assets.json')
+  const webpackAssets = require('../../internals/webpack-assets.json')
   return `
     <script src="/build/${NODE_ENV == 'production' ? webpackAssets.vendor.js : 'vendor.js'}"></script>
     <script src="/build/${NODE_ENV == 'production' ? webpackAssets.app.js : 'app.js'}"></script>
