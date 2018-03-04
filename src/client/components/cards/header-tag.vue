@@ -30,7 +30,6 @@ export default Vue.extend({
 .header-tag 
   padding: 2em 1em
   background-size: cover
-  width: 100%
   border-bottom: 7px solid $color-gray-verysoft
   h1 
     font-size: 3em 
