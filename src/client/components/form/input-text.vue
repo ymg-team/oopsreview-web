@@ -44,16 +44,23 @@
     // validation object result
     validation: {
       type: Object,
-      default: {}
+      default() {
+        return {}
+      }
     },
     // data of form
     data: {
       type: Object,
-      default: {}
+      default() {
+        return {}
+      }
     },
     // handle change value
     onchange: {
-      type: Function
+      type: Function,
+      default() {
+        console.log('changed')        
+      }
     }
   }
 

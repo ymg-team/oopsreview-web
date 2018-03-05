@@ -1,7 +1,7 @@
 <template lang="pug">
 .header-tag
   h1 {{ title }}
-  h2(v-if='subtitle != ""') Is the world's number one operating system, since the release of its first version until now, a lot of developments have been there.  
+  h2(v-if='subtitle != ""') {{ subtitle }}
 </template>
 
 <script lang="ts">

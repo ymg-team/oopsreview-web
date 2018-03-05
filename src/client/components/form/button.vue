@@ -1,5 +1,6 @@
 <template lang="pug">
   button.button.blue(
+    :class='button_type'
     v-on:click='onclick'
     type='type') 
     | {{ value }}
@@ -13,11 +14,18 @@ const props = {
     type: String,
     default: 'button'
   },
+  button_type: {
+    type: String,
+    default: 'blue'
+  },
   value: {
     type: String
   },
   onclick: {
-    type: Function
+    type: Function,
+    default() {
+      return {}  
+    }
   }
 }
 
