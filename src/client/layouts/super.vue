@@ -3,7 +3,7 @@ div
   top-navbar
   .grid 
     .col-2_md-12
-      sidebar
+      super-sidebar
     .col-10_md-12.bg-white
       router-view
   bottom-navbar
@@ -15,7 +15,7 @@ import sidebar from '../components/super-sidebar.vue'
 import header from '../components/header.vue'
 import footer from '../components/footer.vue'
 
-Vue.component('sidebar', sidebar)
+Vue.component('super-sidebar', sidebar)
 Vue.component('top-navbar', header)
 Vue.component('bottom-navbar', footer)
 

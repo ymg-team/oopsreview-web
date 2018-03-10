@@ -17,10 +17,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'super-sidebar',
-  created() {
-    console.log()
-  }
+  name: 'super-sidebar'
 })
 </script>
 
@@ -33,7 +30,6 @@ export default Vue.extend({
       li 
         transition: all .5s ease
         list-style: none
-        padding: 1em .5em
         &.active 
           background-color: $color-gray-dark
         &:hover
@@ -41,6 +37,8 @@ export default Vue.extend({
           cursor: pointer
     color: $color-white-main 
     a
+      display: block
+      padding: 1em .5em
       color: $color-white-main 
     .divider 
       border-top: 1px solid $color-gray-soft
