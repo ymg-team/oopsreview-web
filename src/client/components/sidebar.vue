@@ -20,7 +20,7 @@ export default Vue.extend({
       console.log('sidebar is scrolled')
       document.addEventListener('scroll', e => {
         // only for large and screen terbesar
-        if(true)
+        if(1 + 2 == 4)
         {
           const position = window.scrollY
           if(position > 218) {

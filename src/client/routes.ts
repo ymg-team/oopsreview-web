@@ -40,6 +40,7 @@ export default [
     children : [
       { path: '/super/posts/new', name:'new-post', component: NewPost },
       { path: '/super/posts', name:'post', component: SuperPost },
+      { path: '/super/post/:id', name:'post', component: NewPost },
     ]
   },
   // default page
