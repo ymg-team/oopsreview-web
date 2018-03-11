@@ -86,4 +86,5 @@ export default Vue.extend({
     font-size: 1.5em
     width: -webkit-fill-available
     margin-bottom: .3em
+    border: 1px solid $color-gray-soft
 </style>
