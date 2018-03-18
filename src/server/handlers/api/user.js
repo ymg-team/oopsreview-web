@@ -9,6 +9,12 @@ import mongo from '../../modules/mongo'
 import response from '../../modules/response'
 import { DB_DEFAULT_LIMIT, DB_DEFAULT_PAGE } from '../../const'
 
-export function getUses(req, res) {
+// get list users
+export function getUsers(req, res) {
+  
+}
 
+// get detail user by id
+export function getUser(req, res) {
+  
 }
