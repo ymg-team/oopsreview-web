@@ -1,5 +1,4 @@
 import restify from 'restify'
-// import routes from './routes'
 import render from './render'
 import debug from 'debug'
 import routes from './routes'
@@ -18,6 +17,14 @@ const debugServer = debug('app:server')
 
 const server = restify.createServer()
 const port = process.env.PORT || 19090
+
+// global handler initial
+server.use(restify.plugins.gzipResponse())
+server.use(restify.plugins.bodyParser({
+  mapParams: false,
+  mapFiles: false,
+  maxFieldsSize: 2 * 1024 * 1024
+}))
 
 // routes
 routes(server)
