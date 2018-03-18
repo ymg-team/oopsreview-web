@@ -2,9 +2,10 @@ import restify from 'restify'
 // import routes from './routes'
 import render from './render'
 import debug from 'debug'
+import routes from './routes'
 
 // handlers
-import apiPost from './handlers/api/post'
+import handlerSeal from './handlers/seal'
 
 const { NODE_ENV } = process.env
 
@@ -18,8 +19,12 @@ const debugServer = debug('app:server')
 const server = restify.createServer()
 const port = process.env.PORT || 19090
 
-// api route
-server.get('/api/posts', apiPost)
+// routes
+routes(server)
+
+if(NODE_ENV == 'development') {
+  server.get('/api/generate-seal', handlerSeal)
+}
 
 // serve static file from public directory
 server.get(/\/?.*\//, restify.plugins.serveStatic({
