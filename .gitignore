@@ -60,3 +60,4 @@ typings/
 .idea
 public/build
 internals/webpack-assets.json
+.DS_Store
