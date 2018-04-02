@@ -1,8 +1,8 @@
 <template lang="pug">
-  button.button.blue(
+  button.button(
     :class='button_type'
     v-on:click='onclick'
-    type='type') 
+    type='button') 
     | {{ value }}
 </template>
 

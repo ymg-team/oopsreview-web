@@ -1,23 +1,23 @@
 <template lang='pug'>
   .super-posts-list
     header-tag(
-      title='New Post'
+      :title='title'
       subtitle='Just remember to Oopsreview vision and mission'
     )
-    form(style='padding:1em 0')
+    form(method='post' target='javascript:;' style='padding:1em 0')
       input-text(
+        placeholder= 'title'
         type='text',
-        label='title'
       )
       #post-form
-      div(padding:1em 0)
-        submit(
-          onclick='handleSubmit'
+      div(style='padding:1em 0')
+        oops-button(
+          :onclick='handleSubmit'
           type='submit'
           value='Publish'
         )
-        submit(
-          onclick='handleDraft'
+        oops-button(
+          :onclick='handleDraft'
           type='submit'
           value='Save to Draft'
         )
@@ -32,7 +32,7 @@ import { injectCss, injectScript } from '../../modules/dom'
 
 Vue.component('header-tag', header)
 Vue.component('input-text', text)
-Vue.component('submit', button)
+Vue.component('oops-button', button)
 
 function loadQuillJS()
 {
@@ -45,7 +45,8 @@ export default Vue.extend({
   name: 'super-posts-new',
   data() {
     return {
-      editor: null
+      editor: null,
+      title: this.$route.params.id ? 'Update Post' : 'New Post'
     }
   },
   methods: {

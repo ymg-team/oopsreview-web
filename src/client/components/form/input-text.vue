@@ -7,6 +7,7 @@
       :name='name'
       :value='data[name] || ""'
       v-on:keyup='onchange'
+      :placeholder='placeholder'
       ) 
 
     //- show message if input not valid
@@ -28,6 +29,10 @@
     type: {
       type: String,
       default: 'text'
+    },
+    placeholder: {
+      type: String,
+      default: ''
     },
     // value of input
     value: {
@@ -81,4 +86,5 @@ export default Vue.extend({
     font-size: 1.5em
     width: -webkit-fill-available
     margin-bottom: .3em
+    border: 1px solid $color-gray-soft
 </style>
