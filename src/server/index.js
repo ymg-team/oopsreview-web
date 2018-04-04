@@ -1,20 +1,37 @@
 import restify from 'restify'
-// import routes from './routes'
 import render from './render'
 import debug from 'debug'
-
-const debugServer = debug('app:server')
+import routes from './routes'
 
 // handlers
-import mongo from './handlers/mongo'
+import handlerSeal from './handlers/seal'
+
+const { NODE_ENV } = process.env
+
+// load .env configuration
+if(NODE_ENV == 'development') {
+  require('dotenv').config()
+}
+
+const debugServer = debug('app:server')
 
 const server = restify.createServer()
 const port = process.env.PORT || 19090
 
-// handlers initial
-server.use(mongo)
+// global handler initial
+server.use(restify.plugins.gzipResponse())
+server.use(restify.plugins.bodyParser({
+  mapParams: false,
+  mapFiles: false,
+  maxFieldsSize: 2 * 1024 * 1024
+}))
 
-// api route
+// routes
+routes(server)
+
+if(NODE_ENV == 'development') {
+  server.get('/api/generate-seal', handlerSeal)
+}
 
 // serve static file from public directory
 server.get(/\/?.*\//, restify.plugins.serveStatic({
