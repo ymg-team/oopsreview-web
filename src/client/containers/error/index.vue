@@ -4,7 +4,7 @@
       .grid 
         .col-12.error-page-details
           h1 404
-          h2 Page Not Found 
+          h2 PAGE NOT FOUND
         .col-12.error-page-footer 
           | Are you lost ?
           br

@@ -2,24 +2,24 @@ require('dotenv').config()
 
 const webpack = require('webpack')
 const path = require('path')
+const AssetsPlugin = require('assets-webpack-plugin')
 const nodeEnv = process.env.NODE_ENV || 'development'
 
 let outputPath
 let plugins = [
-  // added vendor chunk
+  new webpack.NoEmitOnErrorsPlugin(),
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
     filename: process.env.NODE_ENV === 'production' ? 'vendor.[hash].js' : 'vendor.js',
     minChunks: Infinity
+  }),
+  new AssetsPlugin({prettyPrint: false, path: path.join(__dirname, 'internals')}),
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+    }
   })
 ]
-
-// set client environment variabels
-plugins.push(new webpack.DefinePlugin({
-  'process.env': {
-    NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-  }
-}))
 
 outputPath = path.resolve(__dirname, 'public/build')
 
