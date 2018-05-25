@@ -12,25 +12,46 @@ var _debug = require('debug');
 
 var _debug2 = _interopRequireDefault(_debug);
 
-var _mongo = require('./handlers/mongo');
+var _routes = require('./routes');
 
-var _mongo2 = _interopRequireDefault(_mongo);
+var _routes2 = _interopRequireDefault(_routes);
+
+var _seal = require('./handlers/seal');
+
+var _seal2 = _interopRequireDefault(_seal);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import routes from './routes'
-var debugServer = (0, _debug2.default)('app:server');
+var NODE_ENV = process.env.NODE_ENV;
+
+// load .env configuration
+
 
 // handlers
 
+if (NODE_ENV == 'development') {
+  require('dotenv').config();
+}
+
+var debugServer = (0, _debug2.default)('app:server');
 
 var server = _restify2.default.createServer();
 var port = process.env.PORT || 19090;
 
-// handlers initial
-server.use(_mongo2.default);
+// global handler initial
+server.use(_restify2.default.plugins.gzipResponse());
+server.use(_restify2.default.plugins.bodyParser({
+  mapParams: false,
+  mapFiles: false,
+  maxFieldsSize: 2 * 1024 * 1024
+}));
 
-// api route
+// routes
+(0, _routes2.default)(server);
+
+if (NODE_ENV == 'development') {
+  server.get('/api/generate-seal', _seal2.default);
+}
 
 // serve static file from public directory
 server.get(/\/?.*\//, _restify2.default.plugins.serveStatic({

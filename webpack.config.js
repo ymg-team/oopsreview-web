@@ -1,46 +1,52 @@
-require('dotenv').config()
+require("dotenv").config();
 
-const webpack = require('webpack')
-const path = require('path')
-const AssetsPlugin = require('assets-webpack-plugin')
-const nodeEnv = process.env.NODE_ENV || 'development'
+const webpack = require("webpack");
+const path = require("path");
+const AssetsPlugin = require("assets-webpack-plugin");
 
-let outputPath
+let outputPath;
 let plugins = [
   new webpack.NoEmitOnErrorsPlugin(),
   new webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
-    filename: process.env.NODE_ENV === 'production' ? 'vendor.[hash].js' : 'vendor.js',
+    name: "vendor",
+    filename:
+      process.env.NODE_ENV === "production" ? "vendor.[hash].js" : "vendor.js",
     minChunks: Infinity
   }),
-  new AssetsPlugin({prettyPrint: false, path: path.join(__dirname, 'internals')}),
+  new AssetsPlugin({
+    prettyPrint: false,
+    path: path.join(__dirname, "internals")
+  }),
   new webpack.DefinePlugin({
-    'process.env': {
+    "process.env": {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV)
     }
   })
-]
+];
 
-outputPath = path.resolve(__dirname, 'public/build')
+outputPath = path.resolve(__dirname, "public/build");
 
 // production config
-if (nodeEnv === 'production') {
+if (process.env.NODE_ENV === "production") {
   // minify appjs
-  const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin
-  plugins.push(new UglifyJsPlugin({ minimize: true }))
+  const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+  plugins.push(
+    new UglifyJSPlugin()
+  );
 }
 
 // default config
 module.exports = {
   entry: {
-    app: './src/client/index.ts',
-    vendor: ['vue', 'vuex', 'vue-router', 'string-manager']
+    app: "./src/client/index.ts",
+    vendor: ["vue", "vuex", "vue-router", "string-manager"]
   },
 
   output: {
-    filename: process.env.NODE_ENV === 'production' ? '[name].[hash].js' : '[name].js',
+    filename:
+      process.env.NODE_ENV === "production" ? "[name].[hash].js" : "[name].js",
     path: outputPath,
-    publicPath: '/'
+    publicPath: "/"
   },
 
   module: {
@@ -48,15 +54,15 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /(node_modules)/,
-        loader: 'babel-loader',
+        loader: "babel-loader",
         query: {
-          presets: ['es2015']
+          presets: ["es2015"]
         }
       },
       {
         test: /\.vue$/,
         exclude: /(node_modules)/,
-        loader: 'vue-loader'
+        loader: "vue-loader"
       },
       {
         test: /\.ts$/,
@@ -76,10 +82,9 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js", ".vue"],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js'
+      vue$: "vue/dist/vue.esm.js"
     }
   },
 
   plugins
-
-}
+};
