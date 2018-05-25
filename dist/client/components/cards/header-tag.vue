@@ -1,7 +1,7 @@
 <template lang="pug">
 .header-tag
   h1 {{ title }}
-  h2(v-if='subtitle != ""') Is the world's number one operating system, since the release of its first version until now, a lot of developments have been there.  
+  h2(v-if='subtitle != ""') {{ subtitle }}
 </template>
 
 <script lang="ts">
@@ -30,7 +30,6 @@ export default Vue.extend({
 .header-tag 
   padding: 2em 1em
   background-size: cover
-  width: 100%
   border-bottom: 7px solid $color-gray-verysoft
   h1 
     font-size: 3em 

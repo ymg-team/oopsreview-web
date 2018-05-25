@@ -3,13 +3,13 @@
     .container.error-page 
       .grid 
         .col-12.error-page-details
-          h1 SITE IS DOWN FOR MAINTENANCE
-          h2 Just Wait, We'll Give You a Better in Version 2
-        //- .col-12.error-page-footer 
-        //-   | Are you lost ?
-        //-   br
-        //-   | Just click above link or 
-        //-   router-link(to='/') back to home
+          h1 404
+          h2 PAGE NOT FOUND
+        .col-12.error-page-footer 
+          | Are you lost ?
+          br
+          | Just click above link or 
+          router-link(to='/') back to home
 
 </template>
 
