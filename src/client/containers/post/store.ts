@@ -2,10 +2,10 @@ import * as types from '../../vuex/types'
 
 const state = {
   list: {},
-  detail: {}
+  detail: []
 }
 
-const getter = {
+const getters = {
 
 }
 
@@ -19,7 +19,7 @@ const mutations = {
 
 export default {
   state,
-  getter,
+  getters,
   actions,
   mutations
 }

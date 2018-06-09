@@ -42,24 +42,24 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import sidebar from '../../components/sidebar.vue'
-import comment from '../../components/boxs/comment.vue'
-import host from '../../../config/host'
-import post from '../../components/boxs/post.vue'
+import Vue from "vue"
+import sidebar from "../../components/sidebar.vue"
+import comment from "../../components/boxs/comment.vue"
+import host from "../../../config/host"
+import post from "../../components/boxs/post.vue"
 
-Vue.component('sidebar', sidebar)
-Vue.component('comment', comment)
-Vue.component('box-post', post)
+Vue.component("sidebar", sidebar)
+Vue.component("comment", comment)
+Vue.component("box-post", post)
 
 export default Vue.extend({
-  name: 'post-detail',
+  name: "post-detail",
   data() {
     return {
       link: `/post/${this.title}-${this.id}`
     }
   },
-  props: ['title', 'id']
+  props: ["title", "id"]
 })
 </script>
 
