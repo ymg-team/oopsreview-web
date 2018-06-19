@@ -50,7 +50,7 @@ import post from "../../components/boxs/post.vue"
 
 Vue.component("sidebar", sidebar)
 Vue.component("comment", comment)
-Vue.component("box-post", post)
+// Vue.component("box-post", post)
 
 export default Vue.extend({
   name: "post-detail",
