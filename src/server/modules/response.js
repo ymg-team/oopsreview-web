@@ -1,15 +1,15 @@
-export default (code = 500, message = 'something wrong', data = {}) => {
+export default (status = 500, message = 'something wrong', data = {}) => {
   let response = {}
 
   if(Object.keys(data).length > 0) response = data
   
-  switch(code) {
+  switch(status) {
     case 200 :
-      response.code = code
+      response.status = status
       break
 
     default :
-      response.code = code 
+      response.status = status 
       response.message = message
       break
   }
