@@ -6,7 +6,7 @@
   "scripts": {
     "start": "concurrently \"yarn webpack:watch\" \"yarn server:watch\"",
     "server:watch": "DEBUG=app:* NODE_ENV=development nodemon ./src/server/index.js --exec 'node -r dotenv/config -r babel-register'",
-    "webpack:watch": "yarn remove:build-client && webpack --watch --progress",
+    "webpack:watch": "yarn remove:build-client && NODE_ENV=development webpack --watch --progress",
     "webpack:prod": "yarn remove:build-client && NODE_ENV=production webpack --progress",
     "babel:prod": "yarn remove:build-server && NODE_ENV=production babel src -d dist --copy-files",
     "build:prod": "yarn webpack:prod && yarn babel:prod",

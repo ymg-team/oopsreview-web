@@ -9,7 +9,7 @@
       .grid 
         .col-8_md-12
           div(style='padding-top: .5em')
-          box-post(:data='posts[filter]') 
+          box-post(:data='post.list[filter] || {}') 
 
         .col-4_md-12
           sidebar
@@ -30,19 +30,29 @@ Vue.component("sidebar", sidebar)
 
 export default Vue.extend({
   name: "post-list",
+
   data() {
     return {
       title: "archived",
       filter: "archived",
-      subtitle: ""
+      subtitle: "",
+      data: {
+        status: 200,
+        data: [1,2,3]
+      }
     }
   },
 
   props: ["tag_name"],
 
   methods: {
+    // req data to api
     reqData() {
       this.$store.dispatch(TYPES.GET_POSTS, {filter: this.filter})
+    },
+    // req more data from api
+    reqMoreData() {
+
     }
   },
 
@@ -65,14 +75,13 @@ export default Vue.extend({
       this.subtitle =
         "Is the world's number one operating system, since the release of its first version until now, a lot of developments have been there. "
     }
-    console.log(this.posts, this.filter)
-    this.reqData()
+    setTimeout(() => {this.reqData()}, 500)
   },
 
   computed: {
-    posts(): any {
-        return this.$store.state.post.list
-    }
+    ...mapState([
+      'post'
+    ])
   }
 })
 </script>

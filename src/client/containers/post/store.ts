@@ -1,15 +1,16 @@
+import Vue from 'vue'
 import * as types from "../../vuex/types"
 
 import request from "../../vuex/utils/api"
-import { Context as ContextInterface } from "../../vuex/interfaces"
+// import { Context as ContextInterface } from "../../vuex/interfaces"
 
 interface State {
-  list: {[filter: string]: object},
-  detail: {[filter: string]: object}
+  list: { [filter: string]: any }
+  detail: { [filter: string]: any }
 }
 
 interface ParamsGetPost {
-  filter: string,
+  filter: string
   response: object
 }
 
@@ -18,14 +19,21 @@ const initialState = {
   detail: {}
 }
 
-const getters = {}
+const getters = {
+  // getters to get list news by filter
+  [types.GET_POSTS]: (state: State) => (filter: string) => {
+    let post = {}
+    console.log(state.list.length)
+    return state.list[filter] || {}
+  }
+}
 
 const actions = {
   // request to api post list
-  [types.GET_POSTS]: (context: ContextInterface, params: ParamsGetPost) => {
+  [types.GET_POSTS]: ({ commit }: any, params: ParamsGetPost) => {
     request("get", "/api/posts/dW5kZWZpbmVkMTUyMTM0NDA4ODM0Mw?limit=8").then(
       response => {
-        context.commit(types.GET_POSTS, {
+        commit(types.GET_POSTS, {
           response,
           filter: params.filter
         })
@@ -38,9 +46,9 @@ const mutations = {
   // on request post list
   [types.REQUEST_POSTS]: (
     state: State = initialState,
-    {filter}: ParamsGetPost
+    { filter }: ParamsGetPost
   ) => {
-    state.list[filter] = {loading: true}
+    state.list[filter] = { loading: true }
   },
 
   // receive response post list
@@ -48,7 +56,8 @@ const mutations = {
     state: State = initialState,
     { filter, response }: ParamsGetPost
   ) => {
-    state.list[filter] = Object.assign({}, {loading: false}, response)
+    state.list[filter] = response 
+    state.list[filter].loading = false
   }
 }
 
