@@ -24,7 +24,7 @@ const getters = {
   [types.GET_POSTS]: (state: State) => (filter: string) => {
     let post = {}
     console.log(state.list.length)
-    return state.list[filter] || {}
+    state.list[filter] || {}
   }
 }
 
@@ -37,6 +37,7 @@ const actions = {
           response,
           filter: params.filter
         })
+        
       }
     )
   }
@@ -56,9 +57,13 @@ const mutations = {
     state: State = initialState,
     { filter, response }: ParamsGetPost
   ) => {
-    state.list[filter] = response 
-    state.list[filter].loading = false
+    let {list} = state
+    list[filter] = response 
+    list[filter].loading = false
+
+    state.list = Object.assign({}, list)
   }
+
 }
 
 export default {

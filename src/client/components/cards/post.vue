@@ -4,11 +4,11 @@
       router-link(to='/post/title-and-color-but-farm-123hu70')
         img(src='/images/sample.jpg' alt='alt of image')
     .title
-      router-link(to='/post/title-and-color-but-farm-123hu70')
-        | This is title of post
+      router-link(:to="'/post/' + toSlug(data.title + ' ' + data._id)")
+        | {{ data.title }}
       .meta 
         | By  
-        router-link(to="/author/345rty") Yusuf Akhsan Hidayat 
+        router-link(to="/author/345rty") {{ data.author.fullname }}
         | | 
         | 23 June 2018 - 23:00 UTH8 
         | | 
@@ -16,9 +16,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue"
+import { toSlug } from "string-manager"
+
 export default Vue.extend({
-  
+  props: ["data"],
+
+  methods: {
+    toSlug(str: string): string {
+      return toSlug(str)
+    }
+  }
 })
 </script>
 

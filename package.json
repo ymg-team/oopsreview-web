@@ -37,7 +37,7 @@
     "mongodb": "^3.0.4",
     "pug": "^2.0.0-rc.4",
     "restify": "^6.3.4",
-    "string-manager": "^1.1.5",
+    "string-manager": "^2.0.0-beta.0",
     "typescript": "^2.7.2",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",

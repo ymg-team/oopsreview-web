@@ -1,8 +1,8 @@
 <template lang="pug">
 .box-post
   .grid
-    div(v-if="data.data && data.data.length > 0")
-      post-card(v-for="(n,key) in data.data" :key="key")
+    div(v-if="data.result && data.result.length > 0")
+      post-card(v-for="(n,key) in data.result" :key="key" :data="n")
 
   loading(v-if="!data.status || data.loading")
 
@@ -30,6 +30,9 @@ export default Vue.extend({
     data(oldval, newval) {
       console.log(oldval, newval)
     }
+  },
+
+  created() {
   }
 })
 </script>
