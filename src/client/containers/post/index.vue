@@ -9,6 +9,7 @@
       .grid 
         .col-8_md-12
           div(style='padding-top: .5em')
+          // | {{ count }}
           box-post(:data='post.list[filter] || {}') 
 
         .col-4_md-12
@@ -35,25 +36,14 @@ export default Vue.extend({
     return {
       title: "archived",
       filter: "archived",
-      subtitle: "",
-      data: {
-        status: 200,
-        data: [1,2,3]
-      }
+      subtitle: ""
     }
   },
 
   props: ["tag_name"],
 
   methods: {
-    // req data to api
-    reqData() {
-      this.$store.dispatch(TYPES.GET_POSTS, {filter: this.filter})
-    },
-    // req more data from api
-    reqMoreData() {
-
-    }
+    
   },
 
   watch: {
@@ -75,7 +65,12 @@ export default Vue.extend({
       this.subtitle =
         "Is the world's number one operating system, since the release of its first version until now, a lot of developments have been there. "
     }
-    setTimeout(() => {this.reqData()}, 500)
+    this.$store.dispatch(TYPES.GET_POSTS, {filter: this.filter})
+    
+  },
+
+  mounted() {
+   
   },
 
   computed: {

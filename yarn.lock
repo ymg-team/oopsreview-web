@@ -5140,9 +5140,9 @@ strict-uri-encode@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz#279b225df1d582b1f54e65addd4352e18faa0713"
 
-string-manager@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/string-manager/-/string-manager-1.1.5.tgz#7ea28bde5d0b46cb9af091e28ddfa409f4054ce5"
+string-manager@^2.0.0-beta.0:
+  version "2.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/string-manager/-/string-manager-2.0.0-beta.0.tgz#54228fdbc42a3431f0b5be288090051830871951"
 
 string-width@^1.0.1, string-width@^1.0.2:
   version "1.0.2"
