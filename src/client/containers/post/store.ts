@@ -62,6 +62,14 @@ const mutations = {
     list[filter].loading = false
 
     state.list = Object.assign({}, list)
+  },
+
+  // receive response loadmore post list
+  [types.GET_MORE_POST]: (
+    state: State = initialState,
+    { filter, response }: ParamsGetPost
+  ) => {
+
   }
 
 }
