@@ -7,10 +7,21 @@ import { queryToObj } from "string-manager"
 import postTransformer from "../../transformers/post"
 import userTransformer from "../../transformers/user"
 
+/**
+ * @description function to select post list by parameters
+ * @param {limit} req.getQuery().limit total data to show
+ */
 export function list(req, res) {
-  const { page, limit, user_id } = req.getQuery()
-    ? queryToObj(req.getQuery())
-    : {}
+  const {
+    page,
+    limit,
+    user_id,
+    featured,
+    lastid,
+    lastcreatedon
+  } = req.getQuery() ? queryToObj(req.getQuery()) : {}
+
+  let sort = { created_on: -1 }
 
   let aggregate = [
     {
@@ -23,6 +34,17 @@ export function list(req, res) {
     }
   ]
 
+  // if sort by featured post most viewed
+  if (featured === "true") sort = { views: -1 }
+
+  // get loadmore data
+  if (lastcreatedon) {
+    // console.log(lastcreatedon)
+    aggregate.push({
+      $match: { created_on: { $lt: parseInt(lastcreatedon) } }
+    })
+  }
+
   // filter by author
   if (user_id)
     aggregate.push({
@@ -34,6 +56,7 @@ export function list(req, res) {
       .aggregate(aggregate)
       .skip(parseInt(page) || 0)
       .limit(parseInt(limit) || DB_DEFAULT_LIMIT)
+      .sort(sort) //-1 is descending
       .toArray((err, result) => {
         // error from database
         if (err) {
@@ -54,6 +77,10 @@ export function list(req, res) {
   })
 }
 
+/**
+ * @description function to select post by _id
+ * @param {number} req.params.id id of post
+ */
 export function detail(req, res) {
   const { id } = req.params
   if (id.length != 24) return res.send(200, response(204, "post not found"))
