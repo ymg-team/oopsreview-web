@@ -1,8 +1,7 @@
 <template lang="pug">
 .box-post
-  .grid
-    div(v-if="data.result && data.result.length > 0")
-      post-card(v-for="(n,key) in data.result" :key="key" :data="n")
+  .grid(v-if="data.result && data.result.length > 0")
+    post-card(v-for="(n,key) in data.result" :key="key" :data="n")
 
   loading(v-if="!data.status || data.loading")
 

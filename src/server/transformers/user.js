@@ -6,5 +6,9 @@
 
 export default (n) => {
     delete n.password
-    return n
+    return {
+      fullname: n.fullname,
+      username: n.username,
+      avatar: n.avatar
+    }
 }
