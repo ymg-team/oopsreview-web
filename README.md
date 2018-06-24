@@ -6,6 +6,8 @@ Web version of https://oopsreview.com
 
 ## Getting Started
  - ### Development / Local
+    - **create .env**
+      copy `.env.example` to `.env` and configure according to your system.
     - **run server**
       ```
       yarn start
@@ -29,5 +31,10 @@ Web version of https://oopsreview.com
 - [Sass](https://sass-lang.com/)
 - [Pug](https://pugjs.org/)
 - [Typescript](https://www.typescriptlang.org/)
-- [ExpressJS](https://expressjs.com/)
+- [Restify](http://restify.com/)
 - [MongoDB](https://www.mongodb.com/)
+
+## Dev Mode Powered By
+- [MLab](https://mlab.com)
+- [Heroku](https://heroku.com)
+- [Firebase](https://console.firebase.google.com/u/1/)
