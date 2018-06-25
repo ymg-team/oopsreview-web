@@ -65,10 +65,10 @@ export function list(req, res) {
         }
 
         // transform data
-        result.map(n => {
+        result.map((n, key) => {
           const author = userTransformer(n.author[0])
-          n = postTransformer(n)
-          n.author = author
+          result[key] = postTransformer(n)
+          result[key].author = author
         })
 
         // success
