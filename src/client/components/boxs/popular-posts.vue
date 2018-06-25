@@ -1,16 +1,16 @@
 <template lang="pug">
   .popular-post
     .container 
-      .grid
-        .col-8_sm-12.card-post-popular
+      .grid(v-if="data.status && data.status === 200")
+        .col-8_sm-12.card-post-popular(v-if="typeof data.result[0] !== 'undefined'")
           .grid
             .thumb.col-6
               router-link(to="/post/this-post-title-324efe3")
-                .thumb-image(style='background-image:url(/images/sample.jpg)')
+                .thumb-image(:style="`background-image:url(${data.result[0].image.small})`")
             .title.col-6
               router-link(to="/post/this-post-title-324efe3")
-                h2 This Is Post title long and ready to ready, how about you
-              small by Yusuf A.H.
+                h2 {{ data.result[0].title }}
+              small by  {{ data.result[0].author.fullname }}.
         
         .col-4_sm-12.card-post-popular
           .thumb
@@ -78,7 +78,9 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-  name: 'popular-post-box'
+  name: 'popular-post-box',
+
+  props: ['data']
 })
 </script>
 

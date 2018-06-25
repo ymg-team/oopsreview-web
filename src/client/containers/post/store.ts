@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import * as types from "../../vuex/types"
+import { objToQuery } from "string-manager"
 
 import request from "../../vuex/utils/api"
 // import { Context as ContextInterface } from "../../vuex/interfaces"
@@ -10,7 +11,9 @@ interface State {
 }
 
 interface ParamsGetPost {
-  filter: string
+  filter: string,
+  limit?: number,
+  featured?: boolean,
   response: object
 }
 
@@ -31,7 +34,12 @@ const getters = {
 const actions = {
   // request to api post list
   [types.GET_POSTS]: ({ commit }: any, params: ParamsGetPost) => {
-    request("get", "/api/posts/dW5kZWZpbmVkMTUyMTM0NDA4ODM0Mw?limit=8").then(
+
+    // generate querystring
+    if(!params.limit) params.limit = 8
+    const query = objToQuery(params)
+    
+    request("get", `/api/posts/dW5kZWZpbmVkMTUyMTM0NDA4ODM0Mw?${query}`).then(
       response => {
         commit(types.GET_POSTS, {
           response,
