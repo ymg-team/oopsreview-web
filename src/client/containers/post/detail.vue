@@ -9,16 +9,17 @@
               router-link(to='/author/yussan') {{ post.detail[id].author.fullname }}
               | &nbsp;|
               | 26 January 2019, 14:00 WIB
-              br
-              | Posted in 
-              router-link(to='/tag/macos') MacOS 
-              router-link(to='/tag/cloud') Cloud
+              div(v-if="typeof post.detail[id].tags === 'object' && post.detail[id].tags.length > 0")
+                br
+                | Posted in 
+                span(v-for="item, key in post.detail[id].tags" :key="key") 
+                  router-link(:to="'/tag/' + item" ) {{ item }}
+                  | {{ key < post.detail[id].tags.length -1 ? ', ' : ''  }}
         
         .grid 
           .col-8_md-12
             article
               img(:src="post.detail[id].image.original")
-              
               div(v-html="post.detail[id].content")
           
           .col-4_md-12

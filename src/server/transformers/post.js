@@ -20,7 +20,7 @@ export default (n) => {
       updated_on: n.updated_on,
       views: n.views,
       content: n.content,
-      tags: n.tags,
+      tags: n.tags ? n.tags.split(',') : [],
       image: {
         original: n.image || DEFAULT_THUMB,
         600: n.image ? generateCustomUrl(n.image, 'w_600,c_scale') : generateCustomUrl(DEFAULT_THUMB, 'w_600,c_scale'),
