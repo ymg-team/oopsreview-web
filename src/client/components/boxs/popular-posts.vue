@@ -2,72 +2,27 @@
   .popular-post
     .container 
       .grid(v-if="data.status && data.status === 200")
-        .col-8_sm-12.card-post-popular(v-if="typeof data.result[0] !== 'undefined'")
-          .grid
-            .thumb.col-6
-              router-link(to="/post/this-post-title-324efe3")
-                .thumb-image(:style="`background-image:url(${data.result[0].image.small})`")
-            .title.col-6
-              router-link(to="/post/this-post-title-324efe3")
-                h2 {{ data.result[0].title }}
-              small by  {{ data.result[0].author.fullname }}.
-        
-        .col-4_sm-12.card-post-popular
-          .thumb
-            router-link(to="/post/this-post-title-324efe3")
-              .thumb-image(style='background-image:url(/images/sample.jpg)') 
-          .title
-            router-link(to="/post/this-post-title-324efe3")
-              h2 This Is Post title long and ready to ready, how about you
-            small by 
-              a(href='/user/234u7g234') Yusuf A.H.
-        
-        .col-4_sm-12.card-post-popular
-          .thumb
-            router-link(to="/post/this-post-title-324efe3")
-              .thumb-image(style='background-image:url(/images/sample.jpg)') 
-          .title
-            router-link(to="/post/this-post-title-324efe3")
-              h2 This Is Post title long and ready to ready, how about you
-            small by 
-              a(href='/user/234u7g234') Yusuf A.H.
 
-        .col-8_sm-12.card-post-popular
-          .grid
-            .thumb.col-6
-              router-link(to="/post/this-post-title-324efe3")
-                .thumb-image(style='background-image:url(/images/sample.jpg)')
-            .title.col-6
-              router-link(to="/post/this-post-title-324efe3")
-                h2 This Is Post title long and ready to ready, how about you
-              small by Yusuf A.H.
+        // 1
+        card-large(:data="data.result[0]")
         
-        .col-4_sm-12.card-post-popular
-          .thumb
-            router-link(to="/post/this-post-title-324efe3")
-              .thumb-image(style='background-image:url(/images/sample.jpg)') 
-          .title
-            router-link(to="/post/this-post-title-324efe3")
-              h2 This Is Post title long and ready to ready, how about you
-            small by Yusuf A.H.
+        // 2
+        card-small(:data="data.result[1]")
+        
+        // 3
+        card-small(:data="data.result[2]")
+        
+        // 4
+        card-large(:data="data.result[3]")
+        
+        // 5
+        card-small(:data="data.result[4]")
 
-        .col-4_sm-12.card-post-popular
-          .thumb
-            router-link(to="/post/this-post-title-324efe3")
-              .thumb-image(style='background-image:url(/images/sample.jpg)') 
-          .title
-            router-link(to="/post/this-post-title-324efe3")
-              h2 This Is Post title long and ready to ready, how about you
-            small by Yusuf A.H.
+        // 6
+        card-small(:data="data.result[5]")
 
-        .col-4_sm-12.card-post-popular
-          .thumb
-            router-link(to="/post/this-post-title-324efe3")
-              .thumb-image(style='background-image:url(/images/sample.jpg)') 
-          .title
-            router-link(to="/post/this-post-title-324efe3")
-              h2 This Is Post title long and ready to ready, how about you
-            small by Yusuf A.H.
+        // 7
+        card-small(:data="data.result[6]")
 
       .popular-end
           strong Oopsreview 
@@ -77,6 +32,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import CardSmall from '../cards/post-small.vue'
+import CardLarge from '../cards/post-large.vue'
+
+Vue.component("card-small", CardSmall)
+Vue.component("card-large", CardLarge)
+
 export default Vue.extend({
   name: 'popular-post-box',
 

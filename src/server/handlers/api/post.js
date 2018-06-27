@@ -107,9 +107,14 @@ export function detail(req, res) {
           return res.send(500, response(500, "something wrong with mongo"))
         }
 
-        if (result.length < 0) res.send(200, response(204, "post not found"))
+        if (result.length < 0) return res.send(200, response(204, "post not found"))
 
-        res.send(200, response(200, "success", result[0]))
+        // transform result
+        const author = userTransformer(result[0].author[0])
+        result = postTransformer(result[0])
+        result.author = author
+
+        res.send(200, response(200, "success", result))
       })
   })
 }

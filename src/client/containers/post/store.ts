@@ -23,12 +23,6 @@ const initialState = {
 }
 
 const getters = {
-  // getters to get list news by filter
-  [types.GET_POSTS]: (state: State) => (filter: string) => {
-    let post = {}
-    console.log(state.list.length)
-    state.list[filter] || {}
-  }
 }
 
 const actions = {
@@ -45,13 +39,36 @@ const actions = {
           response,
           filter: params.filter
         })
-        
+      }
+    )
+  },
+
+  // request to api post detail
+  [types.GET_POST]: ({ commit }: any, post_id: string) => {
+    request("get", `/api/post/${post_id}/5aa4ac2b830a0aef88acdb5c`).then(
+      response => {
+        commit(types.GET_POST, {
+          response,
+          filter: post_id
+        })
       }
     )
   }
 }
 
 const mutations = {
+  // on receive post detail
+  [types.GET_POST]: (
+    state: State = initialState,
+    {filter, response}
+  ) => {
+    let {detail} = state
+    detail[filter] = response 
+    detail[filter].loading = false
+
+    state.detail = Object.assign({}, detail)
+  },
+  
   // on request post list
   [types.REQUEST_POSTS]: (
     state: State = initialState,

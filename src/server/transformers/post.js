@@ -1,4 +1,5 @@
 import { toSlug } from "string-manager"
+import { generateCustomUrl } from "../modules/cloudinary"
 
 /**
  * created by yussan
@@ -6,8 +7,7 @@ import { toSlug } from "string-manager"
  * created using WebStorm
  */
 
-const DEFAULT_THUMB = 'https://res.cloudinary.com/dhjkktmal/image/upload/v1529931141/oopsreview/2018/default-thumb-oopsreview.png'
-const DEFAULT_THUMB_SMALL = 'https://res.cloudinary.com/dhjkktmal/image/upload/w_200,c_scale/oopsreview/2018/default-thumb-oopsreview.png'
+const DEFAULT_THUMB = 'https://res.cloudinary.com/dhjkktmal/image/upload/v1529931141/oopsreview/2018/default-thumb.png'
 
 export default (n) => {
     delete n.user_id
@@ -23,7 +23,8 @@ export default (n) => {
       tags: n.tags,
       image: {
         original: n.image || DEFAULT_THUMB,
-        small: n.image ? n.image.replace(/upload.*oopsreview/, 'upload/w_200,c_scale/oopsreview' ) : DEFAULT_THUMB_SMALL
+        600: n.image ? generateCustomUrl(n.image, 'w_600,c_scale') : generateCustomUrl(DEFAULT_THUMB, 'w_600,c_scale'),
+        small: n.image ? generateCustomUrl(n.image, 'w_200,c_scale') : generateCustomUrl(DEFAULT_THUMB, 'w_200,c_scale')
       }
     }
 }
