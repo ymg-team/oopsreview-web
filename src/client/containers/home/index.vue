@@ -1,11 +1,11 @@
 <template lang="pug">
   div 
-    popular-box
+    popular-box(:data='post.list.featured || {}')
     .container.bg-white 
       .grid 
         .col-8
           div(style='padding-top: .5em')
-          box-post(:data='post.list.home || {}') 
+          box-post(:data='post.list.latest || {}') 
         .col-4
           sidebar
         .col-12(style='padding-bottom: 0')
@@ -20,7 +20,7 @@ import post from "../../components/boxs/post.vue"
 import sidebar from "../../components/sidebar.vue"
 import buttonBig from "../../components/form/button-big.vue"
 import { mapState } from "vuex"
-import * as TYPES from '../../vuex/types'
+import * as TYPES from "../../vuex/types"
 
 Vue.component("popular-box", popular)
 Vue.component("card-title", title)
@@ -31,8 +31,13 @@ Vue.component("buttonBig", buttonBig)
 export default Vue.extend({
   name: "home",
 
-  created(){
-    this.$store.dispatch(TYPES.GET_POSTS, {filter: "home"})
+  created() {
+    this.$store.dispatch(TYPES.GET_POSTS, { filter: "latest", limit: 8 })
+    this.$store.dispatch(TYPES.GET_POSTS, {
+      filter: "featured",
+      featured: true,
+      limit: 8
+    })
   },
 
   computed: {

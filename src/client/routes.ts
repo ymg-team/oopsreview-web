@@ -22,7 +22,7 @@ export default [
       { path: '/posts', component: Post },
       { path: '/search', name: 'search', component: Post },
       { path: '/tag/:tag_name', props: true, component: Post },
-      { path: '/post/:title-:id', name: 'post_detail', component: PostDetail },
+      { path: '/post/:title', name: 'post_detail', component: PostDetail },
       { path: '/static/:title', name: 'static_detail', component:  StaticDetail },
     ]
   },

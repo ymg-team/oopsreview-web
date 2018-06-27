@@ -1,32 +1,27 @@
 <template lang="pug">
   .col-12.card-post
     .thumb
-      router-link(to='/post/title-and-color-but-farm-123hu70')
-        img(src='/images/sample.jpg' alt='alt of image')
+      router-link(:to="'/post/' + data.nospace_title + '-' + data._id")
+        img(:src="data.image.small" :alt="data.title")
     .title
-      router-link(:to="'/post/' + toSlug(data.title + ' ' + data._id)")
+      router-link(:to="'/post/' + data.nospace_title + '-' + data._id")
         | {{ data.title }}
       .meta 
         | By  
-        router-link(to="/author/345rty") {{ data.author.fullname }}
+        router-link(:to="'/author/ + data.author.username'") {{ data.author.fullname }} 
         | | 
         | 23 June 2018 - 23:00 UTH8 
+        | | 
+        | {{ data.views }} Views
         | | 
         | 45 Comments
 </template>
 
 <script lang="ts">
 import Vue from "vue"
-import { toSlug } from "string-manager"
 
 export default Vue.extend({
   props: ["data"],
-
-  methods: {
-    toSlug(str: string): string {
-      return toSlug(str)
-    }
-  }
 })
 </script>
 

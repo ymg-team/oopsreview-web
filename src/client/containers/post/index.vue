@@ -42,10 +42,6 @@ export default Vue.extend({
 
   props: ["tag_name"],
 
-  methods: {
-    
-  },
-
   watch: {
     tag_name(nv, ov) {
       if (nv) {
