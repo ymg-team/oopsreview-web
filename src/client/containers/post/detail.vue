@@ -4,11 +4,15 @@
       div(v-if="typeof post.detail[id] !== 'undefined'")
         .grid
           .col-12
-            h1 {{ post.detail[id].title }}
+            h1 {{ toCamelCase(post.detail[id].title) }}
             p By 
-              router-link(to='/author/yussan') {{ post.detail[id].author.fullname }}
+              router-link(to='/author/yussan') {{ toCamelCase(post.detail[id].author.fullname) }}
               | &nbsp;|
-              | 26 January 2019, 14:00 WIB
+              | {{ epochToRelative( post.detail[id].created_on ) }}
+              br 
+              | {{ post.detail[id].views || 0 }} views 
+              | |
+              | {{ post.detail[id].comments || 0 }} comments 
               div(v-if="typeof post.detail[id].tags === 'object' && post.detail[id].tags.length > 0")
                 br
                 | Posted in 
@@ -32,7 +36,7 @@
         .grid.p-t-2 
           .col-8_md-12
             h2.title-menu The Latest
-            box-post
+            box-post(:data='post.list.latest_detail || {}') 
 
       div(v-else)
         loading
@@ -43,8 +47,10 @@
 <script lang="ts">
 import Vue from "vue"
 import host from "../../../config/host"
-import * as TYPES from '../../vuex/types'
-import {mapState} from "vuex"
+import * as TYPES from "../../vuex/types"
+import { mapState } from "vuex"
+import { toCamelCase } from "string-manager"
+import { epochToRelative } from "../../modules/datetime"
 
 // components
 import sidebar from "../../components/sidebar.vue"
@@ -55,27 +61,48 @@ import loading from "../../components/cards/loading.vue"
 Vue.component("sidebar", sidebar)
 Vue.component("comment", comment)
 Vue.component("loading", loading)
-// Vue.component("box-post", post)
+Vue.component("box-post", post)
 
 export default Vue.extend({
   name: "post-detail",
   data() {
-    const title_arr = this.$route.params.title.split('-')
+    // const title_arr = this.$route.params.title.split("-")
     return {
       link: `/post/${this.$route.params.title}`,
-      id: title_arr[title_arr.length - 1]
+      id: 0
     }
   },
 
   created() {
-    const title_arr = this.$route.params.title.split('-')
-    this.$store.dispatch(TYPES.GET_POST, title_arr[title_arr.length - 1])
+    const title_arr = this.$route.params.title.split("-")
+    this.$store.dispatch(TYPES.GET_POSTS, { filter: "latest_detail", limit: 3 })
+    this.fetchPostDetail(title_arr[title_arr.length - 1])
+  },
+
+  methods: {
+    toCamelCase(str) {
+      return toCamelCase(str)
+    },
+    epochToRelative(epoch) {
+      return epochToRelative(epoch)
+    },
+    fetchPostDetail(id) {
+      this.id = id
+      this.$store.dispatch(TYPES.GET_POST, id)
+    }
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    // request post detail
+    const title_arr = to.params.title.split("-")
+    this.fetchPostDetail(title_arr[title_arr.length - 1])
+    this.link = `/post/${to.params.title}`
+
+    next()
   },
 
   computed: {
-    ...mapState([
-      'post'
-    ])
+    ...mapState(["post"])
   }
 })
 </script>

@@ -14,7 +14,8 @@ interface ParamsGetPost {
   filter: string,
   limit?: number,
   featured?: boolean,
-  response: object
+  response: any,
+  lastcreatedon?: number
 }
 
 const initialState = {
@@ -35,13 +36,23 @@ const actions = {
     
     request("get", `/api/posts/dW5kZWZpbmVkMTUyMTM0NDA4ODM0Mw?${query}`).then(
       response => {
-        commit(types.GET_POSTS, {
-          response,
-          filter: params.filter
-        })
+        if(typeof params.lastcreatedon === "number") {
+          // loadmore news
+          commit(types.GET_MORE_POSTS, {
+            response,
+            filter: params.filter
+          })
+        } else {
+          // get news
+          commit(types.GET_POSTS, {
+            response,
+            filter: params.filter
+          })
+        }
       }
     )
   },
+
 
   // request to api post detail
   [types.GET_POST]: ({ commit }: any, post_id: string) => {
@@ -90,11 +101,16 @@ const mutations = {
   },
 
   // receive response loadmore post list
-  [types.GET_MORE_POST]: (
+  [types.GET_MORE_POSTS]: (
     state: State = initialState,
     { filter, response }: ParamsGetPost
   ) => {
+    let {list} = state
+    list[filter].status = response.status
+    list[filter].result = list[filter].result.concat(response.result)
+    list[filter].loading = false
 
+    state.list = Object.assign({}, list)
   }
 
 }

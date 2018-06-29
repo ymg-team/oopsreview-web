@@ -18,8 +18,9 @@ export default (n) => {
       nospace_title: toSlug(n.title), 
       created_on: n.created_on,
       updated_on: n.updated_on,
-      views: n.views,
       content: n.content,
+      views: n.views || 0,
+      comments: n.comments || 0,
       tags: n.tags ? n.tags.split(',') : [],
       image: {
         original: n.image || DEFAULT_THUMB,

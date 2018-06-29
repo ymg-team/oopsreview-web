@@ -1,5 +1,7 @@
 <template lang="pug">
-  router-link.button-big(:class='button_type' :to='to')
+  router-link.button-big(v-if="to !== 'javascript:;'" :class='button_type' :to='to')
+    | {{ text }}
+  a.button-big(v-else-if="!to || to == 'javascript:;'" v-on:click="onclick" :class='button_type' href='javascript:;')
     | {{ text }}
 </template>
 
@@ -18,6 +20,10 @@ const props = {
   text: {
     type: String,
     default: ''
+  },
+  onclick: {
+    type: Function,
+    default: () => {}
   }
 }
 

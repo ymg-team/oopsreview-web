@@ -1,25 +1,27 @@
 const static_data = [
   {
     "index": "about",
+    "created_at": 1530193444, 
     "title": "about",
-    "text": "lorem ipsum semi dolor"
+    "image": "",
+    "html": "<p><strong>Oopsreview</strong> </p>"
   },
   {
     "index": "privacy",
+    "created_at": 1530193444,
     "title": "privacy",
-    "text": "lorem ipsum semi dolor"
+    "image": "",
+    "html": "<p>lorem ipsum semi dolor</p>"
   }
 ]
 
 export function getData(index: String): Object {
-  let found = false
+  let data
   static_data.map((n: any) => {
-    if(n.index = index) {
-      found = true 
-      n.status = 200
-      return n
+    if(n.index === index) {
+      data = n
     }
   })
 
-  return {status: 204}
+  return data
 }
