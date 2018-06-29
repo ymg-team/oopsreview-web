@@ -17,22 +17,7 @@ Vue.component("loading", loading)
 
 export default Vue.extend({
   name: "box-post",
-
-  data() {
-    return {
-    }
-  },
-
   props: ["data"],
-
-  watch: {
-    data(oldval, newval) {
-      console.log(oldval, newval)
-    }
-  },
-
-  created() {
-  }
 })
 </script>
 

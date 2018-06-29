@@ -9,10 +9,13 @@
       small by 
         router-link(:to="'/user/' + data.author.username") {{ data.author.fullname }}.
 </template>
+
 <script lang="ts">
 import Vue from "vue"
+
 export default Vue.extend({
   name: "card-post-small",
+
   props: ["data"]
 })
 </script>

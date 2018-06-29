@@ -8,20 +8,27 @@
         | {{ data.title }}
       .meta 
         | By  
-        router-link(:to="'/author/ + data.author.username'") {{ data.author.fullname }} 
+        router-link(:to="'/author/' + data.author.username") {{ data.author.fullname }} 
         | | 
-        | 23 June 2018 - 23:00 UTH8 
+        | {{ epochToRelative(data.created_on || 0) }}
         | | 
-        | {{ data.views }} Views
+        | {{ data.views || 0 }} Views
         | | 
-        | 45 Comments
+        | {{ data.comments || 0 }} Comments
 </template>
 
 <script lang="ts">
 import Vue from "vue"
+import { epochToRelative } from '../../modules/datetime'
 
 export default Vue.extend({
   props: ["data"],
+
+  methods: {
+    epochToRelative(epochtime) {
+      return epochToRelative(epochtime)
+    }
+  },
 })
 </script>
 

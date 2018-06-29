@@ -21,8 +21,6 @@ export function list(req, res) {
     lastcreatedon
   } = req.getQuery() ? queryToObj(req.getQuery()) : {}
 
-  let sort = { created_on: -1 }
-
   let aggregate = [
     {
       $lookup: {
@@ -35,7 +33,21 @@ export function list(req, res) {
   ]
 
   // if sort by featured post most viewed
-  if (featured === "true") sort = { views: -1 }
+  let sort = {}
+  if (featured === "true") {
+    sort = {
+      $sort: {
+        "views": -1
+      }
+    }
+  } else {
+    sort = {
+      $sort: {
+        "created_on": -1
+      }
+    }
+  }
+  aggregate.push(sort)
 
   // get loadmore data
   if (lastcreatedon) {
@@ -56,7 +68,6 @@ export function list(req, res) {
       .aggregate(aggregate)
       .skip(parseInt(page) || 0)
       .limit(parseInt(limit) || DB_DEFAULT_LIMIT)
-      .sort(sort) //-1 is descending
       .toArray((err, result) => {
         // error from database
         if (err) {
@@ -64,15 +75,19 @@ export function list(req, res) {
           return res.send(500, response(500, "something wrong with mongo"))
         }
 
-        // transform data
-        result.map((n, key) => {
-          const author = userTransformer(n.author[0])
-          result[key] = postTransformer(n)
-          result[key].author = author
-        })
+        if (result.length > 0) {
+          // transform data
+          result.map((n, key) => {
+            const author = userTransformer(n.author[0])
+            result[key] = postTransformer(n)
+            result[key].author = author
+          })
 
-        // success
-        return res.send(200, response(200, "success", { result }))
+          // success
+          return res.send(200, response(200, "success", { result }))
+        } else {
+          return res.send(200, response(204, "no post available"))
+        }
       })
   })
 }
@@ -107,7 +122,8 @@ export function detail(req, res) {
           return res.send(500, response(500, "something wrong with mongo"))
         }
 
-        if (result.length < 0) return res.send(200, response(204, "post not found"))
+        if (result.length < 0)
+          return res.send(200, response(204, "post not found"))
 
         // transform result
         const author = userTransformer(result[0].author[0])
