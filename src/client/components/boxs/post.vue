@@ -6,7 +6,7 @@
   p.align-center.text-muted(v-if="data.status && data.status !== 200")
     | {{ data.message }}
 
-  loading(v-if="!data.status || data.loading")
+  loading(v-if="!data.status")
 
 </template>
 

@@ -1,24 +1,34 @@
 <template lang="pug">
   .col-12.card-post
     .thumb
-      router-link(to='/post/title-and-color-but-farm-123hu70')
-        img(src='/images/sample.jpg' alt='alt of image')
+      router-link(:to="'/post/' + data.nospace_title + '-' + data._id")
+        img(:src="data.image.small" :alt="data.title")
     .title
-      router-link(to='/post/title-and-color-but-farm-123hu70')
-        | This is title of post
+      router-link(:to="'/post/' + data.nospace_title + '-' + data._id")
+        | {{ data.title }}
       .meta 
         | By  
-        router-link(to="/author/345rty") Yusuf Akhsan Hidayat 
+        router-link(:to="'/author/' + data.author.username") {{ data.author.fullname }} 
         | | 
-        | 23 June 2018 - 23:00 UTH8 
+        | {{ epochToRelative(data.created_on || 0) }}
         | | 
-        | 45 Comments
+        | {{ data.views || 0 }} Views
+        | | 
+        | {{ data.comments || 0 }} Comments
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue"
+import { epochToRelative } from '../../modules/datetime'
+
 export default Vue.extend({
-  
+  props: ["data"],
+
+  methods: {
+    epochToRelative(epochtime) {
+      return epochToRelative(epochtime)
+    }
+  },
 })
 </script>
 

@@ -9,7 +9,7 @@
         .col-4
           sidebar
         .col-12(style='padding-bottom: 0')
-          buttonBig(v-if="post.list.latest && post.list.latest.status === 200" button_type='blue' to='/posts' text='More Stories')
+          buttonBig(v-if="post.list.latest && post.list.latest.status === 200" button_type='blue' to='/posts' text='More Posts')
 </template>
 
 <script lang="ts">

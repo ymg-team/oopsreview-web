@@ -10,7 +10,7 @@
     "webpack:prod": "yarn remove:build-client && NODE_ENV=production webpack --progress",
     "babel:prod": "yarn remove:build-server && NODE_ENV=production babel src -d dist --copy-files",
     "build:prod": "yarn webpack:prod && yarn babel:prod",
-    "server-test:prod": "NODE_ENV=production nodemon dist/server/index.js",
+    "server-test:prod": "NODE_ENV=production nodemon ./dist/server/index.js  --exec 'node -r dotenv/config'",
     "remove:build-client": "yarn rimraf public/build",
     "remove:build-server": "yarn rimraf dist",
     "lint": "eslint src",

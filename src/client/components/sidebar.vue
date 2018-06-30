@@ -1,6 +1,7 @@
 <template lang="pug">
   .sidebar#sidebar(:class='fixed ? "fixed" : ""')
-    img(src='/images/sample-ads.jpg')
+    a(href="https://m.do.co/c/e4eacf5d20a5" target="_blank")
+      img(src='https://res.cloudinary.com/dhjkktmal/image/upload/c_scale,w_400/v1530369293/oopsreview/2018/ADS_Digital_Ocean.png')
 </template>
 
 <script lang="ts">

@@ -8,6 +8,7 @@ import request from "../../vuex/utils/api"
 interface State {
   list: { [filter: string]: any }
   detail: { [filter: string]: any }
+  tags: { [filter: string]: any }
 }
 
 interface ParamsGetPost {
@@ -20,7 +21,8 @@ interface ParamsGetPost {
 
 const initialState = {
   list: {},
-  detail: {}
+  detail: {},
+  tags: {}
 }
 
 const getters = {
@@ -29,6 +31,7 @@ const getters = {
 const actions = {
   // request to api post list
   [types.GET_POSTS]: ({ commit }: any, params: ParamsGetPost) => {
+    commit(types.REQUEST_POSTS, {filter: params.filter})
 
     // generate querystring
     if(!params.limit) params.limit = 8
@@ -56,6 +59,7 @@ const actions = {
 
   // request to api post detail
   [types.GET_POST]: ({ commit }: any, post_id: string) => {
+    commit(types.REQUEST_POSTS, {filter: post_id})
     request("get", `/api/post/${post_id}/5aa4ac2b830a0aef88acdb5c`).then(
       response => {
         commit(types.GET_POST, {
@@ -64,10 +68,34 @@ const actions = {
         })
       }
     )
+  },
+
+  // request tags from api
+  [types.GET_TAG]: ({ commit }: any, name: string) => {
+    request("get", `/api/tag/${name}/5aa4ac2b830a0aef88acdb5c`).then(
+      response => {
+        commit(types.GET_TAG, {
+          response,
+          filter: name
+        })
+      }
+    )
   }
 }
 
 const mutations = {
+
+  // on receive tag
+  [types.GET_TAG]: (
+    state: State = initialState,
+    {filter, response}
+  ) => {
+    let {tags} = state 
+    tags[filter] = response 
+
+    state.tags = Object.assign({}, tags)
+  },
+
   // on receive post detail
   [types.GET_POST]: (
     state: State = initialState,
@@ -85,7 +113,8 @@ const mutations = {
     state: State = initialState,
     { filter }: ParamsGetPost
   ) => {
-    state.list[filter] = { loading: true }
+    if(!state.list[filter]) state.list[filter] = {}
+    state.list[filter].loading = true
   },
 
   // receive response post list

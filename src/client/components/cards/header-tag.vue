@@ -1,7 +1,7 @@
 <template lang="pug">
 .header-tag
   h1 {{ title }}
-  h2(v-if='subtitle != ""') {{ subtitle }}
+  .subtitle(v-html="subtitle")
 </template>
 
 <script lang="ts">
@@ -34,6 +34,11 @@ export default Vue.extend({
   h1 
     font-size: 3em 
     text-transform: uppercase
-  h1, h2 
+  .subtitle 
+    font-size: 1.5em
+    text-transform: capitalize 
+    a
+      color: $color-gray-soft
+  h1, .subtitle  
     font-weight: 300
 </style>

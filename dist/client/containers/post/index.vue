@@ -5,55 +5,122 @@
         .col-8_md-12.align-center
           header-tag(
             :title='title' 
-            :subtitle='subtitle')  
+            :subtitle=" post.tags[tag_name] && post.tags[tag_name].status === 200 ? post.tags[tag_name].description : subtitle")  
       .grid 
         .col-8_md-12
           div(style='padding-top: .5em')
-          box-post
+          // | {{ count }}
+          box-post(:data='post.list[filter] || {}') 
+
+          button-big(
+            v-if="post.list[filter] && post.list[filter].status === 200 && post.list[filter].result.length >= 8" 
+            type="blue" 
+            :loading="post.list[filter].loading"
+            :onclick="() => morePosts()"
+            text="MORE POSTS")
 
         .col-4_md-12
           sidebar
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import headerTag from '../../components/cards/header-tag.vue'
-  import post from '../../components/boxs/post.vue'
-  import sidebar from '../../components/sidebar.vue'
+import Vue from "vue"
+import * as TYPES from "../../vuex/types"
+import { mapState } from "vuex"
 
-  Vue.component('header-tag', headerTag)
-  Vue.component('sidebar', sidebar)
+// components
+import headerTag from "../../components/cards/header-tag.vue"
+import post from "../../components/boxs/post.vue"
+import sidebar from "../../components/sidebar.vue"
+import buttonBig from "../../components/form/button-big.vue"
 
-  export default Vue.extend({
-    name: 'post-list',
-    data() {
-      return {
-        title: 'archived',
-        subtitle: ''
-      }
-    },
+Vue.component("header-tag", headerTag)
+Vue.component("sidebar", sidebar)
+Vue.component("button-big", buttonBig)
 
-    props: ['tag_name'],
+export default Vue.extend({
+  name: "post-list",
 
-    watch: {
-      tag_name(nv, ov) {
-        if(nv) {
-          this.title = nv
-          this.subtitle = 'Is the world\'s number one operating system, since the release of its first version until now, a lot of developments have been there. '
-        } else 
-        {
-          this.title = 'archived'
-          this.subtitle = ''
-        }
-      }
-    },
+  data() {
+    let { tag_name } = this
+    let title = "Posts",
+      filter = "archived",
+      subtitle = tag_name ? `Find all available post posted with tag "${tag_name}"` : ""
 
-    created() {
-      if(this.tag_name)
-      {
-        this.title = this.tag_name
-        this.subtitle = 'Is the world\'s number one operating system, since the release of its first version until now, a lot of developments have been there. '
-      }
+    if (tag_name) {
+      title = `Post by tag "${tag_name}"`
+      filter = `archived_${tag_name}`
     }
-  })
+
+    // initial data
+    return {
+      title,
+      filter,
+      subtitle
+    }
+  },
+
+  props: ["tag_name"],
+
+  beforeRouteUpdate(to, from, next) {
+    let { tag_name }: any = to.params
+    let filter = "archived",
+      title = "posts",
+      subtitle = ""
+    
+    if (tag_name) {
+      filter = `archived_${tag_name}`
+      title = `posts by tag "${tag_name}"`
+      subtitle = `Find all available post posted with tag "${tag_name}"`
+      this.$store.dispatch(TYPES.GET_TAG, tag_name)
+    } else {
+    }
+
+    this.title = title
+    this.filter = filter
+    this.subtitle = subtitle
+
+    // fetch new data if not available in store
+    const params = this.generateParams()
+    if (!this.post[filter]) this.$store.dispatch(TYPES.GET_POSTS, params)
+
+    next()
+  },
+
+  watch: {
+    tag_name(value) {}
+  },
+
+  created() {
+    let params = this.generateParams()
+
+    // first fetch data of post list
+    this.$store.dispatch(TYPES.GET_POSTS, params)
+    if(this.tag_name) this.$store.dispatch(TYPES.GET_TAG, this.tag_name)
+  },
+
+  methods: {
+    morePosts() {
+      const post = this.$store.state.post.list[this.filter].result
+      let params = this.generateParams()
+      params.lastcreatedon = post[post.length - 1].created_on
+
+      // fetch lattest created on
+      return this.$store.dispatch(TYPES.GET_POSTS, params)
+    },
+
+    generateParams() {
+      let params: any = { filter: this.filter }
+      console.log(this.tag_name)
+      if (this.tag_name) params.tag = this.tag_name
+      return params
+    },
+  },
+
+  mounted() {},
+
+  computed: {
+    ...mapState(["post"])
+  }
+})
 </script>

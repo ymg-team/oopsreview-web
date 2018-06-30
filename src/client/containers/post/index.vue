@@ -5,7 +5,7 @@
         .col-8_md-12.align-center
           header-tag(
             :title='title' 
-            :subtitle='subtitle')  
+            :subtitle=" post.tags[tag_name] && post.tags[tag_name].status === 200 ? post.tags[tag_name].description : subtitle")  
       .grid 
         .col-8_md-12
           div(style='padding-top: .5em')
@@ -15,6 +15,7 @@
           button-big(
             v-if="post.list[filter] && post.list[filter].status === 200 && post.list[filter].result.length >= 8" 
             type="blue" 
+            :loading="post.list[filter].loading"
             :onclick="() => morePosts()"
             text="MORE POSTS")
 
@@ -41,17 +42,14 @@ export default Vue.extend({
   name: "post-list",
 
   data() {
+    let { tag_name } = this
     let title = "Posts",
       filter = "archived",
-      subtitle = ""
-
-    let { tag_name } = this
+      subtitle = tag_name ? `Find all available post posted with tag "${tag_name}"` : ""
 
     if (tag_name) {
       title = `Post by tag "${tag_name}"`
       filter = `archived_${tag_name}`
-      subtitle =
-        "Is the world's number one operating system, since the release of its first version until now, a lot of developments have been there. "
     }
 
     // initial data
@@ -67,15 +65,20 @@ export default Vue.extend({
   beforeRouteUpdate(to, from, next) {
     let { tag_name }: any = to.params
     let filter = "archived",
-      title = "posts"
-    filter = `archived_${tag_name}`
+      title = "posts",
+      subtitle = ""
+    
     if (tag_name) {
+      filter = `archived_${tag_name}`
       title = `posts by tag "${tag_name}"`
+      subtitle = `Find all available post posted with tag "${tag_name}"`
+      this.$store.dispatch(TYPES.GET_TAG, tag_name)
     } else {
     }
 
     this.title = title
     this.filter = filter
+    this.subtitle = subtitle
 
     // fetch new data if not available in store
     const params = this.generateParams()
@@ -93,6 +96,7 @@ export default Vue.extend({
 
     // first fetch data of post list
     this.$store.dispatch(TYPES.GET_POSTS, params)
+    if(this.tag_name) this.$store.dispatch(TYPES.GET_TAG, this.tag_name)
   },
 
   methods: {
@@ -110,7 +114,7 @@ export default Vue.extend({
       console.log(this.tag_name)
       if (this.tag_name) params.tag = this.tag_name
       return params
-    }
+    },
   },
 
   mounted() {},

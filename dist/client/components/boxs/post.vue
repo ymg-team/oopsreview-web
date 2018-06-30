@@ -1,25 +1,26 @@
 <template lang="pug">
-  .box-post
-    .grid
-      card 
-      card 
-      card  
-      card  
-      card  
-      card  
-    loading
+.box-post
+  .grid(v-if="data.result && data.result.length > 0")
+    post-card(v-for="(n,key) in data.result" :key="key" :data="n")
+
+  p.align-center.text-muted(v-if="data.status && data.status !== 200")
+    | {{ data.message }}
+
+  loading(v-if="!data.status")
+
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import card from '../cards/post.vue'
-import loading from '../cards/loading.vue'
+import Vue from "vue"
+import card from "../cards/post.vue"
+import loading from "../cards/loading.vue"
 
-Vue.component('card', card)
-Vue.component('loading', loading)
+Vue.component("post-card", card)
+Vue.component("loading", loading)
 
 export default Vue.extend({
-  name: 'post-box'
+  name: "box-post",
+  props: ["data"],
 })
 </script>
 

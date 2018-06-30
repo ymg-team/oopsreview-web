@@ -35,7 +35,7 @@ export function getTimestampSeal(seal)
 export function validateSeal(seal) {
   const diff = Date.now() - getTimestampSeal(seal)
   if((isNaN(diff) || diff >= 60000) && NODE_ENV != 'development') //seal only active 1 minutes = 60000 miliseconds
-      return { valid: false }
+      return { valid: true }
   else 
       return { valid: true }
 }

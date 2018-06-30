@@ -5,33 +5,46 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { injectScript } from '../../modules/dom'
+import Vue from "vue"
+import { injectScript } from "../../modules/dom"
 
 function renderDisqus(target: string) {
-  if((<any>window).DISQUS)
-    (<any>window).reset({
-      reload: true,
-      config: function () {  
-        this.page.identifier = target
-        this.page.url = target
-      }
-    })
+  console.log("render DISQUS :", target)
+  setTimeout(() => {
+    if ((<any>window).DISQUS)
+      (<any>window).DISQUS.reset({
+        reload: true,
+        config: function() {
+          this.page.identifier = target
+          this.page.url = target
+        }
+      })
+  }, 1000)
 }
 
 export default Vue.extend({
-  name: 'comment',
+  name: "comment",
+
   props: {
     link: {
       type: String,
       required: true
     }
   },
+
+  watch: {
+    link(val) {
+      renderDisqus(`https://oopsreview.com${val}`)
+    }
+  },
+
   created() {
-    injectScript('//oopsreview.disqus.com/embed.js', () => {
-      // waiting for DISQUS initialized
-      setTimeout(() => { renderDisqus('https://oopsreview.com/post/this-is-title-6a4sde34'), 1000 })
-    })   
+    if (!(<any>window).DISQUS)
+      injectScript("//oopsreview.disqus.com/embed.js", () => {
+        // waiting for DISQUS initialized
+        renderDisqus(`https://oopsreview.com${this.link}`)
+      })
+    else renderDisqus(`https://oopsreview.com${this.link}`)
   }
 })
 </script>

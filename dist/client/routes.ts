@@ -22,8 +22,8 @@ export default [
       { path: '/posts', component: Post },
       { path: '/search', name: 'search', component: Post },
       { path: '/tag/:tag_name', props: true, component: Post },
-      { path: '/post/:title-:id', name: 'post-detail', component: PostDetail },
-      { path: '/static/:title', name: 'static-detail', component:  StaticDetail },
+      { path: '/post/:title', name: 'post_detail', component: PostDetail },
+      { path: '/static/:title', name: 'static_detail', component:  StaticDetail },
     ]
   },
   // super page auth
@@ -38,9 +38,9 @@ export default [
     path: '/super',
     component: SuperLayout,
     children : [
-      { path: '/super/posts/new', name:'new-post', component: NewPost },
-      { path: '/super/posts', name:'post', component: SuperPost },
-      { path: '/super/post/:id', name:'post', component: NewPost },
+      { path: '/super/posts/new', name:'new_post', component: NewPost },
+      { path: '/super/posts', name:'super_post', component: SuperPost },
+      { path: '/super/post/:id', name:'super_post_detail', component: NewPost },
     ]
   },
   // default page

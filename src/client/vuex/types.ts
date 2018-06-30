@@ -5,4 +5,6 @@ export const GET_MORE_POSTS = 'GET_MORE_POSTS'
 export const REQUEST_POST = 'REQUEST_POST'
 export const GET_POST = 'GET_POST'
 
+export const GET_TAG = 'GET_TAG'
+
 export const API_FAILURE = 'API_FAILURE'

@@ -1,25 +1,35 @@
 <template lang="pug">
-  router-link.button-big(v-if="to !== 'javascript:;'" :class='button_type' :to='to')
-    | {{ text }}
-  a.button-big(v-else-if="!to || to == 'javascript:;'" v-on:click="onclick" :class='button_type' href='javascript:;')
-    | {{ text }}
+  router-link.button-big(
+    v-if="to !== 'javascript:;'" :class="button_type + (loading ? ' loading ' : '')" 
+    :disabled="loading" 
+    :to='to')
+    | {{ loading ? 'loading...' : text }}
+  button.button-big(
+    v-else-if="!to || to == 'javascript:;'" 
+    v-on:click="onclick" :class="button_type + (loading ? ' loading ' : '')" 
+    :disabled="loading")
+    | {{ loading ? 'loading...' : text }}
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue"
 
 const props = {
   button_type: {
     type: String,
-    default: 'blue'
+    default: "blue"
+  },
+  loading: {
+    type: Boolean,
+    default: false
   },
   to: {
     type: String,
-    default: 'javascript:;'
+    default: "javascript:;"
   },
   text: {
     type: String,
-    default: ''
+    default: ""
   },
   onclick: {
     type: Function,
@@ -28,7 +38,7 @@ const props = {
 }
 
 export default Vue.extend({
-  name: 'button-big',
+  name: "button-big",
   props
 })
 </script>
@@ -38,8 +48,14 @@ export default Vue.extend({
   @import '../../../design/sass/color'
   @import '../../../design/sass/size'
   .button-big
+    width: 100% 
+    border: none
+    cursor: pointer
     &.blue
       background-color: $color-blue-main
+      &.loading 
+        background-color: $color-gray-verysoft !important
+        color: $color-gray-medium !important
       &:hover
         background-color: $color-blue-dark
     &:hover

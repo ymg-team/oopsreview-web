@@ -115,6 +115,8 @@ export default Vue.extend({
   h1 
     font-size: $size-text-large
   img 
+    &:first-child 
+      padding: .5em 0
     padding: 1em 0
     max-width: 100%
     text-align: center
