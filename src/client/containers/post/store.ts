@@ -107,7 +107,7 @@ const mutations = {
   ) => {
     let {list} = state
     list[filter].status = response.status
-    list[filter].result = list[filter].result.concat(response.result)
+    if(response.status === 200) list[filter].result = list[filter].result.concat(response.result)
     list[filter].loading = false
 
     state.list = Object.assign({}, list)

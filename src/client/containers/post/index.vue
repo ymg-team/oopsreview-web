@@ -13,7 +13,7 @@
           box-post(:data='post.list[filter] || {}') 
 
           button-big(
-            v-if="post.list[filter] && post.list[filter].status === 200" 
+            v-if="post.list[filter] && post.list[filter].status === 200 && post.list[filter].result.length >= 8" 
             type="blue" 
             :onclick="() => morePosts()"
             text="MORE POSTS")
@@ -41,45 +41,75 @@ export default Vue.extend({
   name: "post-list",
 
   data() {
+    let title = "Posts",
+      filter = "archived",
+      subtitle = ""
+
+    let { tag_name } = this
+
+    if (tag_name) {
+      title = `Post by tag "${tag_name}"`
+      filter = `archived_${tag_name}`
+      subtitle =
+        "Is the world's number one operating system, since the release of its first version until now, a lot of developments have been there. "
+    }
+
+    // initial data
     return {
-      title: "archived",
-      filter: "archived",
-      subtitle: ""
+      title,
+      filter,
+      subtitle
     }
   },
 
   props: ["tag_name"],
 
-  watch: {
-    tag_name(nv, ov) {
-      if (nv) {
-        this.title = nv
-        this.subtitle =
-          "Is the world's number one operating system, since the release of its first version until now, a lot of developments have been there. "
-      } else {
-        this.title = "archived"
-        this.subtitle = ""
-      }
+  beforeRouteUpdate(to, from, next) {
+    let { tag_name }: any = to.params
+    let filter = "archived",
+      title = "posts"
+    filter = `archived_${tag_name}`
+    if (tag_name) {
+      title = `posts by tag "${tag_name}"`
+    } else {
     }
+
+    this.title = title
+    this.filter = filter
+
+    // fetch new data if not available in store
+    const params = this.generateParams()
+    if (!this.post[filter]) this.$store.dispatch(TYPES.GET_POSTS, params)
+
+    next()
+  },
+
+  watch: {
+    tag_name(value) {}
   },
 
   created() {
-    if (this.tag_name) {
-      this.title = this.tag_name
-      this.subtitle =
-        "Is the world's number one operating system, since the release of its first version until now, a lot of developments have been there. "
-    }
-    this.$store.dispatch(TYPES.GET_POSTS, { filter: this.filter })
+    let params = this.generateParams()
+
+    // first fetch data of post list
+    this.$store.dispatch(TYPES.GET_POSTS, params)
   },
 
   methods: {
     morePosts() {
-      // get lattest created on
-      const post = this.$store.state.post.list[this.filter].result 
-      return this.$store.dispatch(TYPES.GET_POSTS, {
-        filter: this.filter,
-        lastcreatedon: post[post.length - 1].created_on
-      })
+      const post = this.$store.state.post.list[this.filter].result
+      let params = this.generateParams()
+      params.lastcreatedon = post[post.length - 1].created_on
+
+      // fetch lattest created on
+      return this.$store.dispatch(TYPES.GET_POSTS, params)
+    },
+
+    generateParams() {
+      let params: any = { filter: this.filter }
+      console.log(this.tag_name)
+      if (this.tag_name) params.tag = this.tag_name
+      return params
     }
   },
 

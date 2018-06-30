@@ -23,4 +23,9 @@
 
 <style lang='sass'>
   @import '../../design/sass/base'
+  @import '../../design/sass/color'
+  .align-center 
+    text-align: center 
+  .text-muted 
+    color: $color-gray-medium
 </style>
