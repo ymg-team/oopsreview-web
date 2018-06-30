@@ -18,7 +18,8 @@ export function list(req, res) {
     user_id,
     featured,
     lastid,
-    lastcreatedon
+    lastcreatedon,
+    tag
   } = req.getQuery() ? queryToObj(req.getQuery()) : {}
 
   let aggregate = [
@@ -31,6 +32,13 @@ export function list(req, res) {
       }
     }
   ]
+
+  // if tag: filter post by tagname 
+  if (tag) {
+    aggregate.push({
+      $match: { tags: {$regex: ".*" + tag + ".*"} }
+    })
+  }
 
   // if sort by featured post most viewed
   let sort = {}
@@ -51,7 +59,6 @@ export function list(req, res) {
 
   // get loadmore data
   if (lastcreatedon) {
-    // console.log(lastcreatedon)
     aggregate.push({
       $match: { created_on: { $lt: parseInt(lastcreatedon) } }
     })
