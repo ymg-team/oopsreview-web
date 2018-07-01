@@ -22,7 +22,7 @@
         
         .grid 
           .col-8_md-12
-            article
+            article.post-detail-content
               img(:src="post.detail[id].image.original")
               div(v-html="post.detail[id].content")
           
@@ -107,23 +107,24 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 @import '../../../design/sass/size'
 @import '../../../design/sass/color'
 
 .post-detail
   h1 
     font-size: $size-text-large
-  img 
-    &:first-child 
-      padding: .5em 0
-    padding: 1em 0
-    max-width: 100%
-    text-align: center
-  article 
+  article.post-detail-content 
     line-height: 1.8
     letter-spacing: .3px
     font-size: 1.1em
+    img 
+      &:first-child 
+        margin: .5em auto
+      max-width: 100%
+      text-align: center
+      display: block 
+      margin: 1.5em auto
     br 
       display: block
       margin: 1em 0
