@@ -204,3 +204,4 @@ $RECYCLE.BIN/
 .DS_Store
 dist
 public/build
+internals/webpack-assets.json
