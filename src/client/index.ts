@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Meta from 'vue-meta'
 import VueRouter from 'vue-router'
 import routes from './routes'
 import storeModules from './vuex/modules'
 
 Vue.use(VueRouter)
 Vue.use(Vuex)
+Vue.use(Meta)
 
 // routes declaration
 export const router = new VueRouter({
