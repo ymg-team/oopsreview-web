@@ -27,6 +27,19 @@ function getScript()
   return `
     <script src="/build/${NODE_ENV == 'production' ? webpackAssets.vendor.js : 'vendor.js'}"></script>
     <script src="/build/${NODE_ENV == 'production' ? webpackAssets.app.js : 'app.js'}"></script>
+    ${
+      NODE_ENV === 'production' ?
+      `
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87936512-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'UA-87936512-1');
+        </script>
+      `
+      : ''
+    }
   `
 }
 

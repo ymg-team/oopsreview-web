@@ -65,10 +65,17 @@ Vue.component("box-post", post)
 
 export default Vue.extend({
   name: "post-detail",
+
+  // metaInfo: this.meta,
+
   data() {
     // const title_arr = this.$route.params.title.split("-")
     return {
       link: `/post/${this.$route.params.title}`,
+      meta: {
+        title: 'Oopsreview - Software Review Specialist',
+        description: 'Here we will help you to determine what best application is suitable for you to use.'
+      },
       id: 0
     }
   },
