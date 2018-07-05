@@ -122,6 +122,15 @@ export default Vue.extend({
   h1 
     font-size: $size-text-large
   article.post-detail-content 
+    h2
+      margin-top: 50px
+      border-top: 1px solid gray
+      border-bottom: 1px solid gray
+      padding: 10px
+      text-align: center
+    h3 
+      margin-top: 50px
+      text-align: center
     line-height: 1.8
     letter-spacing: .3px
     font-size: 1.1em

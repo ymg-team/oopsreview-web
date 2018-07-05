@@ -24,6 +24,11 @@
 <style lang='sass'>
   @import '../../design/sass/base'
   @import '../../design/sass/color'
+  
+  body
+    color: $color-gray-dark
+    a 
+      color: $color-gray-medium
   .align-center 
     text-align: center 
   .text-muted 
