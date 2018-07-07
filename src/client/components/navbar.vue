@@ -77,7 +77,7 @@ export default Vue.extend({
     handleScroll() {
       document.addEventListener('scroll', (e) => {
         const position = window.scrollY
-        if(position > 218 && this.$route.name == 'post-detail') {
+        if(position > 218) {
           // show navbar
           this.show_navbar = true
         }else {
@@ -122,6 +122,7 @@ export default Vue.extend({
     ul.navbar 
       margin: 0
       padding: 1em 0
+      display: inline-flex
       li 
         display: inline-block
         margin-right: 1em
@@ -134,10 +135,11 @@ export default Vue.extend({
           &:hover 
             color: $color-gray-dark
     .left
-      display: inline-block
+      overflow-x: auto
+      display: inline-flex
       width: calc(100% - 35px)
     .right 
-      display: inline-block 
+      display: inline-flex 
       width: 35px
 
     ul.search

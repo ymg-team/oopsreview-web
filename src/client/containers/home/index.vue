@@ -3,13 +3,13 @@
     popular-box(:data='post.list.featured || {}')
     .container.bg-white 
       .grid 
-        .col-8
+        .col-8_sm-12
           div(style='padding-top: .5em')
           box-post(:data='post.list.latest || {}') 
-        .col-4
+        .col-4_sm-12
           sidebar
         .col-12(style='padding-bottom: 0')
-          buttonBig(v-if="post.list.latest && post.list.latest.status === 200" button_type='blue' to='/posts' text='More Posts')
+          buttonBig(v-if="post.list.latest && post.list.latest.status === 200" style="width:calc(100% - 1em)" button_type='blue' to='/posts' text='More Posts')
 </template>
 
 <script lang="ts">

@@ -37,5 +37,10 @@ header
     max-width: 100%
 
 // responsiveness
+@media screen and (max-width: 600px)
+  header
+    padding: 1em 0 0
+    img.logo 
+      height: 50px
 
 </style>
