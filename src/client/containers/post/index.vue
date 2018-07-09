@@ -45,7 +45,9 @@ export default Vue.extend({
     let { tag_name } = this
     let title = "Posts",
       filter = "archived",
-      subtitle = tag_name ? `Find all available post posted with tag "${tag_name}"` : ""
+      subtitle = tag_name
+        ? `Find all available post posted with tag "${tag_name}"`
+        : ""
 
     if (tag_name) {
       title = `Post by tag "${tag_name}"`
@@ -62,33 +64,53 @@ export default Vue.extend({
 
   props: ["tag_name"],
 
-  beforeRouteUpdate(to, from, next) {
-    let { tag_name }: any = to.params
-    let filter = "archived",
-      title = "posts",
-      subtitle = ""
-    
-    if (tag_name) {
-      filter = `archived_${tag_name}`
-      title = `posts by tag "${tag_name}"`
-      subtitle = `Find all available post posted with tag "${tag_name}"`
-      this.$store.dispatch(TYPES.GET_TAG, tag_name)
-    } else {
-    }
+  // beforeRouteUpdate(to, from, next) {
+  //   let { tag_name }: any = to.params
+  //   let filter = "archived",
+  //     title = "posts",
+  //     subtitle = ""
 
-    this.title = title
-    this.filter = filter
-    this.subtitle = subtitle
+  //   if (tag_name) {
+  //     filter = `archived_${tag_name}`
+  //     title = `posts by tag "${tag_name}"`
+  //     subtitle = `Find all available post posted with tag "${tag_name}"`
+  //     this.$store.dispatch(TYPES.GET_TAG, tag_name)
+  //   }
 
-    // fetch new data if not available in store
-    const params = this.generateParams()
-    if (!this.post[filter]) this.$store.dispatch(TYPES.GET_POSTS, params)
+  //   this.title = title
+  //   this.filter = filter
+  //   this.subtitle = subtitle
 
-    next()
-  },
+  //   // fetch new data if not available in store
+  //   const params = this.generateParams()
+  //   if (!this.post[filter]) this.$store.dispatch(TYPES.GET_POSTS, params)
+
+  //   next()
+  // },
 
   watch: {
-    tag_name(value) {}
+    tag_name() {
+      const {tag_name} = this
+
+      let filter = "archived",
+      title = "posts",
+      subtitle = ""
+
+      if (tag_name) {
+        filter = `archived_${tag_name}`
+        title = `posts by tag "${tag_name}"`
+        subtitle = `Find all available post posted with tag "${tag_name}"`
+        this.$store.dispatch(TYPES.GET_TAG, tag_name)
+      }
+
+      this.title = title
+      this.filter = filter
+      this.subtitle = subtitle
+
+      // fetch new data if not available in store
+      const params = this.generateParams()
+      if (!this.post[filter]) this.$store.dispatch(TYPES.GET_POSTS, params)
+    }
   },
 
   created() {
@@ -96,7 +118,7 @@ export default Vue.extend({
 
     // first fetch data of post list
     this.$store.dispatch(TYPES.GET_POSTS, params)
-    if(this.tag_name) this.$store.dispatch(TYPES.GET_TAG, this.tag_name)
+    if (this.tag_name) this.$store.dispatch(TYPES.GET_TAG, this.tag_name)
   },
 
   methods: {
@@ -111,10 +133,9 @@ export default Vue.extend({
 
     generateParams() {
       let params: any = { filter: this.filter }
-      console.log(this.tag_name)
       if (this.tag_name) params.tag = this.tag_name
       return params
-    },
+    }
   },
 
   mounted() {},
