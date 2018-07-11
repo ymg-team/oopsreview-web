@@ -19,6 +19,7 @@ import title from "../../components/cards/title.vue"
 import post from "../../components/boxs/post.vue"
 import sidebar from "../../components/sidebar.vue"
 import buttonBig from "../../components/form/button-big.vue"
+import DefaultMeta from "../../../config/metainfo"
 import { mapState } from "vuex"
 import * as TYPES from "../../vuex/types"
 
@@ -30,6 +31,8 @@ Vue.component("buttonBig", buttonBig)
 
 export default Vue.extend({
   name: "home",
+
+  metaInfo: DefaultMeta,
 
   created() {
     this.$store.dispatch(TYPES.GET_POSTS, { filter: "latest", limit: 8 })

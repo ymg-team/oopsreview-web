@@ -131,13 +131,26 @@ export function detail(req, res) {
 
         if (result.length < 0)
           return res.send(200, response(204, "post not found"))
-
+        
         // transform result
         const author = userTransformer(result[0].author[0])
         result = postTransformer(result[0])
         result.author = author
 
+        // update: increment views
+        db.collection('posts').update({_id: ObjectID(result._id)}, {"$set": {"views": result.views + 1}})
+
         res.send(200, response(200, "success", result))
       })
   })
 }
+
+// /**
+//  * @description function to increment post views
+//  * @param {number} req.params.id
+//  */
+// export function incrementViews(req, res) {
+//   const {id} = req.params 
+//   if (id.length != 24) return res.send(200, response(204, "post not found"))
+  
+// }
