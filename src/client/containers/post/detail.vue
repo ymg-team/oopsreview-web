@@ -5,20 +5,7 @@
         .grid
           .col-12
             h1 {{ toCamelCase(post.detail[id].title) }}
-            p By 
-              router-link(to='/author/yussan') {{ toCamelCase(post.detail[id].author.fullname) }}
-              | &nbsp;|
-              | {{ epochToRelative( post.detail[id].created_on ) }}
-              br 
-              | {{ post.detail[id].views || 0 }} views 
-              | |
-              | {{ post.detail[id].comments || 0 }} comments 
-              div(v-if="typeof post.detail[id].tags === 'object' && post.detail[id].tags.length > 0")
-                br
-                | Posted in 
-                span(v-for="item, key in post.detail[id].tags" :key="key") 
-                  router-link(:to="'/tag/' + item" ) {{ item }}
-                  | {{ key < post.detail[id].tags.length -1 ? ', ' : ''  }}
+            box-meta(:data="post.detail[id]")
         
         .grid 
           .col-8_md-12
@@ -55,6 +42,7 @@ import { epochToRelative } from "../../modules/datetime"
 // components
 import sidebar from "../../components/sidebar.vue"
 import comment from "../../components/boxs/comment.vue"
+import meta from "../../components/boxs/post-meta.vue"
 import post from "../../components/boxs/post.vue"
 import loading from "../../components/cards/loading.vue"
 
@@ -62,6 +50,7 @@ Vue.component("sidebar", sidebar)
 Vue.component("comment", comment)
 Vue.component("loading", loading)
 Vue.component("box-post", post)
+Vue.component("box-meta", meta)
 
 export default Vue.extend({
   name: "post-detail",
