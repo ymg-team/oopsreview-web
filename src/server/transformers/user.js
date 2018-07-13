@@ -1,7 +1,8 @@
+import { generateCustomUrl } from "../modules/cloudinary"
+
 /**
  * created by yussan
  * created at 17/03/18 23.33
- * created using WebStorm
  */
 
 export default (n) => {
@@ -9,6 +10,9 @@ export default (n) => {
     return {
       fullname: n.fullname,
       username: n.username,
-      avatar: n.avatar
+      avatar: {
+        original: n.avatar,
+        small: generateCustomUrl(n.avatar, 'w_200,c_scale')
+      }
     }
 }

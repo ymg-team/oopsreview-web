@@ -6,7 +6,11 @@
           .link-collection 
             router-link(to='/static/about') About Oopsreview 
             | |&nbsp;
-            router-link(to='/static/') Privacy
+            router-link(to='/static/terms-conditions') Terms and Conditions 
+            | |&nbsp;
+            router-link(to='/static/privacy-policy') Privacy Policy 
+            | |&nbsp;
+            a(href='https://docs.google.com/forms/d/e/1FAIpQLSeUxc711pgVvbbz-U3ljhaFe11HL4yCK1vPdCOhtWfKlBozuQ/viewform' target="_blank") Contact Us
           p
             strong Oopsreview 
             | Software Review Specialist
