@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   development: {
     front: 'https://localhost:19090'
   },
