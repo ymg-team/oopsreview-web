@@ -15,11 +15,12 @@ export function list(req, res) {
   const {
     page,
     limit,
-    user_id,
+    username,
     featured,
     lastid,
     lastcreatedon,
-    tag
+    tag,
+    keyword
   } = req.getQuery() ? queryToObj(req.getQuery()) : {}
 
   let aggregate = [
@@ -32,6 +33,13 @@ export function list(req, res) {
       }
     }
   ]
+
+  // filter post by author username
+  if (username) {
+    aggregate.push({
+      $match: { "author.username": username }
+    })
+  }
 
   // if tag: filter post by tagname
   if (tag) {
@@ -64,11 +72,14 @@ export function list(req, res) {
     })
   }
 
-  // filter by author
-  if (user_id)
+  // filter / search by keyword
+  if(keyword) {
+    // ref: https://stackoverflow.com/a/2712896/2780875
+    const re = new RegExp(keyword, "i")
     aggregate.push({
-      $match: { user_id: ObjectID(user_id) }
+      $match: { title: re}
     })
+  }
 
   mongo().then(db => {
     db.collection("posts")
@@ -76,6 +87,7 @@ export function list(req, res) {
       .skip(parseInt(page) || 0)
       .limit(parseInt(limit) || DB_DEFAULT_LIMIT)
       .toArray((err, result) => {
+
         // error from database
         if (err) {
           console.log(err)
@@ -119,6 +131,14 @@ export function detail(req, res) {
             localField: "user_id",
             foreignField: "_id",
             as: "author"
+          }
+        },
+        {
+          $lookup: {
+            from: "apps",
+            localField: "app_id",
+            foreignField: "_id",
+            as: "app"
           }
         }
       ])

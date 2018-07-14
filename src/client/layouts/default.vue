@@ -33,4 +33,6 @@
     text-align: center 
   .text-muted 
     color: $color-gray-medium
+  .no-padding
+    padding: 0 !important
 </style>

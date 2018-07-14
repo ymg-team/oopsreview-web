@@ -7,7 +7,7 @@
       router-link(:to="'/post/' + data.nospace_title + '-' + data._id")
         h2 {{ data.title }}
       small by 
-        router-link(:to="'/user/' + data.author.username") {{ data.author.fullname }}.
+        router-link(:to="'/author/' + data.author.username") {{ data.author.fullname }}.
 </template>
 
 <script lang="ts">

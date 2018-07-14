@@ -1,32 +1,38 @@
 <template lang="pug">
-  .post-detail.bg-white
-    .container
-      div(v-if="typeof post.detail[id] !== 'undefined'")
-        .grid
-          .col-12
-            h1 {{ toCamelCase(post.detail[id].title) }}
-            box-meta(:data="post.detail[id]")
-        
-        .grid 
-          .col-8_md-12
-            article.post-detail-content
-              img(:src="post.detail[id].image.original")
-              div(v-html="post.detail[id].content")
+  div(v-if="typeof post.detail[id] !== 'undefined'")
+    div(v-if="post.detail[id].status === 200")
+      .post-detail.bg-white
+        .container
+          .grid
+            .col-12
+              h1 {{ toCamelCase(post.detail[id].title) }}
+              box-meta(:data="post.detail[id]")
           
-          .col-4_md-12
-            sidebar(:link='link')
+          .grid 
+            .col-8_md-12
+              app-card(v-if="post.detail[id].app._id" :data="post.detail[id]" :app="post.detail[id].app")
 
-        .grid 
-          .col-8_md-12 
-            comment(:link='link') 
+              article.post-detail-content
+                img(:src="post.detail[id].image.original")
+                div(v-html="post.detail[id].content")
+            
+            .col-4_md-12
+              sidebar(:link='link')
 
-        .grid.p-t-2 
-          .col-8_md-12
-            h2.title-menu The Latest
-            box-post(:data='post.list.latest_detail || {}') 
+          .grid 
+            .col-8_md-12 
+              comment(:link='link') 
 
-      div(v-else)
-        loading
+          .grid.p-t-2 
+            .col-8_md-12
+              h2.title-menu The Latest
+              box-post(:data='post.list.latest_detail || {}') 
+            
+    div(v-else)
+      error-box
+
+  div(v-else)
+    loading
 
 
 </template>
@@ -45,12 +51,16 @@ import comment from "../../components/boxs/comment.vue"
 import meta from "../../components/boxs/post-meta.vue"
 import post from "../../components/boxs/post.vue"
 import loading from "../../components/cards/loading.vue"
+import appCard from "../../components/cards/post-app.vue"
+import ErrorBox from "../../containers/error/index.vue"
 
 Vue.component("sidebar", sidebar)
 Vue.component("comment", comment)
 Vue.component("loading", loading)
 Vue.component("box-post", post)
 Vue.component("box-meta", meta)
+Vue.component("app-card", appCard)
+Vue.component("error-box", ErrorBox)
 
 export default Vue.extend({
   name: "post-detail",
