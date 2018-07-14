@@ -47,12 +47,13 @@ export default Vue.extend({
 .post-meta 
   color: $color-gray-dark !important
   [class*=icono-]
-    color: $color-gray-dark !important  
+    color: $color-gray-dark !important
+    zoom: 0.8
   img.avatar 
-    width: 20px
-    height: 20px
-    border-radius: 20px
-    margin-bottom: -5px
+    width: 35px
+    height: 35px
+    border-radius: 35px
+    margin-bottom: -12.5px
     margin-right: 5px
   .stats 
     padding: 10px 0

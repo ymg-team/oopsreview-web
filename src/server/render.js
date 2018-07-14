@@ -1,4 +1,4 @@
-import MetaInfo from "../config/metainfo.js"
+import MetaInfo from "../config/metainfo.ts"
 const { NODE_ENV } = process.env
 
 const html = `<!DOCTYPE html>   

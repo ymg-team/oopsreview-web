@@ -19,7 +19,8 @@ export function list(req, res) {
     featured,
     lastid,
     lastcreatedon,
-    tag
+    tag,
+    keyword
   } = req.getQuery() ? queryToObj(req.getQuery()) : {}
 
   let aggregate = [
@@ -65,10 +66,20 @@ export function list(req, res) {
   }
 
   // filter by author
-  if (user_id)
+  if (user_id) {
     aggregate.push({
       $match: { user_id: ObjectID(user_id) }
     })
+  }
+
+  // filter / search by keyword
+  if(keyword) {
+    // ref: https://stackoverflow.com/a/2712896/2780875
+    const re = new RegExp(keyword, "i")
+    aggregate.push({
+      $match: { title: re}
+    })
+  }
 
   mongo().then(db => {
     db.collection("posts")
