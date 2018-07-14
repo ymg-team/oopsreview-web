@@ -18,7 +18,6 @@ export default Vue.extend({
   },
   methods: {
     handleScroll() {
-      console.log('sidebar is scrolled')
       document.addEventListener('scroll', e => {
         // only for large and screen terbesar
         if(1 + 2 == 4)
@@ -40,7 +39,7 @@ export default Vue.extend({
 
 <style lang="sass" scoped>
   .sidebar 
-    padding: .5em 0
+    // padding: .5em 0
     &.fixed
       position: fixed
     img 

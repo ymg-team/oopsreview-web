@@ -1,11 +1,11 @@
 <template lang="pug">
   .post-meta
-    span.text-muted Posted: 
-    time {{ epochToRelative(data.created_on) }}
-    | , by 
     router-link(:to="'/author/' + data.author.username")
       img.avatar(:src="data.author.avatar.small" alt="avatar user")
-      | {{ toCamelCase(data.author.fullname) }}
+      | by
+      | {{ toCamelCase(data.author.fullname) }}, 
+      | posted 
+      time {{ epochToRelative(data.created_on) }}
     .stats 
       span.stats-item
         span.icono-eye 
@@ -48,6 +48,7 @@ export default Vue.extend({
   color: $color-gray-dark !important
   [class*=icono-]
     color: $color-gray-dark !important
+    margin-right: 10px
     zoom: 0.8
   img.avatar 
     width: 35px

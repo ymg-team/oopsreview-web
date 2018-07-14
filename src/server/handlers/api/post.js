@@ -15,7 +15,7 @@ export function list(req, res) {
   const {
     page,
     limit,
-    user_id,
+    username,
     featured,
     lastid,
     lastcreatedon,
@@ -33,6 +33,13 @@ export function list(req, res) {
       }
     }
   ]
+
+  // filter post by author username
+  if (username) {
+    aggregate.push({
+      $match: { "author.username": username }
+    })
+  }
 
   // if tag: filter post by tagname
   if (tag) {
@@ -65,13 +72,6 @@ export function list(req, res) {
     })
   }
 
-  // filter by author
-  if (user_id) {
-    aggregate.push({
-      $match: { user_id: ObjectID(user_id) }
-    })
-  }
-
   // filter / search by keyword
   if(keyword) {
     // ref: https://stackoverflow.com/a/2712896/2780875
@@ -87,6 +87,7 @@ export function list(req, res) {
       .skip(parseInt(page) || 0)
       .limit(parseInt(limit) || DB_DEFAULT_LIMIT)
       .toArray((err, result) => {
+
         // error from database
         if (err) {
           console.log(err)
@@ -130,6 +131,14 @@ export function detail(req, res) {
             localField: "user_id",
             foreignField: "_id",
             as: "author"
+          }
+        },
+        {
+          $lookup: {
+            from: "apps",
+            localField: "app_id",
+            foreignField: "_id",
+            as: "app"
           }
         }
       ])
