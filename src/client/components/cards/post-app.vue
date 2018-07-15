@@ -13,7 +13,8 @@
       | {{ app.categories }}
       br
       strong Website: 
-      a(:href="app.link") {{ app.link }}
+      a(:href="app.link" target="_blank") {{ app.link }}
+      br
     .col-6_sm-12.no-padding(style="padding-right:10px !important")
       strong Oopsreview Rating Overall : 4/5
       br
@@ -49,4 +50,7 @@ export default Vue.extend({
   .app-card 
     padding: 10px
     border: 1px solid $color-gray-soft
+    color: $color-gray-medium
+    margin-bottom: 15px !important
+    font-size: 13px
 </style>

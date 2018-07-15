@@ -135,7 +135,7 @@ export default Vue.extend({
     font-size: 1.1em
     img 
       &:first-child 
-        margin: .5em auto
+        margin: 0 auto 5px
       max-width: 100%
       text-align: center
       display: block 
