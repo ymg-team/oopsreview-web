@@ -42,7 +42,7 @@ import Vue from "vue"
 import host from "../../../config/host"
 import * as TYPES from "../../vuex/types"
 import { mapState } from "vuex"
-import { toCamelCase } from "string-manager"
+import { toCamelCase, truncate, stripTags } from "string-manager"
 import { epochToRelative } from "../../modules/datetime"
 
 // components
@@ -76,6 +76,37 @@ export default Vue.extend({
         description: 'Here we will help you to determine what best application is suitable for you to use.'
       },
       id: 0
+    }
+  },
+
+  metaInfo() {
+    if(typeof this.post.detail[this.id] !== 'undefined') {
+      if(this.post.detail[this.id].status === 200){
+        const description = truncate(stripTags(this.post.detail[this.id].content), 500, '...')
+        return {
+          title: toCamelCase(this.post.detail[this.id].title),
+          meta: [
+          {
+            vmid: 'description',
+            name: "description",
+            content: description
+          }
+        ]
+        }
+      } else {
+        return {
+        title: "Page Not Found",
+        meta: [
+          {
+            vmid: 'description',
+            name: "description",
+            content: "Are you lost, click link bellow to acccess other page"
+          }
+        ]
+      }
+      }
+    } else {
+      return {}
     }
   },
 

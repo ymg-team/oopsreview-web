@@ -51,12 +51,12 @@ export default Vue.extend({
         : ""
 
     // if access route /author/:username
-    if(username) {
+    if (username) {
       title = `Post by "${username}"`
       subtitle = `Find all available post posted by "${username}"`
       filter = `archived_author_${username}`
     }
-    
+
     // if access route /tag/:tag_name
     if (tag_name) {
       title = `Post by tag "${tag_name}"`
@@ -64,7 +64,7 @@ export default Vue.extend({
     }
 
     // if access route /post?q=keyword
-    if(q) {
+    if (q) {
       title = `Searching "${q}"`
       filter = `archived_search_${q}`
       subtitle = `Searching post by keyword "${q}"`
@@ -78,12 +78,18 @@ export default Vue.extend({
     }
   },
 
+  metaInfo() {
+    return {
+      title: "Post"
+    }
+  },
+
   props: ["tag_name", "username"],
 
   watch: {
     tag_name() {
       const { tag_name } = this
-      
+
       let filter = "archived",
         title = "posts",
         subtitle = ""
@@ -106,14 +112,14 @@ export default Vue.extend({
 
     $route() {
       const { q } = this.$route.query
-      if(q) {
+      if (q) {
         const title = `Searching "${q}"`
         const subtitle = `Searching post by keyword "${q}"`
         const filter = `archived_${q}`
-        
-        this.title = title 
+
+        this.title = title
         this.subtitle = subtitle
-        this.filter = filter 
+        this.filter = filter
 
         const params = this.generateParams()
         if (!this.post[filter]) this.$store.dispatch(TYPES.GET_POSTS, params)
@@ -135,8 +141,10 @@ export default Vue.extend({
       let params = this.generateParams()
       params.lastcreatedon = post[post.length - 1].created_on
 
+      const { $store }: any = this
+
       // fetch lattest created on
-      return this.$store.dispatch(TYPES.GET_POSTS, params)
+      return $store.dispatch(TYPES.GET_POSTS, params)
     },
 
     generateParams() {

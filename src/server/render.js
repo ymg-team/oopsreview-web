@@ -7,7 +7,7 @@ const html = `<!DOCTYPE html>
       <meta charset="utf-8">
       <title>${MetaInfo.title}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-      <meta name="description" content="${MetaInfo.description}" />
+      <meta data-vmid="description" data-vue-meta="true" name="description" content="${MetaInfo.description}" />
       <link rel="manifest" href="/manifest.json" />
       <link rel="icon" href="/images/icons/icon-72x72.png" />
       <style>

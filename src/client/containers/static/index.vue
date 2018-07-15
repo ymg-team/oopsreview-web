@@ -47,7 +47,7 @@ export default Vue.extend({
         title: toCamelCase(title),
         meta: [
           {
-            vmid: "description",
+            vmid: 'description',
             name: "description",
             content: description
           }
@@ -58,7 +58,7 @@ export default Vue.extend({
         title: "Page Not Found",
         meta: [
           {
-            vmid: "description",
+            vmid: 'description',
             name: "description",
             content: "Are you lost, click link bellow to acccess other page"
           }
