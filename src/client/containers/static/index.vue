@@ -3,29 +3,34 @@
     .container
       .grid-center
         .col-6_md-12
-          h1 {{ content.title  }}
+          h1 {{ toCamelCase(content.title)  }}
           p Published {{ epochToRelative(content.created_at) }}
       .grid-center
         .col-6_md-12
           article
-            img(:src=" content.image || 'https://res.cloudinary.com/dhjkktmal/image/upload/v1529931141/oopsreview/2018/default-thumb.png' ")
+            img(:src=" content.image || 'https://res.cloudinary.com/dhjkktmal/image/upload/c_scale,w_600/v1529931141/oopsreview/2018/default-thumb.png' ")
             article(v-html="content.html")
 
   error-box(v-else error_code="400" error_message="Content Not Found")
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { getData } from '../../../../internals/static-data'
-import { epochToRelative } from '../../modules/datetime'
+import Vue from "vue"
+import { getData } from "../../../../internals/static-data"
+import { epochToRelative } from "../../modules/datetime"
+import { truncate, toCamelCase, stripTags } from "string-manager"
 
-// components 
-import ErrorContainer from '../../containers/error/index.vue'
+// components
+import ErrorContainer from "../../containers/error/index.vue"
 
 Vue.component("error-box", ErrorContainer)
 
+interface Data {
+  content: any
+}
+
 export default Vue.extend({
-  name: 'static-detail',
+  name: "static-detail",
 
   data() {
     return {
@@ -33,20 +38,47 @@ export default Vue.extend({
     }
   },
 
+  metaInfo() {
+    if (typeof this.content !== "undefined") {
+      const { title, html }: any = this.content
+      const description = truncate(stripTags(html), 500, '...')
+
+      return {
+        title: toCamelCase(title),
+        meta: [
+          {
+            vmid: 'description',
+            name: "description",
+            content: description
+          }
+        ]
+      }
+    } else {
+      return {
+        title: "Page Not Found",
+        meta: [
+          {
+            vmid: 'description',
+            name: "description",
+            content: "Are you lost, click link bellow to acccess other page"
+          }
+        ]
+      }
+    }
+  },
+
   methods: {
     epochToRelative(epochtime) {
       return epochToRelative(epochtime)
+    },
+    toCamelCase(str) {
+      return toCamelCase(str)
     }
   },
 
   beforeRouteUpdate(to, from, next) {
     this.content = getData(to.params.title)
     next()
-  },
-
-  // on component created
-  created() {
-    console.log(this.content)
   }
 })
 </script>

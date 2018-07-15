@@ -7,7 +7,8 @@
           div(style='padding-top: .5em')
           box-post(:data='post.list.latest || {}') 
         .col-4_sm-12
-          sidebar
+          div(style="padding-top:10px")
+            sidebar
         .col-12(style='padding-bottom: 0')
           buttonBig(v-if="post.list.latest && post.list.latest.status === 200" style="width:calc(100% - 1em)" button_type='blue' to='/posts' text='More Posts')
 </template>
