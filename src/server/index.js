@@ -1,4 +1,5 @@
 import restify from 'restify'
+import cookies from 'restify-cookies'
 import render from './render'
 import debug from 'debug'
 import routes from './routes'
@@ -19,6 +20,7 @@ const server = restify.createServer()
 const port = process.env.PORT || 19090
 
 // global handler initial
+server.use(cookies.parse)
 server.use(restify.plugins.gzipResponse())
 server.use(restify.plugins.bodyParser({
   mapParams: false,

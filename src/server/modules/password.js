@@ -1,20 +1,34 @@
-import bcrypt from 'bcrypt'
+import {enc, AES, MD5} from "crypto-js"
+
+const KEY = 'oopsreview-web'
 
 /**
- * @description enc password
- * @param {string} password 
- * @see https://stackoverflow.com/questions/14015677/node-js-encryption-of-passwords
+ * @description function to encrypt password
+ * @param {string} string
  */
-export function encPassword(password='', callback) {
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) 
-      return callback(err);
+export function encString(plaintext = "") {
+  const enc = AES.encrypt(plaintext, KEY).toString()
+  console.log("enc plain", plaintext)
+  console.log("enc result", enc)
+  return enc
+}
 
-      console.log('salt', salt)
+/**
+ * @description function to decrypt script
+ * @param {string} ciphertext 
+ */
+export function decString(ciphertext = "") {
+  const dec = AES.decrypt(ciphertext, KEY).toString(enc.Utf8)
+  console.log("dec", dec)
+  return dec 
+}
 
-    bcrypt.hash(password, '$2a$10$fmIFy1LJU9Zsxy.RhhDIre', (err, hash) => {
-      console.log(hash)
-      return callback(err, hash)
-    })
-  })
+/**
+ * @description function to hash password with md5
+ * @param {string} password as plain text
+ */
+export function hashPassword(password = "") {
+  const hash = MD5(password).toString()
+  // console.log("hash", hash)
+  return hash
 }
