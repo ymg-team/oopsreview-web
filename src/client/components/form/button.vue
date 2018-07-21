@@ -1,5 +1,6 @@
 <template lang="pug">
   button.button(
+    :disabled="loading"
     :class='button_type'
     v-on:click='onclick'
     type='button') 
@@ -17,6 +18,10 @@ const props = {
   button_type: {
     type: String,
     default: 'blue'
+  },
+  loading: {
+    type: Boolean,
+    default: false
   },
   value: {
     type: String
@@ -43,6 +48,9 @@ export default Vue.extend({
   cursor: pointer
   padding: .5em .8em
   font-size: 1.2em
+  &:disabled, &[disabled] 
+    cursor: default
+    background-color: $color-gray-soft !important
   &.blue
     color: $color-white-main
     background-color: $color-blue-main

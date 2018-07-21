@@ -9,14 +9,16 @@
             name='username' 
             :data='formdata' 
             :validation='formvalidate'
-            :onchange='handleChangeText')
+            :onchange='handleChangeText'
+            :onkeyup='handleChangeText')
           input-text(
             label='Your Password'
             name='password' 
             type='password' 
             :data='formdata' 
             :validation='formvalidate'
-            :onchange='handleChangeText')
+            :onchange='handleChangeText'
+            :onkeyup='handleChangeText')
           alert(
             v-if='formvalidate.isValid == false' 
             type='error'
@@ -24,35 +26,39 @@
             )
           div(style='padding:.5em')
           submit.blue(
+            :loading="auth.loading || (auth.response.status && auth.response.status === 201)"
             :onclick='handleSubmit'
-            value='Go inside !'
+            :value='auth.loading || (auth.response.status && auth.response.status === 201) ? "loading..." : "Go inside !"'
           )
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import text from '../../components/form/input-text.vue'
-import button from '../../components/form/button.vue'
-import alert from '../../components/cards/alert.vue'
-import { validation } from '../../modules/form'
-import { router } from '../../index.ts'
+import Vue from "vue"
+import text from "../../components/form/input-text.vue"
+import button from "../../components/form/button.vue"
+import alert from "../../components/cards/alert.vue"
+import toast from "../../modules/toast"
+import * as TYPES from "../../vuex/types"
+import { validation } from "../../modules/form"
+import { router } from "../../index"
+import { mapState } from "vuex"
 
 const rules = {
-  username: 'required',
-  password: 'required'
+  username: "required",
+  password: "required"
 }
 
-Vue.component('input-text', text)
-Vue.component('submit', button)
-Vue.component('alert', alert)
+Vue.component("input-text", text)
+Vue.component("submit", button)
+Vue.component("alert", alert)
 
 export default Vue.extend({
-  name: 'auth',
-  
+  name: "auth",
+
   data() {
     return {
       formdata: <any>{},
-      formvalidate: <any>{} ,
+      formvalidate: <any>{},
       validation: new validation(rules)
     }
   },
@@ -60,17 +66,47 @@ export default Vue.extend({
   methods: {
     handleChangeText(e: any) {
       const { name, value } = e.target
+
+      if(e.keyCode === 13) {
+        return this.handleSubmit()
+      }
+
       let nextformdata: any = this.formdata
       nextformdata[name] = value
+      const validate = this.validation.validate(this.formdata)
+
       this.formdata = Object.assign({}, nextformdata)
-      this.formvalidate = this.validation.validate(this.formdata)
+      this.formvalidate = validate
     },
 
     handleSubmit() {
       this.formvalidate = this.validation.validate(this.formdata)
-      if(this.formvalidate.isValid) 
-      {
-        router.push({path: '/super/posts'})
+      if (this.formvalidate.isValid) {
+        // router.push({ path: "/super/posts" })
+        const { username, password } = this.formdata
+        this.$store.dispatch(TYPES.LOGIN, { email: username, password })
+      }
+    }
+  },
+
+  computed: {
+    ...mapState(["auth"])
+  },
+
+  watch: {
+    ["auth.response"](): any {
+      if (this.auth.response.status) {
+        if (this.auth.response.status === 201) {
+          toast("Login success", "success")
+          setTimeout(() => {
+            router.push({ path: "/super/posts" })
+          }, 1000)
+        } else {
+          toast(
+            "username and password not match, please try again",
+            "error"
+          )
+        }
       }
     }
   }

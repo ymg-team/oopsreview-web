@@ -1,13 +1,13 @@
 const { NODE_ENV } = process.env
 
 export function set(req, res, key, val) {
-  // {
-  //   path: '/',
-  //   domain: NODE_ENV === 'development' ? 'http://localhost:19090' : 'https://oopsreview.com',
-  //   secure: true,
-  //   httpOnly: true
-  // }
-  res.setCookie(key, val);
+  const options = {
+    path: '/',
+    domain: NODE_ENV === 'development' ? 'localhost' : 'oopsreview.com',
+    secure: false,
+    httpOnly: true
+  }
+  res.setCookie(key, val, options);
 }
 
 export function get(req, res, key) {

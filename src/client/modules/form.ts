@@ -1,3 +1,5 @@
+import toast from "../modules/toast"
+
 export class validation {
   // solved from : https://www.typescriptlang.org/docs/handbook/classes.html
   rules: {[n: string]: any}
@@ -25,6 +27,8 @@ export class validation {
         }
       }
     })
+
+    if(!isValid) toast('form belum valid', 'error')
 
     return {
       isValid,

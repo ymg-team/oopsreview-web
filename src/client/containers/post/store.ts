@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import * as types from "../../vuex/types"
 import { objToQuery } from "string-manager"
 
@@ -12,10 +11,10 @@ interface State {
 }
 
 interface ParamsGetPost {
-  filter: string,
-  limit?: number,
-  featured?: boolean,
-  response: any,
+  filter: string
+  limit?: number
+  featured?: boolean
+  response: any
   lastcreatedon?: number
 }
 
@@ -25,21 +24,20 @@ const initialState = {
   tags: {}
 }
 
-const getters = {
-}
+const getters = {}
 
 const actions = {
   // request to api post list
   [types.GET_POSTS]: ({ commit }: any, params: ParamsGetPost) => {
-    commit(types.REQUEST_POSTS, {filter: params.filter})
+    commit(types.REQUEST_POSTS, { filter: params.filter })
 
     // generate querystring
-    if(!params.limit) params.limit = 8
+    if (!params.limit) params.limit = 8
     const query = objToQuery(params)
-    
+
     request("get", `/api/posts/dW5kZWZpbmVkMTUyMTM0NDA4ODM0Mw?${query}`).then(
       response => {
-        if(typeof params.lastcreatedon === "number") {
+        if (typeof params.lastcreatedon === "number") {
           // loadmore news
           commit(types.GET_MORE_POSTS, {
             response,
@@ -56,10 +54,9 @@ const actions = {
     )
   },
 
-
   // request to api post detail
   [types.GET_POST]: ({ commit }: any, post_id: string) => {
-    commit(types.REQUEST_POSTS, {filter: post_id})
+    commit(types.REQUEST_POSTS, { filter: post_id })
     request("get", `/api/post/${post_id}/5aa4ac2b830a0aef88acdb5c`).then(
       response => {
         commit(types.GET_POST, {
@@ -84,36 +81,29 @@ const actions = {
 }
 
 const mutations = {
-
   // on receive tag
-  [types.GET_TAG]: (
-    state: State = initialState,
-    {filter, response}
-  ) => {
-    let {tags} = state 
-    tags[filter] = response 
+  [types.GET_TAG]: (state: State = initialState, { filter, response }) => {
+    let { tags } = state
+    tags[filter] = response.data
 
     state.tags = Object.assign({}, tags)
   },
 
   // on receive post detail
-  [types.GET_POST]: (
-    state: State = initialState,
-    {filter, response}
-  ) => {
-    let {detail} = state
-    detail[filter] = response 
+  [types.GET_POST]: (state: State = initialState, { filter, response }) => {
+    let { detail } = state
+    detail[filter] = response.data
     detail[filter].loading = false
 
     state.detail = Object.assign({}, detail)
   },
-  
+
   // on request post list
   [types.REQUEST_POSTS]: (
     state: State = initialState,
     { filter }: ParamsGetPost
   ) => {
-    if(!state.list[filter]) state.list[filter] = {}
+    if (!state.list[filter]) state.list[filter] = {}
     state.list[filter].loading = true
   },
 
@@ -122,8 +112,8 @@ const mutations = {
     state: State = initialState,
     { filter, response }: ParamsGetPost
   ) => {
-    let {list} = state
-    list[filter] = response 
+    let { list } = state
+    list[filter] = response.data
     list[filter].loading = false
 
     state.list = Object.assign({}, list)
@@ -134,14 +124,14 @@ const mutations = {
     state: State = initialState,
     { filter, response }: ParamsGetPost
   ) => {
-    let {list} = state
+    let { list } = state
     list[filter].status = response.status
-    if(response.status === 200) list[filter].result = list[filter].result.concat(response.result)
+    if (response.status === 200)
+      list[filter].result = list[filter].result.concat(response.result)
     list[filter].loading = false
 
     state.list = Object.assign({}, list)
   }
-
 }
 
 export default {

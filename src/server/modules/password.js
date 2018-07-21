@@ -8,8 +8,8 @@ const KEY = 'oopsreview-web'
  */
 export function encString(plaintext = "") {
   const enc = AES.encrypt(plaintext, KEY).toString()
-  console.log("enc plain", plaintext)
-  console.log("enc result", enc)
+  // console.log("enc plain", plaintext)
+  // console.log("enc result", enc)
   return enc
 }
 
@@ -19,7 +19,7 @@ export function encString(plaintext = "") {
  */
 export function decString(ciphertext = "") {
   const dec = AES.decrypt(ciphertext, KEY).toString(enc.Utf8)
-  console.log("dec", dec)
+  // console.log("dec", dec)
   return dec 
 }
 

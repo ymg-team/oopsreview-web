@@ -29,20 +29,21 @@ export function login(req, res) {
   })
 }
 
+export function logout(req, res) {
+  cookies.set(req, res, "oopsreview_session", "")
+  return res.send(200, { message: "logout success" })
+}
+
 /**
  * function to to check is user logged in
  */
 export function checkLogin(req, res, next) {
-  const cookies = req.cookies.oopsreview_session 
+  const cookies = req.cookies.oopsreview_session
   let sessiondata = {}
-  if(cookies) {
+  if (cookies) {
     sessiondata = decString(cookies)
     sessiondata = JSON.parse(sessiondata)
   }
 
   res.json(sessiondata || {})
-}
-
-export function logout(req, res) {
-  console.log("logout success, destory session")
 }
