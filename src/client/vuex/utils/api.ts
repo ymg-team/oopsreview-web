@@ -1,13 +1,39 @@
-import axios from 'axios'
+import axios from "axios"
 
-export default function request(method: string, url: string, formdata?: object) {
+// ref: https://github.com/axios/axios#global-axios-defaults
+axios.defaults.headers.post["Content-Type"] =
+  "application/x-www-form-urlencoded"
+
+export default function request(
+  method: string,
+  url: string,
+  formdata?: object
+) {
   method = method.toLowerCase()
-    return new Promise((resolve, reject) => {
-      switch(method) {
-        case 'get':
-          return axios.get(url)
-            .then((response: any) => resolve(response.data))
-            .catch((error: any) => reject(error))
+  return new Promise((resolve, reject) => {
+    let config = {
+      method,
+      url,
+      data: {}
+    }
+    if(method != 'get') {
+      if(formdata) {
+        let formdata_input = new FormData()
+        const keys = Object.keys(formdata)
+        keys.map(n => {
+          formdata_input.set(n, formdata[n])
+        })
+        
+        config.data = formdata_input
       }
-    })
+      // config.config = { headers: {'Content-Type': 'multipart/form-data' }}
+    }
+    return axios(config)
+      .then((response: any) => {
+        const {status, data} = response
+        resolve({status, data})
+      })
+      .catch((error: any) => reject(error))
+   
+  })
 }

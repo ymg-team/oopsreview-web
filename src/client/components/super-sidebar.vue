@@ -1,23 +1,59 @@
 <template lang='pug'>
 .super-sidebar 
   ul 
-    li(v-bind:class='{ active: $route.name==\'new-post\' }') 
+    li(:class="$route.name === 'new_post' ? 'active' : '' ") 
       router-link(to='/super/posts/new') + New Post
-    li(v-bind:class='{ active: $route.name==\'post\' }') 
+    li(:class="$route.name === 'post' ? 'active' : '' ") 
       router-link(to='/super/posts') Posts
-    li(v-bind:class='{ active: $route.name==\'team\' }') 
+    li(:class="$route.name === 'team' ? 'active' : '' ") 
       router-link(to='/super/team') Team
   .divider
   ul 
     li 
-      a(href='javascript:;') logout
+      a(href='javascript:;' v-on:click='handleLogout()') logout
 </template>
 
 <script lang='ts'>
-import Vue from 'vue'
+import Vue from "vue"
+import * as TYPES from "../vuex/types"
+import toast from "../modules/toast"
+import {mapState} from "vuex"
 
 export default Vue.extend({
-  name: 'super-sidebar'
+  name: "super-sidebar",
+
+  methods: {
+    handleLogout() {
+      console.log("logout...")
+      this.$store.dispatch(TYPES.LOGOUT)
+    }
+  },
+
+  mounted() {
+    console.log(this.$route.name)
+  },
+
+  watch: {
+    ["auth.response"]():any {
+      if (this.auth.response.status) {
+        if (this.auth.response.status === 200) {
+          toast("Logout success", "success")
+          setTimeout(() => {
+            location.reload()
+          }, 1000)
+        } else {
+          toast(
+            "Failed to logout, please try again",
+            "error"
+          )
+        }
+      }
+    }
+  },
+
+  computed: {
+    ...mapState(['auth'])
+  }
 })
 </script>
 
