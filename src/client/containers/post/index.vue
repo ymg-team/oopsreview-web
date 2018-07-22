@@ -36,6 +36,7 @@ import buttonBig from "../../components/form/button-big.vue"
 Vue.component("header-tag", headerTag)
 Vue.component("sidebar", sidebar)
 Vue.component("button-big", buttonBig)
+Vue.component("box-post", post)
 
 export default Vue.extend({
   name: "post-list",
