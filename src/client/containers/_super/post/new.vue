@@ -25,10 +25,10 @@
 
 <script>
 import Vue from 'vue'
-import header from '../../components/cards/header-tag.vue'
-import text from '../../components/form/input-text.vue'
-import button from '../../components/form/button.vue'
-import { injectCss, injectScript } from '../../modules/dom'
+import header from '../../../components/cards/header-tag.vue'
+import text from '../../../components/form/input-text.vue'
+import button from '../../../components/form/button.vue'
+import { injectCss, injectScript } from '../../../modules/dom'
 
 Vue.component('header-tag', header)
 Vue.component('input-text', text)
@@ -77,7 +77,7 @@ export default Vue.extend({
 </script>
 
 <style lang="sass" scoped>
-@import '../../../design/sass/color'
+@import '../../../../design/sass/color'
 
 #post-form
   height: 550px

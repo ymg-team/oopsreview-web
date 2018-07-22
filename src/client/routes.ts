@@ -5,8 +5,8 @@ import PostDetail from './containers/post/detail.vue'
 import StaticDetail from './containers/static/index.vue'
 
 import Auth from './containers/auth/index.vue'
-import SuperPost from './containers/super-posts/index.vue'
-import NewPost from './containers/super-posts/new.vue'
+import SuperPost from './containers/_super/post/index.vue'
+import NewPost from './containers/_super/post/new.vue'
 
 import SuperLayout from './layouts/super.vue'
 import DefaultLayout from './layouts/default.vue'

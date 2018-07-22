@@ -14,7 +14,7 @@
           input-text(
             label='Your Password'
             name='password' 
-            type='password' 
+            type='password'
             :data='formdata' 
             :validation='formvalidate'
             :onchange='handleChangeText'
