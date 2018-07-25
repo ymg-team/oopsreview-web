@@ -88,7 +88,7 @@ export default Vue.extend({
     }
   },
 
-  created() {
+  mounted() {
     // user is doing search, and access /search page
     if(this.keyword != '') {
       this.search_text = this.keyword

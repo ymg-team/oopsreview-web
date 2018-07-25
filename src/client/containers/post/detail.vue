@@ -4,7 +4,7 @@
       .post-detail.bg-white
         .container
           .grid
-            .col-12
+            .col-8_md-12(data-push-left="off-2_md-0")
               h1 {{ toCamelCase(post.detail[id].title) }}
               box-meta(:data="post.detail[id]")
           

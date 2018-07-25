@@ -4,7 +4,7 @@
       .grid
         .col.align-center
           router-link(to='/')
-            img.logo(src='/images/logo-wide-2.png')
+            img.logo#logo(src='/images/logo-wide-2.png')
 </template>
 
 <script lang="ts">
