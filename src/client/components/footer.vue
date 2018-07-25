@@ -17,6 +17,14 @@
             br 
             | Powered by 
             a(href='https://byidmore.com' target='_blank') IdMore
+        .col-6_sm-12
+          .link-social
+            a(href="https://facebook.com/oopsreview" target="_blank")
+              span.icono-facebook
+            a(href="https://twitter.com/oopsreview" target="_blank")
+              span.icono-twitter 
+            a(href="https://oopsreview.com/feed" target="_blank")
+              span.icono-rss 
 </template>
 
 <style lang="sass" scoped>
@@ -32,5 +40,7 @@
       color: $color-gray-soft
       &:hover
         color: $color-white-main
+    .link-social 
+      float: right
 </style>
 

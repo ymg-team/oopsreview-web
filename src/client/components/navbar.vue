@@ -117,7 +117,7 @@ export default Vue.extend({
       top: 0
       z-index: 5
       img.logo 
-        width: 200px
+        width: 150px
 
     ul.navbar 
       margin: 0
