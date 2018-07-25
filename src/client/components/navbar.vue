@@ -88,7 +88,7 @@ export default Vue.extend({
     }
   },
 
-  created() {
+  mounted() {
     // user is doing search, and access /search page
     if(this.keyword != '') {
       this.search_text = this.keyword
@@ -117,7 +117,7 @@ export default Vue.extend({
       top: 0
       z-index: 5
       img.logo 
-        width: 200px
+        width: 150px
 
     ul.navbar 
       margin: 0

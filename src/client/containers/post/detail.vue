@@ -4,27 +4,27 @@
       .post-detail.bg-white
         .container
           .grid
-            .col-12
+            .col-8_md-12(data-push-left="off-2_md-0")
               h1 {{ toCamelCase(post.detail[id].title) }}
               box-meta(:data="post.detail[id]")
           
           .grid 
-            .col-8_md-12
+            .col-8_md-12(data-push-left="off-2_md-0")
               app-card(v-if="post.detail[id].app._id" :data="post.detail[id]" :app="post.detail[id].app")
 
+          .grid 
+            .col-12.post-detail-mainimage
+              img(:src="post.detail[id].image.original")
+            .col-8_md-12(data-push-left="off-2_md-0")
               article.post-detail-content
-                img(:src="post.detail[id].image.original")
                 div(v-html="post.detail[id].content")
-            
-            .col-4_md-12
-              sidebar(:link='link')
 
           .grid 
-            .col-8_md-12 
+            .col-8_md-12(data-push-left="off-2_md-0")
               comment(:link='link') 
 
           .grid.p-t-2 
-            .col-8_md-12
+            .col-8_md-12(data-push-left="off-2_md-0")
               h2.title-menu The Latest
               box-post(:data='post.list.latest_detail || {}') 
             
@@ -151,6 +151,9 @@ export default Vue.extend({
 .post-detail
   h1 
     font-size: $size-text-large
+  .post-detail-mainimage
+    img 
+      max-width: 100%
   article.post-detail-content 
     h2
       margin-top: 50px
@@ -165,12 +168,10 @@ export default Vue.extend({
     letter-spacing: .3px
     font-size: 1.1em
     img 
-      &:first-child 
-        margin: 0 auto 5px
       max-width: 100%
       text-align: center
       display: block 
-      margin: 1.5em auto
+      margin: 2.5em auto
     br 
       display: block
       margin: 1em 0

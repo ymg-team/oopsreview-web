@@ -24,6 +24,8 @@ import DefaultMeta from "../../../config/metainfo"
 import { mapState } from "vuex"
 import * as TYPES from "../../vuex/types"
 
+
+// Vue.component("popular-box",  popular)
 Vue.component("popular-box", popular)
 Vue.component("card-title", title)
 Vue.component("box-post", post)

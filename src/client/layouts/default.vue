@@ -60,4 +60,5 @@ export default Vue.extend({
     color: $color-gray-medium
   .no-padding
     padding: 0 !important
+
 </style>
