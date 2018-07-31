@@ -152,6 +152,7 @@ export default Vue.extend({
   h1 
     font-size: $size-text-large
   .post-detail-mainimage
+    text-align: center
     img 
       max-width: 100%
   article.post-detail-content 
