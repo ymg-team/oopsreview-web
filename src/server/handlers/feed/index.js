@@ -45,7 +45,7 @@ export function getFeed(req, res) {
               <link>https://oopsreview.com/post/${toSlug(n.title)}-${n._id}</link>
               <guid>https://oopsreview.com/post/${toSlug(n.title)}-${n._id}</guid>
               <category domain="https://oopsreview.com">${n.tags.split(',').join('/')}</category>
-              <pubDate>${(new Date(n.created_on)).toUTCString()}</pubDate>
+              <pubDate>${(new Date(n.created_on * 1000)).toUTCString()}</pubDate>
             </item>
             `
           })
@@ -59,14 +59,14 @@ export function getFeed(req, res) {
 function xmlFeedWrapper(items = "",update_date = 0) {
   // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toUTCString
   return `
-  <rss version="2.0">
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
       <title>Oopsreview Feed</title>
       <description>Oopsreview is software review specialist</description>
       <link>https://oopsreview.com</link>
       <category domain="https://oopsreview.com">computers/software/internet</category>
       <copyright>Copyright 2017-2018 Id More Team.</copyright>
-      <lastBuildDate>${(new Date(update_date)).toUTCString()}</lastBuildDate>
+      <lastBuildDate>${(new Date(update_date * 1000)).toUTCString()}</lastBuildDate>
       <language>en-us</language>
       <image>
         <url>https://res.cloudinary.com/dhjkktmal/image/upload/c_scale,h_60/v1532272510/oopsreview/2018/oopsreview.png</url>
@@ -77,6 +77,7 @@ function xmlFeedWrapper(items = "",update_date = 0) {
         <height>60</height>
       </image>
       ${items}
+      <atom:link href="https://oopsreview.com/feed" rel="self" type="application/rss+xml" />
     </channel>
   </rss>
   `
