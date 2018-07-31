@@ -43,7 +43,7 @@ export function getFeed(req, res) {
               <description>${truncate(stripTags(n.content), 500, '[READ MORE...]')}</description>
               <link>https://oopsreview.com/post/${toSlug(n.title)}-${n._id}</link>
               <category domain="https://oopsreview.com">${n.tags.split(',').join('/')}</category>
-              <pubDate>${n.created_on}</pubDate>
+              <pubDate>${new Date(n.created_on)}</pubDate>
             </item>
             `
           })
@@ -57,22 +57,24 @@ export function getFeed(req, res) {
 function xmlFeedWrapper(items = "",update_date = 0) {
   return `
   <rss version="2.0">
-    <channel>Oopsreview Feed</channel>
-    <description>Oopsreview is software review specialist</description>
-    <link>https://oopsreview.com</link>
-    <category domain="https://oopsreview.com">computers/software/internet</category>
-    <copyright>Copyright 2017-2018 Id More Team.</copyright>
-    <lastBuildDate>${update_date}</lastBuildDate>
-    <language>en-us</language>
-    <image>
-      <url>https://res.cloudinary.com/dhjkktmal/image/upload/c_scale,h_60/v1532272510/oopsreview/2018/oopsreview.png</url>
+    <channel>
       <title>Oopsreview Feed</title>
-      <link>https://oopsreview.com</link>
       <description>Oopsreview is software review specialist</description>
-      <width>60</width>
-      <height>60</height>
-    </image>
-    ${items}
+      <link>https://oopsreview.com</link>
+      <category domain="https://oopsreview.com">computers/software/internet</category>
+      <copyright>Copyright 2017-2018 Id More Team.</copyright>
+      <lastBuildDate>${new Date(update_date)}</lastBuildDate>
+      <language>en-us</language>
+      <image>
+        <url>https://res.cloudinary.com/dhjkktmal/image/upload/c_scale,h_60/v1532272510/oopsreview/2018/oopsreview.png</url>
+        <title>Oopsreview Feed</title>
+        <link>https://oopsreview.com</link>
+        <description>Oopsreview is software review specialist</description>
+        <width>60</width>
+        <height>60</height>
+      </image>
+      ${items}
+    </channel>
   </rss>
   `
 }
