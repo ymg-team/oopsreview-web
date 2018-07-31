@@ -76,8 +76,8 @@ function xmlFeedWrapper(items = "",update_date = 0) {
         <width>60</width>
         <height>60</height>
       </image>
-      ${items}
       <atom:link href="https://oopsreview.com/feed" rel="self" type="application/rss+xml" />
+      ${items}
     </channel>
   </rss>
   `
