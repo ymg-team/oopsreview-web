@@ -114,6 +114,10 @@ const mutations = {
   ) => {
     let { list } = state
     list[filter] = response.data
+    if(!response.data) {
+      list[filter] = {}
+      list[filter].status = response.status
+    }
     list[filter].loading = false
 
     state.list = Object.assign({}, list)
