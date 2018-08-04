@@ -145,7 +145,7 @@ export default Vue.extend({
       const { $store }: any = this
 
       // fetch lattest created on
-      return $store.dispatch(TYPES.GET_POSTS, params)
+      $store.dispatch(TYPES.GET_POSTS, params)
     },
 
     generateParams() {

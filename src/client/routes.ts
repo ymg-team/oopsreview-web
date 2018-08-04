@@ -6,7 +6,7 @@ import StaticDetail from './containers/static/index.vue'
 
 import Auth from './containers/auth/index.vue'
 import SuperPost from './containers/_super/post/index.vue'
-import NewPost from './containers/_super/post/new.vue'
+import FormPost from './containers/_super/post/form.vue'
 
 import SuperLayout from './layouts/super.vue'
 import DefaultLayout from './layouts/default.vue'
@@ -39,9 +39,9 @@ export default [
     path: '/super',
     component: SuperLayout,
     children : [
-      { path: '/super/posts/new', name:'new_post', component: NewPost },
+      { path: '/super/posts/new', name:'new_post', component: FormPost },
       { path: '/super/posts', name:'super_post', component: SuperPost },
-      { path: '/super/post/:id', name:'super_post_detail', component: NewPost },
+      { path: '/super/post/:id', props: true, name:'super_post_detail', component: FormPost }
     ]
   },
   // default page

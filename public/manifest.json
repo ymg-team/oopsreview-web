@@ -1,9 +1,9 @@
 {
   "name": "Oopsreview",
-  "short_name": "Oopsreview",
+  "short_name": "oopsreview",
   "theme_color": "#000000",
-  "background_color": "#ffffff",
-  "display": "browser",
+  "background_color": "#000000",
+  "display": "fullscreen",
   "Scope": "/",
   "start_url": "/",
   "icons": [

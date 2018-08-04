@@ -105,7 +105,7 @@ export function list(req, res) {
           // success
           return res.send(200, response(200, "success", { result }))
         } else {
-          return res.send(200, response(204, "no post available"))
+          return res.send(204, response(204, "no post available"))
         }
       })
   })

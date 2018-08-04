@@ -11,47 +11,54 @@
     //- big button to load more post
     big-button(
       v-if='post.list[filter] && post.list[filter].status && post.list[filter].status === 200' 
+      :onclick='() => morePosts()'
       type="blue" 
       text="more posts")
 
 </template>
 
 <script lang='ts'>
-import Vue from 'vue'
-import {mapState} from 'vuex'
-import * as TYPES from '../../../vuex/types'
+import Vue from "vue"
+import { mapState } from "vuex"
+import * as TYPES from "../../../vuex/types"
 
 // components
-import header from '../../../components/cards/header-tag.vue'
-import superboxpost from '../../../components/boxs/super-post.vue'
-import inputtext from '../../../components/form/input-text.vue'
-import bigbutton from '../../../components/form/button-big'
+import header from "../../../components/cards/header-tag.vue"
+import superboxpost from "../../../components/boxs/super-post.vue"
+import inputtext from "../../../components/form/input-text.vue"
+import bigbutton from "../../../components/form/button-big.vue"
 
-Vue.component('header-tag', header)
-Vue.component('super-box-post', superboxpost)
-Vue.component('input-text', inputtext)
-Vue.component('big-button', bigbutton)
+Vue.component("header-tag", header)
+Vue.component("super-box-post", superboxpost)
+Vue.component("input-text", inputtext)
+Vue.component("big-button", bigbutton)
 
 export default Vue.extend({
-  name: 'super-posts-list',
+  name: "super-posts-list",
 
   data() {
     return {
-      filter: 'post_all'
+      filter: "post_all"
     }
   },
 
   methods: {
     morePosts() {
+      console.log("show more post...")
+      const post = this.$store.state.post.list[this.filter].result
+      let params = this.generateParams()
+      params.lastcreatedon = post[post.length - 1].created_on
 
+      // fetch lattest created on
+      this.$store.dispatch(TYPES.GET_POSTS, params)
     },
 
     generateParams() {
       const { q } = this.$route.query
-      
-     let params: any = {
-       filter: this.filter
-     }
+
+      let params: any = {
+        filter: this.filter
+      }
       if (q) params.keyword = q
       return params
     }

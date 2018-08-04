@@ -3,7 +3,7 @@
     div(v-if='!data || !data.status')
       loading 
     div(v-else)
-      div(v-if='data.status === 200' v-for="n,key in data.result")
+      div(v-if='data.result.length > 0' v-for="n,key in data.result")
         row-super-post(:key="key" :data="n")
       div(v-else)
         text-info(:text='data.message || "post tidak ditemukan"')
