@@ -12,6 +12,7 @@ const html = `<!DOCTYPE html>
       }" />
       <link rel="manifest" href="/manifest.json" />
       <link rel="icon" href="/images/icons/icon-72x72.png" />
+      <link href="${NODE_ENV === 'production' ? '/opensearch/production.xml' : '/opensearch/development.xml'}" rel="search" title="oopsreview" type="application/opensearchdescription+xml">
       <style>
         body {
           background-color: #000000;
