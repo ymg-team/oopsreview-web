@@ -24,7 +24,6 @@ import DefaultMeta from "../../../config/metainfo"
 import { mapState } from "vuex"
 import * as TYPES from "../../vuex/types"
 
-
 // Vue.component("popular-box",  popular)
 Vue.component("popular-box", popular)
 Vue.component("card-title", title)
@@ -35,7 +34,14 @@ Vue.component("buttonBig", buttonBig)
 export default Vue.extend({
   name: "home",
 
-  metaInfo: DefaultMeta,
+  // custom meta info from vue-meta
+  // metaInfo: DefaultMeta,
+  metaInfo() {
+    return {
+      title: DefaultMeta.title,
+      meta: [{ vmid: "description", name: "description", content: DefaultMeta.description }]
+    }
+  },
 
   created() {
     this.$store.dispatch(TYPES.GET_POSTS, { filter: "latest", limit: 8 })

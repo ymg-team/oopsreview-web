@@ -45,31 +45,26 @@ export default Vue.extend({
     let { tag_name, username } = this
     let { q } = this.$route.query
 
-    let title = "Posts",
-      filter = "archived",
-      subtitle = tag_name
-        ? `Find all available post posted with tag "${tag_name}"`
-        : ""
+    let filter = "archived"
 
     // if access route /author/:username
     if (username) {
-      title = `Post by "${username}"`
-      subtitle = `Find all available post posted by "${username}"`
       filter = `archived_author_${username}`
     }
 
     // if access route /tag/:tag_name
     if (tag_name) {
-      title = `Post by tag "${tag_name}"`
       filter = `archived_${tag_name}`
     }
 
     // if access route /post?q=keyword
     if (q) {
-      title = `Searching "${q}"`
       filter = `archived_search_${q}`
-      subtitle = `Searching post by keyword "${q}"`
     }
+
+    // tricky: cannot call this on data()
+    const { generateMeta }: any = this
+    const { title, subtitle } = generateMeta()
 
     // initial data
     return {
@@ -80,8 +75,12 @@ export default Vue.extend({
   },
 
   metaInfo() {
+    const { title, subtitle } = this.generateMeta()
+
+    // initial data
     return {
-      title: "Post"
+      title,
+      meta: [{ vmid: "description", name: "description", content: subtitle }]
     }
   },
 
@@ -137,6 +136,39 @@ export default Vue.extend({
   },
 
   methods: {
+    generateMeta() {
+      let { tag_name, username }: any = this
+      let { q } = this.$route.query
+
+      let title = "Posts",
+        subtitle = tag_name
+          ? `Find all available post posted with tag "${tag_name}"`
+          : ""
+
+      // if access route /author/:username
+      if (username) {
+        title = `Post by "${username}"`
+        subtitle = `Find all available post posted by "${username}"`
+      }
+
+      // if access route /tag/:tag_name
+      if (tag_name) {
+        title = `Post by tag "${tag_name}"`
+      }
+
+      // if access route /post?q=keyword
+      if (q) {
+        title = `Searching "${q}"`
+        subtitle = `Searching post by keyword "${q}"`
+      }
+
+      // initial data
+      return {
+        title,
+        subtitle
+      }
+    },
+
     morePosts() {
       const post = this.$store.state.post.list[this.filter].result
       let params = this.generateParams()
