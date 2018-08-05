@@ -2,22 +2,23 @@
   .post-meta
     router-link(:to="'/author/' + data.author.username")
       img.avatar(:src="data.author.avatar.small" alt="avatar user")
-      | by
-      | {{ toCamelCase(data.author.fullname) }}, 
-      | posted 
-      time {{ epochToRelative(data.created_on) }}
+      div.avatar-text
+        | by
+        | {{ toCamelCase(data.author.fullname) }}, 
+        | posted 
+        time {{ epochToRelative(data.created_on) }}
     .stats 
-      span.stats-item
-        span.icono-eye 
-        | {{ data.views || 0 }} 
-      span.stats-item
-        span.icono-commentEmpty 
-        | {{ data.comments || 0 }}  
       span.stats-item(v-if="typeof data.tags === 'object' && data.tags.length > 0")
         span.icono-tag 
         span(v-for="item, key in data.tags" :key="key") 
           router-link(:to="'/tag/' + item" ) {{ item }}
           | {{ key < data.tags.length -1 ? ', ' : ''  }}
+      span.stats-item
+        span.icono-commentEmpty 
+        | {{ data.comments || 0 }}  
+      span.stats-item
+        span.icono-eye 
+        | {{ data.views || 0 }} 
 
 </template>
 
@@ -56,6 +57,10 @@ export default Vue.extend({
     border-radius: 35px
     margin-bottom: -12.5px
     margin-right: 5px
+    margin-bottom: 5px
+    float: left
+  .avatar-text 
+    padding: 5px 0
   .stats 
     padding: 10px 0
     .stats-item 

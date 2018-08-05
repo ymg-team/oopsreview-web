@@ -1,4 +1,5 @@
 import MetaInfo from "../config/metainfo.js"
+
 const { NODE_ENV } = process.env
 
 const html = `<!DOCTYPE html>   
@@ -12,7 +13,11 @@ const html = `<!DOCTYPE html>
       }" />
       <link rel="manifest" href="/manifest.json" />
       <link rel="icon" href="/images/icons/icon-72x72.png" />
-      <link href="${NODE_ENV === 'production' ? '/opensearch/production.xml' : '/opensearch/development.xml'}" rel="search" title="oopsreview" type="application/opensearchdescription+xml">
+      <link href="${
+        NODE_ENV === "production"
+          ? "/opensearch/production.xml"
+          : "/opensearch/development.xml"
+      }" rel="search" title="oopsreview" type="application/opensearchdescription+xml">
       <link rel="alternate" href="https://oopsreview.com" hreflang="en-US"/> 
       <style>
         body {

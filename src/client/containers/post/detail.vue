@@ -72,38 +72,43 @@ export default Vue.extend({
     return {
       link: `/post/${this.$route.params.title}`,
       meta: {
-        title: 'Oopsreview - Software Review Specialist',
-        description: 'Here we will help you to determine what best application is suitable for you to use.'
+        title: "Oopsreview - Software Review Specialist",
+        description:
+          "Here we will help you to determine what best application is suitable for you to use."
       },
       id: 0
     }
   },
 
   metaInfo() {
-    if(typeof this.post.detail[this.id] !== 'undefined') {
-      if(this.post.detail[this.id].status === 200){
-        const description = truncate(stripTags(this.post.detail[this.id].content), 500, '...')
+    if (typeof this.post.detail[this.id] !== "undefined") {
+      if (this.post.detail[this.id].status === 200) {
+        const description = truncate(
+          stripTags(this.post.detail[this.id].content),
+          500,
+          "..."
+        )
         return {
           title: toCamelCase(this.post.detail[this.id].title),
           meta: [
-          {
-            vmid: 'description',
-            name: "description",
-            content: description
-          }
-        ]
+            {
+              vmid: "description",
+              name: "description",
+              content: description
+            }
+          ]
         }
       } else {
         return {
-        title: "Page Not Found",
-        meta: [
-          {
-            vmid: 'description',
-            name: "description",
-            content: "Are you lost, click link bellow to acccess other page"
-          }
-        ]
-      }
+          title: "Page Not Found",
+          meta: [
+            {
+              vmid: "description",
+              name: "description",
+              content: "Are you lost, click link bellow to acccess other page"
+            }
+          ]
+        }
       }
     } else {
       return {}
@@ -164,7 +169,7 @@ export default Vue.extend({
       text-align: center
     h3 
       margin-top: 50px
-      text-align: center
+      // text-align: center
     line-height: 1.8
     letter-spacing: .3px
     font-size: 1.1em

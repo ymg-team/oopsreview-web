@@ -24,7 +24,7 @@
 import Vue from 'vue'
 import { router } from '../index'
 
-const popular_tags = ['Android', 'iOS', 'Web', 'Windows', 'MacOS', 'Linux', 'Games', 'Developer']
+const popular_tags = ['Android', 'iOS', 'Web', 'Windows Space', 'MacOS', 'Linux', 'Games', 'Developer']
 
 export default Vue.extend({
   name: 'navbar',
@@ -126,6 +126,7 @@ export default Vue.extend({
       li 
         display: inline-block
         margin-right: 1em
+        width: max-content
         a 
           transition: all .3s ease
           color: $color-white-main

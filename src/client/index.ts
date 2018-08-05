@@ -9,7 +9,7 @@ Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(Meta)
 
-// routes declaration
+// initial router
 export const router = new VueRouter({
   mode: 'history',
   routes,
@@ -25,9 +25,10 @@ const store = new Vuex.Store({
 })
 
 // initial app
-new Vue({
-  el: '#app',
+export const app = new Vue({
   router,
   store,
   template: '<router-view />'
 })
+
+app.$mount("#app")

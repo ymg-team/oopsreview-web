@@ -31,17 +31,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import CardSmall from '../cards/post-small.vue'
-import CardLarge from '../cards/post-large.vue'
+import Vue from "vue"
+import CardSmall from "../cards/post-small.vue"
+import CardLarge from "../cards/post-large.vue"
 
 Vue.component("card-small", CardSmall)
 Vue.component("card-large", CardLarge)
 
 export default Vue.extend({
-  name: 'popular-post-box',
+  name: "popular-post-box",
 
-  props: ['data']
+  props: ["data"]
 })
 </script>
 
@@ -99,5 +99,12 @@ export default Vue.extend({
     font-size: 1.3em 
     text-transform: uppercase
     padding: 2em 0
+
+  // responsive
+  @media screen and (max-width: 600px)
+    .card-post-popular
+      &.col-8_sm-12 
+        h2
+          font-size: .7em
 
 </style>

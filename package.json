@@ -9,6 +9,8 @@
     "webpack:watch": "yarn remove:build-client && NODE_ENV=development webpack --watch --progress",
     "webpack:prod": "yarn remove:build-client && NODE_ENV=production webpack --progress",
     "babel:prod": "yarn remove:build-server && NODE_ENV=production babel src -d dist --copy-files",
+    "build-server:watch": "NODE_ENV=development webpack --config ./webpack/webpackserver.config.js --progress --watch",
+    "build-server:prod": "NODE_ENV=production webpack --config ./webpack/webpackserver.config.js --progress",
     "build:prod": "yarn webpack:prod && yarn babel:prod",
     "server-test:prod": "NODE_ENV=production nodemon ./dist/server/index.js  --exec 'node -r dotenv/config'",
     "remove:build-client": "yarn rimraf public/build",
@@ -40,7 +42,7 @@
     "restify-cookies": "^0.2.5",
     "string-manager": "^2.0.0-beta.0",
     "typescript": "^2.7.2",
-    "vue": "^2.5.16",
+    "vue": "^2.5.17",
     "vue-meta": "^1.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
@@ -64,6 +66,7 @@
     "ts-loader": "^3.5.0",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "vue-loader": "^14.1.1",
-    "vue-template-compiler": "^2.5.16"
+    "vue-template-compiler": "^2.5.17",
+    "webpack-merge": "^4.1.4"
   }
 }
