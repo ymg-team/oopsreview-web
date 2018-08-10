@@ -1,7 +1,7 @@
 {
   "name": "oopsreview-web",
   "version": "0.0.0",
-  "description": "web version olf oopsreview.com",
+  "description": "web version of oopsreview.com",
   "main": "dist/index.js",
   "scripts": {
     "start": "concurrently \"yarn webpack:watch\" \"yarn server:watch\"",
@@ -15,6 +15,7 @@
     "server-test:prod": "NODE_ENV=production nodemon ./dist/server/index.js  --exec 'node -r dotenv/config'",
     "remove:build-client": "yarn rimraf public/build",
     "remove:build-server": "yarn rimraf dist",
+    "update-changelog": "conventional-changelog >> CHANGELOG.md",
     "lint": "eslint src",
     "test": "yarn test"
   },
@@ -57,6 +58,7 @@
     "babel-register": "^6.26.0",
     "cloudinary": "^1.10.0",
     "concurrently": "^3.6.0",
+    "conventional-changelog-cli": "^2.0.1",
     "css-loader": "^0.28.10",
     "dotenv": "^5.0.1",
     "node-sass": "^4.7.2",
