@@ -1,5 +1,5 @@
 import mongo from "../../modules/mongo"
-import {epochToFormat} from "../../modules/dateTime"
+import { epochToFormat } from "../../modules/dateTime"
 
 /**
  * @description function to genereate sitemap of tags
@@ -42,7 +42,7 @@ export function getSitemapTags(req, res) {
 }
 
 /**
- * @description function to generate tag of author
+ * @description function to generate sitemap of author
  */
 export function getSitemapUsers(req, res) {
   res.setHeader("Content-Type", "application/xml")
@@ -78,7 +78,47 @@ export function getSitemapUsers(req, res) {
           res.end(xmlSitemapWrapper(items, 0))
         }
       })
-  }) 
+  })
+}
+
+/**
+ * @description function to generate sitemap of posts
+ */
+export function getSitemapPosts(req, res) {
+  res.setHeader("Content-Type", "application/xml")
+  let items = ""
+
+  let aggregate = []
+
+  // order by desc
+  aggregate.push({
+    $sort: {
+      created_on: -1
+    }
+  })
+
+  mongo().then(db => {
+    db.collection("posts")
+      .aggregate(aggregate)
+      .toArray((err, result) => {
+        if (err) {
+          res.end("error get sitemap")
+        } else {
+          // generate xml
+          result.map(n => {
+            items += `
+            <url>
+              <loc>https://oopsreview.com/post/${(n.title.replace(/ /g,'-')).toLowerCase()}-${n._id}</loc>
+              <lastmod>${epochToFormat(n.created_on, "Y-M-D")}</lastmod>
+              <changefreq>daily</changefreq>
+              <priority>0.8</priority>
+          </url>
+            `
+          })
+          res.end(xmlSitemapWrapper(items, 0))
+        }
+      })
+  })
 }
 
 function xmlSitemapWrapper(items = "", update_date = 0) {
