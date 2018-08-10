@@ -48,3 +48,7 @@ export function epochToRelative(epochtime: number): string {
 
   return lang[timespan][n > 1 ? 'plural' : 'singular'].replace('#', n) +  postfix
 }
+
+// export function epochToCustom(epochtime: number): string {
+
+// }
