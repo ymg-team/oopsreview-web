@@ -114,7 +114,7 @@ const mutations = {
   ) => {
     let { list } = state
     list[filter] = response.data
-    if(!response.data) {
+    if (!response.data) {
       list[filter] = {}
       list[filter].status = response.status
     }
@@ -131,7 +131,8 @@ const mutations = {
     let { list } = state
     list[filter].status = response.status
     if (response.status === 200) {
-      list[filter].result = list[filter].result.concat(response.result)
+      console.log(response)
+      list[filter].result = list[filter].result.concat(response.data.result)
     }
     list[filter].loading = false
 
