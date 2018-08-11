@@ -4,6 +4,6 @@ export function epochToFormat(epoch=0, format='') {
   switch(format) {
     case 'Y-M-D':
     default:
-      return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+      return `${date.getFullYear()}-${String(`0${date.getMonth()}`).slice(-2)}-${String(`0${date.getDate()}`).slice(-2)}`
   }
 }
