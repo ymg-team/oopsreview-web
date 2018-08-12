@@ -8,30 +8,30 @@ export class validation {
   }
 
   validate (formdata: {[n: string]: any}) {
-    let isValid: Boolean = true
+    let is_valid: Boolean = true
     let result: {[n: string]: any} = {}
 
     Object.keys(this.rules).map((n, key) => {
       const rules = this.rules[n].split('|')
       if (rules.includes('required') && !formdata[n]) {
-        isValid = isValid && false
+        is_valid = is_valid && false
         result[n] = {
-          isValid: false,
+          is_valid: false,
           message: 'this input is required'
         }
       } else {
-        isValid = isValid && true
+        is_valid = is_valid && true
         result[n] = {
-          isValid: true,
+          is_valid: true,
           message: ''
         }
       }
     })
 
-    if(!isValid) toast('form belum valid', 'error')
+    if(!is_valid) toast('form belum valid', 'error')
 
     return {
-      isValid,
+      is_valid,
       result
     }
   }

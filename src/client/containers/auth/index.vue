@@ -9,16 +9,14 @@
             name='username' 
             :data='formdata' 
             :validation='formvalidate'
-            :onchange='handleChangeText'
-            :onkeyup='handleChangeText')
+            :onchange='handleChangeText')
           input-text(
             label='Your Password'
             name='password' 
             type='password'
             :data='formdata' 
             :validation='formvalidate'
-            :onchange='handleChangeText'
-            :onkeyup='handleChangeText')
+            :onchange='handleChangeText')
           alert(
             v-if='formvalidate.isValid == false' 
             type='error'
