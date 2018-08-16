@@ -8,22 +8,22 @@
         | posted 
         time {{ epochToRelative(data.created_on) }}
     .stats 
-      span.stats-item(v-if="typeof data.tags === 'object' && data.tags.length > 0")
-        span.icono-tag 
-        span(v-for="item, key in data.tags" :key="key") 
-          router-link(:to="'/tag/' + item" ) {{ item }}
-          | {{ key < data.tags.length -1 ? ', ' : ''  }}
       span.stats-item
         span.icono-commentEmpty 
         | {{ data.comments || 0 }}  
       span.stats-item
         span.icono-eye 
         | {{ data.views || 0 }} 
+      span.stats-item(v-if="typeof data.tags === 'object' && data.tags.length > 0")
+        span.icono-tag 
+        span(v-for="item, key in data.tags" :key="key") 
+          router-link(:to="'/tag/' + item" ) {{ item }}
+          | {{ key < data.tags.length -1 ? ', ' : ''  }}
 
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue"
 import { epochToRelative } from "../../modules/datetime"
 import { toCamelCase } from "string-manager"
 
@@ -39,7 +39,7 @@ export default Vue.extend({
     epochToRelative(epoch) {
       return epochToRelative(epoch)
     }
-  },
+  }
 })
 </script>
 

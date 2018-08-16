@@ -1,5 +1,6 @@
 <template lang="pug">
   div(v-if="typeof post.detail[id] !== 'undefined'")
+
     div(v-if="post.detail[id].status === 200")
       .post-detail.bg-white
         .container
@@ -32,7 +33,7 @@
       error-box
 
   div(v-else)
-    loading
+    preloader
 
 
 </template>
@@ -52,6 +53,7 @@ import meta from "../../components/boxs/post-meta.vue"
 import post from "../../components/boxs/post.vue"
 import loading from "../../components/cards/loading.vue"
 import appCard from "../../components/cards/post-app.vue"
+import Preloader from "../../components/cards/global-loader.vue"
 import ErrorBox from "../../containers/error/index.vue"
 
 Vue.component("sidebar", sidebar)
@@ -61,6 +63,7 @@ Vue.component("box-post", post)
 Vue.component("box-meta", meta)
 Vue.component("app-card", appCard)
 Vue.component("error-box", ErrorBox)
+Vue.component("preloader", Preloader)
 
 export default Vue.extend({
   name: "post-detail",
