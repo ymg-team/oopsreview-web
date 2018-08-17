@@ -42,6 +42,7 @@
     "restify": "^6.3.4",
     "restify-cookies": "^0.2.5",
     "string-manager": "^2.0.0-beta.0",
+    "tslib": "^1.9.3",
     "typescript": "^2.7.2",
     "vue": "^2.5.17",
     "vue-meta": "^1.5.2",

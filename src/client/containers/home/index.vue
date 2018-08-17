@@ -39,7 +39,13 @@ export default Vue.extend({
   metaInfo() {
     return {
       title: DefaultMeta.title,
-      meta: [{ vmid: "description", name: "description", content: DefaultMeta.description }]
+      meta: [
+        {
+          vmid: "description",
+          name: "description",
+          content: DefaultMeta.description
+        }
+      ]
     }
   },
 

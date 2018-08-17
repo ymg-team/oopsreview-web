@@ -51,14 +51,12 @@ import sidebar from "../../components/sidebar.vue"
 import comment from "../../components/boxs/comment.vue"
 import meta from "../../components/boxs/post-meta.vue"
 import post from "../../components/boxs/post.vue"
-import loading from "../../components/cards/loading.vue"
 import appCard from "../../components/cards/post-app.vue"
 import Preloader from "../../components/cards/global-loader.vue"
 import ErrorBox from "../../containers/error/index.vue"
 
 Vue.component("sidebar", sidebar)
 Vue.component("comment", comment)
-Vue.component("loading", loading)
 Vue.component("box-post", post)
 Vue.component("box-meta", meta)
 Vue.component("app-card", appCard)

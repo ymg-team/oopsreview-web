@@ -5,10 +5,12 @@
     // this enables stricter inference for data properties on `this`
     "strict": true,
     // if using webpack 2+ or rollup, to leverage tree shaking:
-    "module": "es2015",
+    // ref: https://github.com/Microsoft/TypeScript/issues/16675
+    "module": "esnext",
     "moduleResolution": "node",
     // allow untyped import
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "importHelpers": true
   },
   "files" : [
     "types/vue.d.ts"

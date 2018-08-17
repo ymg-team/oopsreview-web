@@ -6,17 +6,17 @@
   p.align-center.text-muted(v-if="data.status && data.status !== 200")
     | {{ data.message || 'Post not available' }}
 
-  loading(v-if="!data.status || data.loading")
+  preloader(v-if="!data.status || data.loading")
 
 </template>
 
 <script lang="ts">
 import Vue from "vue"
 import card from "../cards/post.vue"
-import loading from "../cards/loading.vue"
+import preloader from "../cards/global-loader.vue"
 
 Vue.component("post-card", card)
-Vue.component("loading", loading)
+Vue.component("preloader", preloader)
 
 export default Vue.extend({
   name: "box-post",

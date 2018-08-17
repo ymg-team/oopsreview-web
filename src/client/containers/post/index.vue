@@ -30,12 +30,21 @@ import { mapState } from "vuex"
 // components
 import headerTag from "../../components/cards/header-tag.vue"
 import post from "../../components/boxs/post.vue"
-import sidebar from "../../components/sidebar.vue"
-import buttonBig from "../../components/form/button-big.vue"
 
 Vue.component("header-tag", headerTag)
-Vue.component("sidebar", sidebar)
-Vue.component("button-big", buttonBig)
+
+// async components
+// ref: https://vuejsdevelopers.com/2017/07/03/vue-js-code-splitting-webpack/
+Vue.component("sidebar", resolve => {
+  import("../../components/sidebar.vue").then(AsyncComponent => {
+    resolve(AsyncComponent.default)
+  })
+})
+Vue.component("button-big", resolve => {
+  import("../../components/form/button-big.vue").then(AsyncComponent => {
+    resolve(AsyncComponent.default)
+  })
+})
 Vue.component("box-post", post)
 
 export default Vue.extend({
