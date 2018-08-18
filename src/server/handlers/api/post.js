@@ -4,6 +4,7 @@ import response from "../../modules/response"
 import { DB_DEFAULT_LIMIT, DB_DEFAULT_PAGE } from "../../const"
 import { queryToObj } from "string-manager"
 import { epochToFormat } from "../../modules/dateTime"
+import * as cookies from "../../modules/cookies"
 
 import postTransformer from "../../transformers/post"
 import userTransformer from "../../transformers/user"
@@ -173,6 +174,9 @@ export function create(req, res) {
 
   const { title, content, tags = "" } = req.body
   const { image } = req.files
+  const currentTime = Math.round(new Date().getTime() / 1000)
+
+  const user_id = cookies.get(req, res, "oopsreview_session")._id
 
   // normalize tags
   let postdata = {
@@ -182,15 +186,44 @@ export function create(req, res) {
     tags: tags.replace(/\s*,\s*/g, ","),
     comments: 0,
     views: 0,
-    created_at: "",
-    updated_at: "",
+    created_on: currentTime,
+    updated_on: currentTime,
     draft: false,
-    user_id: 0
+    user_id: ObjectID(user_id)
   }
 
   console.log(postdata)
 
-  res.send(201, response(201, "Post Created"))
+  mongo().then(db => {
+    // check is same title available
+    db.collection("posts")
+      .aggregate([
+        {
+          $match: { title }
+        },
+        {
+          // select from specific key: https://stackoverflow.com/a/45738049/2780875
+          $project: {
+            _id: 1
+          }
+        }
+      ])
+      .toArray((err, results) => {
+        if (err) {
+          console.log(err)
+          return res.send(500, response(500, "something wrong with mongo"))
+        }
+
+        if (results.length > 0) {
+          // post available
+          res.send(400, response(400, "Failed to post, duplicated title"))
+        } else {
+          // insert to mongodb
+          db.collection("posts").insert(postdata)
+          res.send(201, response(201, "Post Created"))
+        }
+      })
+  })
 }
 
 /**
