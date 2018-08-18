@@ -17,7 +17,10 @@
       )
 
       //- input post content
-      #post-form
+      quill-editor#post-form(
+        :content="formdata.content || ''"
+        :options="editorOptions"
+      )
 
       //- input post tags
       input-text(
@@ -47,6 +50,7 @@
 
 <script lang="ts">
 import Vue from "vue"
+import { quillEditor } from "vue-quill-editor"
 import header from "../../../components/cards/header-tag.vue"
 import text from "../../../components/form/input-text.vue"
 import button from "../../../components/form/button.vue"
@@ -57,19 +61,31 @@ import * as TYPES from "../../../vuex/types"
 import { mapState } from "vuex"
 import { router } from "../../../index"
 
+import "quill/dist/quill.core.css"
+import "quill/dist/quill.snow.css"
+import "quill/dist/quill.bubble.css"
+
+const editorOptions = {
+  modules: {
+    toolbar: [[{ header: [2, 3, 4] }], ["bold", "italic"], ["link", "image"]]
+  },
+  placeholder: "Write here...",
+  theme: "snow"
+}
+
 Vue.component("header-tag", header)
 Vue.component("input-text", text)
 Vue.component("oops-button", button)
+Vue.component("quill-editor", quillEditor)
 
 function loadQuillJS() {
-  injectScript("/quilljs/quill.min.js", null)
   injectCss("/quilljs/quill.core.css", null)
   injectCss("/quilljs/quill.snow.css", null)
 }
 
 const rules = {
-  title: 'required',
-  tags: 'required'
+  title: "required",
+  tags: "required"
 }
 
 export default Vue.extend({
@@ -78,6 +94,7 @@ export default Vue.extend({
   data() {
     return {
       editor: null,
+      editorOptions,
       title: this.$route.params.id ? "Update Post" : "New Post",
       formdata: <any>{},
       formvalidate: <any>{},
@@ -96,12 +113,12 @@ export default Vue.extend({
       this.formdata = Object.assign({}, nextformdata)
       this.formvalidate = validate
 
-      console.log('formvalidate', this.formvalidate)
+      console.log("formvalidate", this.formvalidate)
     },
 
     handleSubmit() {
       this.formvalidate = this.validation.validate(this.formdata)
-      if (this.formvalidate.isValid) {
+      if (this.formvalidate.is_valid) {
       }
     },
     handleDraft() {}
@@ -116,27 +133,7 @@ export default Vue.extend({
       this.$store.dispatch(TYPES.GET_POST, this.id)
     }
 
-    const formcontainer = document.getElementById("post-form")
-
     loadQuillJS()
-    // config quilljs
-    setTimeout(() => {
-      if (formcontainer) {
-        let { Quill }: any = window
-        const options = {
-          modules: {
-            toolbar: [
-              [{ header: [2, 3, 4] }],
-              ["bold", "italic"],
-              ["link", "image"]
-            ]
-          },
-          placeholder: "Write here...",
-          theme: "snow"
-        }
-        this.editor = new Quill("#post-form", options)
-      }
-    }, 2000)
   },
 
   watch: {
@@ -151,7 +148,8 @@ export default Vue.extend({
         // post available and set formdata
         this.formdata = {
           title: post.title,
-          tags: post.tags
+          tags: post.tags,
+          content: post.content
         }
       }
     },
@@ -162,7 +160,7 @@ export default Vue.extend({
       if (post.status === 200) {
         const { editor }: any = this
         // update html content based on api response
-        editor.setContents('<strong>mama mia</strong>')
+        editor.setContents("<strong>mama mia</strong>")
       }
     }
   },
@@ -181,4 +179,5 @@ export default Vue.extend({
   overflow-y: auto
   font-size: 1em
   color: $color-gray-medium
+  margin-bottom: 1em
 </style>
