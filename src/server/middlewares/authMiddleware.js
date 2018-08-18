@@ -1,6 +1,7 @@
 import { encString, decString } from "../modules/password"
 
 export default (req, res, next) => {
+  // console.log('auth session', req.cookies.oopsreview_session)
   if(req.path() !== '/super') {
     const cookies = req.cookies.oopsreview_session
     if(cookies) {

@@ -18,7 +18,7 @@
             :validation='formvalidate'
             :onchange='handleChangeText')
           alert(
-            v-if='formvalidate.isValid == false' 
+            v-if='formvalidate.is_valid == false' 
             type='error'
             message='form not valid'
             )
@@ -79,10 +79,13 @@ export default Vue.extend({
 
     handleSubmit() {
       this.formvalidate = this.validation.validate(this.formdata)
-      if (this.formvalidate.isValid) {
+      if (this.formvalidate.is_valid) {
         // router.push({ path: "/super/posts" })
         const { username, password } = this.formdata
+        console.log('login super page...')
         this.$store.dispatch(TYPES.LOGIN, { email: username, password })
+      }else {
+        console.log('form not valid', this.formvalidate)
       }
     }
   },

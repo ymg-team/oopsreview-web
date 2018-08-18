@@ -3,6 +3,7 @@ import mongo from "../../modules/mongo"
 import response from "../../modules/response"
 import { DB_DEFAULT_LIMIT, DB_DEFAULT_PAGE } from "../../const"
 import { queryToObj } from "string-manager"
+import { epochToFormat } from "../../modules/dateTime"
 
 import postTransformer from "../../transformers/post"
 import userTransformer from "../../transformers/user"
@@ -73,11 +74,11 @@ export function list(req, res) {
   }
 
   // filter / search by keyword
-  if(keyword) {
+  if (keyword) {
     // ref: https://stackoverflow.com/a/2712896/2780875
     const re = new RegExp(keyword, "i")
     aggregate.push({
-      $match: { title: re}
+      $match: { title: re }
     })
   }
 
@@ -87,7 +88,6 @@ export function list(req, res) {
       .skip(parseInt(page) || 0)
       .limit(parseInt(limit) || DB_DEFAULT_LIMIT)
       .toArray((err, result) => {
-
         // error from database
         if (err) {
           console.log(err)
@@ -171,23 +171,78 @@ export function detail(req, res) {
 export function create(req, res) {
   // get all post data
 
-  const { title, content, tags = '' } = req.body
+  const { title, content, tags = "" } = req.body
   const { image } = req.files
 
   // normalize tags
   let postdata = {
-    title, 
+    title,
     content,
     // ref: https://stackoverflow.com/a/39704153/2780875
     tags: tags.replace(/\s*,\s*/g, ","),
     comments: 0,
     views: 0,
-    created_at: '',
-    updated_at: '',
+    created_at: "",
+    updated_at: "",
+    draft: false,
     user_id: 0
   }
 
   console.log(postdata)
 
-  res.send(201, response(201, "Posted"))
+  res.send(201, response(201, "Post Created"))
+}
+
+/**
+ * @description function to update post
+ * @param {Object} req.body
+ * @param {Object} req.files
+ */
+export function update(req, res) {
+  const { title, content, tags } = req.body
+  const { image } = req.files
+  const currentTime = Math.round(new Date().getTime() / 1000)
+  const _id = ObjectID(req.params.id)
+
+  const postdata = {
+    title,
+    content,
+    tags,
+    content,
+    updated_on: currentTime
+  }
+
+  // console.log("postdata update", postdata)
+
+  mongo().then(db => {
+    // is post available
+    db.collection("posts")
+      .aggregate([
+        {
+          $match: { _id }
+        },
+        {
+          // select from specific key: https://stackoverflow.com/a/45738049/2780875
+          $project: {
+            _id: 1
+          }
+        }
+      ])
+      .toArray((err, result) => {
+        if (err) {
+          console.log(err)
+          return res.send(500, response(500, "something wrong with mongo"))
+        }
+
+        if (result.length > 0) {
+          // update data on mongo
+          db.collection("posts").update({ _id }, { $set: postdata })
+
+          res.send(201, response(201, "Post Updated"))
+        } else {
+          // post not available
+          res.send(204, response(204, "Post not found"))
+        }
+      })
+  })
 }
