@@ -77,16 +77,42 @@ const actions = {
         })
       }
     )
+  },
+
+  // create / update post
+  [types.SUBMIT_POST]: ({ commit }: any, params: object = {}) => {
+    commit(types.REQUEST_SUBMIT_POST, {})
+    const { id }: any = params
+    let endpoint = id
+      ? `/api/post/${id}/update/5aa4ac2b830a0aef88acdb5c`
+      : `/api/post/create/5aa4ac2b830a0aef88acdb5c`
+    let method = id ? 'put' : 'post'
+    request(method, endpoint, params).then(response => {
+      commit(types.GET_POST, {
+        filter: 'response',
+        response
+      })
+    })
   }
 }
 
 const mutations = {
+  // on request submit post
+  [types.REQUEST_SUBMIT_POST]: (state: State) => {
+    let { detail } = state
+    detail.response = {
+      loading: true
+    }
+
+    state.detail = { ...detail }
+  },
+
   // on receive tag
   [types.GET_TAG]: (state: State = initialState, { filter, response }) => {
     let { tags } = state
     tags[filter] = response.data
 
-    state.tags = Object.assign({}, tags)
+    state.tags = { ...tags }
   },
 
   // on receive post detail

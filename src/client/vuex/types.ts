@@ -8,6 +8,10 @@ export const REQUEST_POSTS = 'REQUEST_POSTS'
 export const GET_POSTS = 'GET_POSTS'
 export const GET_MORE_POSTS = 'GET_MORE_POSTS'
 
+// type to handle request create post / update post
+export const REQUEST_SUBMIT_POST = 'SUBMIT_POST'
+export const SUBMIT_POST = 'SUBMIT_POST'
+
 // vuex tag
 export const GET_TAG = 'GET_TAG'
 

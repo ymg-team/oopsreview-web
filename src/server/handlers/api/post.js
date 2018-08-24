@@ -22,7 +22,8 @@ export function list(req, res) {
     lastid,
     lastcreatedon,
     tag,
-    keyword
+    keyword,
+    draft
   } = req.getQuery() ? queryToObj(req.getQuery()) : {}
 
   let aggregate = [
@@ -47,6 +48,13 @@ export function list(req, res) {
   if (tag) {
     aggregate.push({
       $match: { tags: { $regex: ".*" + tag + ".*" } }
+    })
+  }
+
+  // filter post by draft
+  if (draft) {
+    aggregate.push({
+      $match: { draft: draft == 'true' || null }
     })
   }
 
@@ -232,8 +240,8 @@ export function create(req, res) {
  * @param {Object} req.files
  */
 export function update(req, res) {
-  const { title, content, tags } = req.body
-  const { image } = req.files
+  const { title, content, tags, draft = false } = req.body
+  const { image } = req.files || {}
   const currentTime = Math.round(new Date().getTime() / 1000)
   const _id = ObjectID(req.params.id)
 
@@ -241,7 +249,7 @@ export function update(req, res) {
     title,
     content,
     tags,
-    content,
+    draft,
     updated_on: currentTime
   }
 

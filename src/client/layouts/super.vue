@@ -2,9 +2,9 @@
 div
   top-navbar
   .grid 
-    .col-2_md-12
+    .col-2_sm-12
       super-sidebar
-    .col-10_md-12.bg-white
+    .col-10_sm-12.bg-white
       router-view
   bottom-navbar
   toast
