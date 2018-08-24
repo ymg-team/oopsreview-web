@@ -4,7 +4,7 @@
     :class='button_type'
     v-on:click='onclick'
     type='button') 
-    | {{ value }}
+    | {{ loading ? 'loading...' : value }}
 </template>
 
 <script lang="ts">

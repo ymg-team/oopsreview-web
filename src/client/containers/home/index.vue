@@ -50,10 +50,11 @@ export default Vue.extend({
   },
 
   created() {
-    this.$store.dispatch(TYPES.GET_POSTS, { filter: "latest", limit: 8 })
+    this.$store.dispatch(TYPES.GET_POSTS, { filter: "latest", limit: 8, draft: false })
     this.$store.dispatch(TYPES.GET_POSTS, {
       filter: "featured",
       featured: true,
+      draft: false,
       limit: 8
     })
   },

@@ -1,56 +1,63 @@
 <template lang='pug'>
-  .super-posts-list
-    header-tag(
-      :title='title'
-      subtitle='Just remember to Oopsreview vision and mission'
-    )
-    form(method='post' target='javascript:;' style='padding:1em 0')
-      //- input post title
-      input-text(
-        name='title'
-        label="Title"
-        description="Please fill with post title which attracts users to read."
-        type='text'
-        :data='formdata'
-        :validation='formvalidate'
-        :onchange='handleChangeText'
+  .super-posts-list.grid
+    .col-8_md-10_sm-12
+      header-tag(
+        :title='title'
+        subtitle='Just remember to Oopsreview vision and mission'
       )
-
-      //- input post content
-      quill-editor#post-form(
-        :content="formdata.content || ''"
-        :options="editorOptions"
-      )
-
-      //- input post tags
-      input-text(
-        name='tags'
-        label="Tags"
-        description="Tags are used for group posts based on content"
-        placeholder= ""
-        type='text'
-        :data='formdata'
-        :validation='formvalidate'
-        :onchange='handleChangeText'
-      )
-
-      //- buttons to submit
-      div(style='padding:1em 0')
-        oops-button(
-          :onclick='handleSubmit'
-          type='submit'
-          value='Publish'
+      form(method='post' target='javascript:;' style='padding:1em 0')
+        //- input post title
+        input-text(
+          name='title'
+          label="Title"
+          description="Please fill with post title which attracts users to read."
+          type='text'
+          :data='formdata'
+          :validation='formvalidate'
+          :onchange='handleChangeText'
         )
-        oops-button(
-          :onclick='handleDraft'
-          type='submit'
-          value='Save to Draft'
+
+        //- input post content
+        quill-editor#post-form(
+          :content="formdata.content || ''"
+          :options="editorOptions"
+          @change="handleChangeQuill($event)"
         )
+
+        //- input post tags
+        input-text(
+          name='tags'
+          label="Tags"
+          description="Tags are used for group posts based on content"
+          placeholder= ""
+          type='text'
+          :data='formdata'
+          :validation='formvalidate'
+          :onchange='handleChangeText'
+        )
+
+        //- buttons to submit
+        div(style='padding:1em 0')
+          oops-button(
+            :loading='loading'
+            :onclick='handleSubmit'
+            type='submit'
+            :value='id ? "Publish this Post" : "Update and publish"'
+            style='margin-right:10px'
+          )
+
+          //- only show if form not loading state
+          oops-button(
+            v-if="!loading"
+            :onclick='() => handleSubmit(true)'
+            type='submit'
+            value='Save to Draft'
+          )
 </template>
 
 <script lang="ts">
 import Vue from "vue"
-import { quillEditor } from "vue-quill-editor"
+import VueQuillEditor, { quillEditor } from "vue-quill-editor"
 import header from "../../../components/cards/header-tag.vue"
 import text from "../../../components/form/input-text.vue"
 import button from "../../../components/form/button.vue"
@@ -92,10 +99,13 @@ export default Vue.extend({
   name: "super-posts-form",
 
   data() {
+    const { id }: any = this
+
     return {
-      editor: null,
       editorOptions,
-      title: this.$route.params.id ? "Update Post" : "New Post",
+      loading: true,
+      editorHtml: "",
+      title: id ? "Update Post" : "New Post",
       formdata: <any>{},
       formvalidate: <any>{},
       validation: new validation(rules)
@@ -116,11 +126,27 @@ export default Vue.extend({
       console.log("formvalidate", this.formvalidate)
     },
 
-    handleSubmit() {
+    handleChangeQuill({ quill, html, text }) {
+      this.editorHtml = html
+    },
+
+    handleSubmit(draft=false) {
+
       this.formvalidate = this.validation.validate(this.formdata)
       if (this.formvalidate.is_valid) {
+        console.log("publishing post...")
+        const params: any = {
+          title: this.formdata.title,
+          content: this.editorHtml,
+          tags: this.formdata.tags,
+          draft
+        }
+        if (this.id) params.id = this.id
+        console.log("params to submit", params)
+        this.$store.dispatch(TYPES.SUBMIT_POST, params)
       }
     },
+
     handleDraft() {}
   },
 
@@ -139,28 +165,36 @@ export default Vue.extend({
   watch: {
     ["post.detail"]() {
       console.log("get postdata from store...")
-      const post = this.post.detail[this.id]
-      if (post.status !== 200) {
-        // give alert and redirect to post list
-        toast("post not available", "error")
-        router.push({ path: "/super/posts" })
-      } else {
-        // post available and set formdata
-        this.formdata = {
-          title: post.title,
-          tags: post.tags,
-          content: post.content
-        }
-      }
-    },
-
-    editor() {
-      // initial quilljs editor
       const post = this.post.detail[this.id] || {}
-      if (post.status === 200) {
-        const { editor }: any = this
-        // update html content based on api response
-        editor.setContents("<strong>mama mia</strong>")
+      const response = this.post.detail.response || {}
+
+      console.log("response", response)
+
+      // button submit is read only if submit waiting response or response success
+      if (response.loading || response.status === 201) {
+        if(response.status === 201) {
+          // success to create / update post
+          toast("Post submited", "success")
+          setTimeout(() => {
+            location.href = "/super/posts"
+          },1500)
+        }
+        this.loading = true
+      } else {
+        if (post.status !== 200) {
+          // give alert and redirect to post list
+          toast("post not available", "error")
+          router.push({ path: "/super/posts" })
+        } else {
+          // post available and set formdata
+          this.formdata = {
+            title: post.title,
+            tags: post.tags,
+            content: post.content
+          }
+          this.editorHtml = post.content
+          this.loading = false
+        }
       }
     }
   },

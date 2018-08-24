@@ -191,7 +191,7 @@ export default Vue.extend({
 
     generateParams() {
       const { q } = this.$route.query
-      let params: any = { filter: this.filter }
+      let params: any = { filter: this.filter, draft: false }
       if (this.tag_name) params.tag = this.tag_name
       if (this.username) params.username = this.username
       if (q) params.keyword = q

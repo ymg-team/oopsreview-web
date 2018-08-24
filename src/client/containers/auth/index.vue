@@ -65,13 +65,14 @@ export default Vue.extend({
     handleChangeText(e: any) {
       const { name, value } = e.target
 
-      if(e.keyCode === 13) {
+      if (e.keyCode === 13) {
         return this.handleSubmit()
       }
 
       let nextformdata: any = this.formdata
       nextformdata[name] = value
       const validate = this.validation.validate(this.formdata)
+      console.log('validate', validate)
 
       this.formdata = Object.assign({}, nextformdata)
       this.formvalidate = validate
@@ -82,10 +83,10 @@ export default Vue.extend({
       if (this.formvalidate.is_valid) {
         // router.push({ path: "/super/posts" })
         const { username, password } = this.formdata
-        console.log('login super page...')
+        console.log("login super page...")
         this.$store.dispatch(TYPES.LOGIN, { email: username, password })
-      }else {
-        console.log('form not valid', this.formvalidate)
+      } else {
+        console.log("form not valid", this.formvalidate)
       }
     }
   },
@@ -103,10 +104,7 @@ export default Vue.extend({
             router.push({ path: "/super/posts" })
           }, 1000)
         } else {
-          toast(
-            "username and password not match, please try again",
-            "error"
-          )
+          toast("username and password not match, please try again", "error")
         }
       }
     }
