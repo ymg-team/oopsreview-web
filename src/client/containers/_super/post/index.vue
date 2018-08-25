@@ -11,6 +11,7 @@
     //- big button to load more post
     big-button(
       v-if='post.list[filter] && post.list[filter].status && post.list[filter].status === 200' 
+      :loading='post.list[filter].loading'
       :onclick='() => morePosts()'
       type="blue" 
       text="more posts")

@@ -42,7 +42,7 @@
             :loading='loading'
             :onclick='handleSubmit'
             type='submit'
-            :value='id ? "Publish this Post" : "Update and publish"'
+            :value='id ? "Update and publish" : "Publish this Post"'
             style='margin-right:10px'
           )
 
@@ -157,6 +157,8 @@ export default Vue.extend({
     // this.id defined, this page is edit post
     if (typeof this.id !== "undefined") {
       this.$store.dispatch(TYPES.GET_POST, this.id)
+    } else {
+      this.loading = false
     }
 
     loadQuillJS()

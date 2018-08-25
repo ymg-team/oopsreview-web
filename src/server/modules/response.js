@@ -6,6 +6,7 @@ export default (status = 500, message = 'something wrong', data = {}) => {
   switch(status) {
     case 200 :
       response.status = status
+      response.message = message
       break
 
     default :
