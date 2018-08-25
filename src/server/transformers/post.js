@@ -23,7 +23,7 @@ export default (n) => {
       comments: n.comments || 0,
       tags: n.tags ? n.tags.split(',') : [],
       app: n.app && n.app.length > 0 ? n.app[0] : {},
-      draft: n.draft,
+      draft: n.draft == 'true',
       image: {
         original: n.image || DEFAULT_THUMB,
         600: n.image ? generateCustomUrl(n.image, 'w_600,c_scale') : generateCustomUrl(DEFAULT_THUMB, 'w_600,c_scale'),

@@ -11,9 +11,10 @@ export default Vue.extend({
 </script>
 
 <style lang="sass" scoped>
+  @import "../../design/sass/color"
   .label 
     padding: 2px 4px
-    background: #b1b1b1
+    background: $color-gray-soft
     border-radius: 4px
     color: #FFF
 </style>

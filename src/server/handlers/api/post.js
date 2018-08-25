@@ -1,4 +1,4 @@
-import { ObjectID } from "mongodb"
+import { ObjectId } from "mongodb"
 import mongo from "../../modules/mongo"
 import response from "../../modules/response"
 import { DB_DEFAULT_LIMIT, DB_DEFAULT_PAGE } from "../../const"
@@ -8,6 +8,63 @@ import * as cookies from "../../modules/cookies"
 
 import postTransformer from "../../transformers/post"
 import userTransformer from "../../transformers/user"
+
+/**
+ * @description function to select post by _id
+ * @param {number} req.params.id id of post
+ */
+export function detail(req, res) {
+  const { id } = req.params || {}
+  if (id.length != 24) return res.send(200, response(204, "post not found"))
+
+  mongo().then(db => {
+    db.collection("posts")
+      .aggregate([
+        {
+          $match: { _id: ObjectId(id) }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "user_id",
+            foreignField: "_id",
+            as: "author"
+          }
+        },
+        {
+          $lookup: {
+            from: "apps",
+            localField: "app_id",
+            foreignField: "_id",
+            as: "app"
+          }
+        }
+      ])
+      .toArray((err, result) => {
+        // error from database
+        if (err) {
+          console.log(err)
+          return res.send(500, response(500, "something wrong with mongo"))
+        }
+
+        if (result.length < 1)
+          return res.send(200, response(204, "post not found"))
+
+        // transform result
+        const author = userTransformer(result[0].author[0])
+        result = postTransformer(result[0])
+        result.author = author
+
+        // update: increment views
+        db.collection("posts").update(
+          { _id: ObjectId(result._id) },
+          { $set: { views: result.views + 1 } }
+        )
+
+        res.send(200, response(200, "success", result))
+      })
+  })
+}
 
 /**
  * @description function to select post list by parameters
@@ -52,9 +109,9 @@ export function list(req, res) {
   }
 
   // filter post by draft
-  if (draft) {
+  if (typeof draft != "undefined") {
     aggregate.push({
-      $match: { draft: draft == 'true' || null }
+      $match: { draft: draft == "true" }
     })
   }
 
@@ -120,87 +177,32 @@ export function list(req, res) {
   })
 }
 
-/**
- * @description function to select post by _id
- * @param {number} req.params.id id of post
- */
-export function detail(req, res) {
-  const { id } = req.params
-  if (id.length != 24) return res.send(200, response(204, "post not found"))
-
-  mongo().then(db => {
-    db.collection("posts")
-      .aggregate([
-        {
-          $match: { _id: ObjectID(id) }
-        },
-        {
-          $lookup: {
-            from: "users",
-            localField: "user_id",
-            foreignField: "_id",
-            as: "author"
-          }
-        },
-        {
-          $lookup: {
-            from: "apps",
-            localField: "app_id",
-            foreignField: "_id",
-            as: "app"
-          }
-        }
-      ])
-      .toArray((err, result) => {
-        // error from database
-        if (err) {
-          console.log(err)
-          return res.send(500, response(500, "something wrong with mongo"))
-        }
-
-        if (result.length < 0)
-          return res.send(200, response(204, "post not found"))
-
-        // transform result
-        const author = userTransformer(result[0].author[0])
-        result = postTransformer(result[0])
-        result.author = author
-
-        // update: increment views
-        db.collection("posts").update(
-          { _id: ObjectID(result._id) },
-          { $set: { views: result.views + 1 } }
-        )
-
-        res.send(200, response(200, "success", result))
-      })
-  })
-}
-
 export function create(req, res) {
   // get all post data
 
-  const { title, content, tags = "" } = req.body
+  const { title, content, tags = "", draft = false } = req.body
   const { image } = req.files
   const currentTime = Math.round(new Date().getTime() / 1000)
 
   const user_id = cookies.get(req, res, "oopsreview_session")._id
+  // just dummy image for testing
+  const dummy_image =
+    "https://res.cloudinary.com/dhjkktmal/image/upload/v1535163093/oopsreview/2018/default_post_image.png"
 
   // normalize tags
   let postdata = {
     title,
     content,
+    image: dummy_image,
     // ref: https://stackoverflow.com/a/39704153/2780875
     tags: tags.replace(/\s*,\s*/g, ","),
     comments: 0,
     views: 0,
     created_on: currentTime,
     updated_on: currentTime,
-    draft: false,
-    user_id: ObjectID(user_id)
+    draft,
+    user_id: ObjectId(user_id)
   }
-
-  console.log(postdata)
 
   mongo().then(db => {
     // check is same title available
@@ -236,14 +238,14 @@ export function create(req, res) {
 
 /**
  * @description function to update post
- * @param {Object} req.body
- * @param {Object} req.files
+ * @param {object} req.body
+ * @param {object} req.files
  */
 export function update(req, res) {
   const { title, content, tags, draft = false } = req.body
   const { image } = req.files || {}
   const currentTime = Math.round(new Date().getTime() / 1000)
-  const _id = ObjectID(req.params.id)
+  const _id = ObjectId(req.params.id)
 
   const postdata = {
     title,
@@ -252,8 +254,6 @@ export function update(req, res) {
     draft,
     updated_on: currentTime
   }
-
-  // console.log("postdata update", postdata)
 
   mongo().then(db => {
     // is post available
@@ -285,5 +285,21 @@ export function update(req, res) {
           res.send(204, response(204, "Post not found"))
         }
       })
+  })
+}
+
+/**
+ * @description function to delete post
+ * @param {object} req.params
+ * @param {number} req.params.id
+ */
+export function deletePost(req, res) {
+  const { id } = req.params
+
+  // mongodb query execution
+  mongo().then(db => {
+    db.collection("post").remove({ _id: id })
+    // api response
+    res.send(200, response(200, "Post deleted"))
   })
 }

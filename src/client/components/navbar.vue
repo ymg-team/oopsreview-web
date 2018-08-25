@@ -24,7 +24,7 @@
 import Vue from 'vue'
 import { router } from '../index'
 
-const popular_tags = ['Android', 'iOS', 'Web', 'Windows Space', 'MacOS', 'Linux', 'Games', 'Developer']
+const popular_tags = ['Android', 'iOS', 'Web', 'Windows', 'MacOS', 'Linux', 'Games', 'Developer']
 
 export default Vue.extend({
   name: 'navbar',
