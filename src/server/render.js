@@ -28,6 +28,17 @@ const html = `<!DOCTYPE html>
   </head>
   <body>
       <div id="app">oopsreview rendering...</div>
+      <script>
+        //global inline script
+        document.addEventListener('click', function(e){
+          // if(e.target.className === 'icono-caretDown') {}
+          const dropdownEl = document.getElementsByClassName('dropdown');
+          for(let n=0;n<dropdownEl.length;n++){
+            console.log(dropdownEl[n]);
+            dropdownEl[n].classList.remove('show')
+          }
+        })
+      </script>
       ${getScript()}
   </body>
 </html>`
@@ -38,10 +49,12 @@ function getScript() {
     <script src="/build/${
       NODE_ENV == "production" ? webpackAssets.vendor.js : "vendor.js"
     }"></script>
+    
     <script src="/build/${
       NODE_ENV == "production" ? webpackAssets.app.js : "app.js"
     }"></script>
-    ${
+    
+${
       NODE_ENV === "production"
         ? `
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87936512-1"></script>

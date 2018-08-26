@@ -1,9 +1,9 @@
 <template lang="pug">
-  .dropdown
+  .dropdown(:class="show ? 'show' : ''")
     button(type="javascript:;" v-on:click="() => toggleDropdown()")
       i(class="icono-caretDown")
-    div.dropdown-content(:class="show ? 'show' : ''")
-      a.dropdown(v-for="(item, key) in items" :href="item.link || 'javascript:;'" :key="key" ) {{ item.text }}
+    div.dropdown-content
+      a(v-for="(item, key) in items" :href="item.link || 'javascript:;'" :key="key" ) {{ item.text }}
 </template>
 
 <script lang="ts">
@@ -38,7 +38,12 @@ export default Vue.extend({
   .dropdown 
     float: right 
     position: relative 
-    display: inline-block 
+    display: inline-block
+
+    &.show
+      .dropdown-content
+        opacity: 1
+        height: auto
 
     button 
       background: transparent
@@ -50,10 +55,6 @@ export default Vue.extend({
         color: gray
 
     .dropdown-content
-      &.show 
-        opacity: 1 
-        height: auto
-
       opacity: 0
       height: 0
       position: absolute
