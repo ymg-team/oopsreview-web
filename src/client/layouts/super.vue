@@ -30,4 +30,8 @@ export default Vue.extend({
 
 <style lang='sass'>
   @import '../../design/sass/base'
+  .disabled
+    opacity: 0.5
+    pointer-events: none
+    filter: blur(2px)
 </style>

@@ -1,5 +1,5 @@
 <template lang='pug'>
-  .row-post
+  .row-post(:class="data.is_deleted ? 'disabled' : ''")
     router-link(:to='"/super/post/" + data._id') 
       h2 {{ data.title }} 
         label-component(v-if="data.draft" text="draft" custom_style="font-size: 15px;margin-top: 5px;position: absolute;margin-left: 5px;")
@@ -10,16 +10,14 @@
       | Last edited {{ epochToRelative(data.updated_on || 0) }}
     
     .btn-action
-      btn-dropdown(:items=[
-        {link: "'/posts'+data.nospace_title+'/'+data._id", target: "blank", text: "Preview"},
-        {link: "javascript:;", text: "Delete"}
-      ])
+      btn-dropdown(:items="dropdown_item")
 </template>
 
 <script lang='ts'>
 import Vue from "vue"
 import { truncate, stripTags, toCamelCase } from "string-manager"
 import { epochToRelative } from "../../modules/datetime"
+import { DELETE_POST } from "../../vuex/types"
 
 // components
 import label from "../label.vue"
@@ -29,6 +27,23 @@ Vue.component("label-component", label)
 Vue.component("btn-dropdown", BtnDropdown)
 
 export default Vue.extend({
+  data() {
+    const { handleDelete }: any = this
+    return {
+      dropdown_item: [
+        {
+          link: `/post/${this.data.nospace_title}-${this.data._id}`,
+          type: "blank",
+          text: "Preview"
+        },
+        {
+          text: "Delete",
+          type: "delete",
+          action: () => handleDelete(this.data._id)
+        }
+      ]
+    }
+  },
   props: ["data"],
   methods: {
     // truncate(str, int=0, str='') {
@@ -42,6 +57,10 @@ export default Vue.extend({
     },
     epochToRelative(epochtime) {
       return epochToRelative(epochtime)
+    },
+    handleDelete(id) {
+      console.log("delete post with id", id)
+      this.$store.dispatch(DELETE_POST, id)
     }
   }
 })

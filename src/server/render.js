@@ -34,7 +34,6 @@ const html = `<!DOCTYPE html>
           // if(e.target.className === 'icono-caretDown') {}
           const dropdownEl = document.getElementsByClassName('dropdown');
           for(let n=0;n<dropdownEl.length;n++){
-            console.log(dropdownEl[n]);
             dropdownEl[n].classList.remove('show')
           }
         })

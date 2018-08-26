@@ -65,9 +65,17 @@ export default Vue.extend({
     }
   },
 
-  created() {
+   watch: {
+    ["post.list"]() {
+      console.log(this.post.list)
+    }
+  },
+
+  mounted() {
     let params = this.generateParams()
-    this.$store.dispatch(TYPES.GET_POSTS, params)
+    const posts = this.post[this.filter] || {}
+    if (!posts.status)
+      this.$store.dispatch(TYPES.GET_POSTS, params)
   },
 
   computed: {

@@ -1,5 +1,6 @@
 import * as types from "../../vuex/types"
 import { objToQuery } from "string-manager"
+import { deleteListById } from "../../vuex/utils/normalizers"
 
 import request from "../../vuex/utils/api"
 // import { Context as ContextInterface } from "../../vuex/interfaces"
@@ -27,6 +28,18 @@ const initialState = {
 const getters = {}
 
 const actions = {
+  // delete post
+  [types.DELETE_POST]: ({ commit }: any, post_id: string) => {
+    commit(types.DELETE_POST, { post_id })
+
+    // request to api
+    // request("post", `/api/posts/${post_id}/delete/dW5kZWZpbmVkMTUyMTM0NDA4ODM0Mw`).then(
+    //   response => {
+
+    //   }
+    // )
+  },
+
   // request to api post list
   [types.GET_POSTS]: ({ commit }: any, params: ParamsGetPost) => {
     commit(types.REQUEST_POSTS, { filter: params.filter })
@@ -86,10 +99,10 @@ const actions = {
     let endpoint = id
       ? `/api/post/${id}/update/5aa4ac2b830a0aef88acdb5c`
       : `/api/post/create/5aa4ac2b830a0aef88acdb5c`
-    let method = id ? 'put' : 'post'
+    let method = id ? "put" : "post"
     request(method, endpoint, params).then(response => {
       commit(types.GET_POST, {
-        filter: 'response',
+        filter: "response",
         response
       })
     })
@@ -97,6 +110,14 @@ const actions = {
 }
 
 const mutations = {
+  // on delete post by id
+  [types.DELETE_POST]: (state: State = initialState, payload) => {
+    let { list } = state
+    list = deleteListById(list, payload, payload.post_id)
+
+    state.list = { ...list }
+  },
+
   // on request submit post
   [types.REQUEST_SUBMIT_POST]: (state: State) => {
     let { detail } = state
@@ -146,7 +167,7 @@ const mutations = {
     }
     list[filter].loading = false
 
-    state.list = Object.assign({}, list)
+    state.list = { ...list }
   },
 
   // receive response loadmore post list

@@ -3,11 +3,17 @@
     button(type="javascript:;" v-on:click="() => toggleDropdown()")
       i(class="icono-caretDown")
     div.dropdown-content
-      a(v-for="(item, key) in items" :href="item.link || 'javascript:;'" :key="key" ) {{ item.text }}
+      span(v-for="(item, key) in items" :key="key")
+        a(v-if="item.type === 'blank'"  :href="item.link || 'javascript:;'" target="_blank" ) {{ item.text }}
+        BtnDelete(v-else-if="item.type === 'delete'" :action="item.action" :text="item.text")
+        router-link(v-else :to="item.link || 'javascript:;'" target="_blank" ) {{ item.text }}
 </template>
 
 <script lang="ts">
 import Vue from "vue"
+import BtnDelete from "./BtnDelete.vue"
+
+Vue.component('BtnDelete', BtnDelete)
 
 const propTypes = {
   items: {
@@ -15,6 +21,10 @@ const propTypes = {
     default: () => {
       return []
     }
+  },
+  type: {
+    type: String,
+    default: 'self'
   }
 }
 
