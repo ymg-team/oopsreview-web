@@ -5,6 +5,8 @@ import { DB_DEFAULT_LIMIT, DB_DEFAULT_PAGE } from "../../const"
 import { queryToObj } from "string-manager"
 import { epochToFormat } from "../../modules/dateTime"
 import * as cookies from "../../modules/cookies"
+import * as file from "../../modules/file"
+import * as cloudinary from "../../modules/cloudinary"
 
 import postTransformer from "../../transformers/post"
 import userTransformer from "../../transformers/user"
@@ -276,6 +278,10 @@ export function update(req, res) {
         }
 
         if (result.length > 0) {
+          // if set image, upload to cloudinary
+          if (image) {
+          }
+
           // update data on mongo
           db.collection("posts").update({ _id }, { $set: postdata })
 
@@ -302,4 +308,26 @@ export function deletePost(req, res) {
     // api response
     res.send(200, response(200, "Post deleted"))
   })
+}
+
+/**
+ * @description function to test upload to cloudinary
+ * @see https://cloudinary.com/documentation/node_image_upload
+ */
+export function testUploadCloudinary(req, res) {
+  const { image } = req.files
+
+  if (!image) {
+    res.send(400, { message: "bad request" })
+  } else {
+    // create new name
+    const filename = file.encName(image)
+    console.log(filename)
+
+    const sample_image =
+      "https://res.cloudinary.com/demo/image/upload/v1371282172/sample.jpg"
+
+    cloudinary.upload(image.path, `oopsreview/test/${filename}`)
+    res.send(201, { message: "file uploaded" })
+  }
 }

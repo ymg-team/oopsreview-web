@@ -29,9 +29,9 @@ export default Vue.extend({
     }
   },
 
-  mounted() {
-    console.log(this.$route.name)
-  },
+  // mounted() {
+  //   console.log(this.$route.name)
+  // },
 
   watch: {
     ["auth.response"]():any {
