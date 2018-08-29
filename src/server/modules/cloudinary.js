@@ -22,13 +22,14 @@ export function generateCustomUrl(url, arg) {
  * @param {object} file file object from input type file
  * @param {string} dir directory target
  */
-export function upload(file, target) {
+export function upload(file, target, callback) {
   cloudinary.v2.uploader.upload(
     file,
     { use_filename: true, public_id: target },
     (err, result) => {
       if (err) console.log("Cloudinary error", e)
       console.log("Cloudinary success", result)
+      callback(err, result)
     }
   )
 }

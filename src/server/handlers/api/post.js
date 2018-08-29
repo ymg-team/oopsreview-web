@@ -4,6 +4,7 @@ import response from "../../modules/response"
 import { DB_DEFAULT_LIMIT, DB_DEFAULT_PAGE } from "../../const"
 import { queryToObj } from "string-manager"
 import { epochToFormat } from "../../modules/dateTime"
+import * as post from "../../modules/post"
 import * as cookies from "../../modules/cookies"
 import * as file from "../../modules/file"
 import * as cloudinary from "../../modules/cloudinary"
@@ -183,58 +184,72 @@ export function create(req, res) {
   // get all post data
 
   const { title, content, tags = "", draft = false } = req.body
-  const { image } = req.files
+  const { image } = req.files || {}
   const currentTime = Math.round(new Date().getTime() / 1000)
-
   const user_id = cookies.get(req, res, "oopsreview_session")._id
-  // just dummy image for testing
-  const dummy_image =
-    "https://res.cloudinary.com/dhjkktmal/image/upload/v1535163093/oopsreview/2018/default_post_image.png"
 
-  // normalize tags
-  let postdata = {
-    title,
-    content,
-    image: dummy_image,
-    // ref: https://stackoverflow.com/a/39704153/2780875
-    tags: tags.replace(/\s*,\s*/g, ","),
-    comments: 0,
-    views: 0,
-    created_on: currentTime,
-    updated_on: currentTime,
-    draft,
-    user_id: ObjectId(user_id)
-  }
+  // not upload main image
+  if (!image)
+    return res.send(400, response(400, "Failed to post, image is required"))
 
-  mongo().then(db => {
-    // check is same title available
-    db.collection("posts")
-      .aggregate([
-        {
-          $match: { title }
-        },
-        {
-          // select from specific key: https://stackoverflow.com/a/45738049/2780875
-          $project: {
-            _id: 1
-          }
-        }
-      ])
-      .toArray((err, results) => {
-        if (err) {
-          console.log(err)
-          return res.send(500, response(500, "something wrong with mongo"))
-        }
+  // upload image
+  const filename = file.encName(image)
+  const upload_path = `oopsreview/${new Date().getFullYear()}/${filename}`
 
-        if (results.length > 0) {
-          // post available
-          res.send(400, response(400, "Failed to post, duplicated title"))
-        } else {
-          // insert to mongodb
-          db.collection("posts").insert(postdata)
-          res.send(201, response(201, "Post Created"))
-        }
+  cloudinary.upload(image.path, upload_path, (err, result) => {
+    if (err) {
+      console.log("cloudinary error", err)
+      res.send(
+        201,
+        response(201, "Terjadi Masalah Ketika Upload di Cloudinary")
+      )
+    } else {
+      // normalize tags
+      let postdata = {
+        title,
+        content,
+        image: result.secure_url,
+        // ref: https://stackoverflow.com/a/39704153/2780875
+        tags: tags.replace(/\s*,\s*/g, ","),
+        comments: 0,
+        views: 0,
+        created_on: currentTime,
+        updated_on: currentTime,
+        draft: Boolean(draft == "true" || draft == true),
+        user_id: ObjectId(user_id)
+      }
+
+      mongo().then(db => {
+        // check is same title available
+        db.collection("posts")
+          .aggregate([
+            {
+              $match: { title }
+            },
+            {
+              // select from specific key: https://stackoverflow.com/a/45738049/2780875
+              $project: {
+                _id: 1
+              }
+            }
+          ])
+          .toArray((err, results) => {
+            if (err) {
+              console.log(err)
+              return res.send(500, response(500, "something wrong with mongo"))
+            }
+
+            if (results.length > 0) {
+              // post available
+              res.send(400, response(400, "Failed to post, duplicated title"))
+            } else {
+              // insert to mongodb
+              db.collection("posts").insert(postdata)
+              res.send(201, response(201, "Post Created"))
+            }
+          })
       })
+    }
   })
 }
 
@@ -244,54 +259,26 @@ export function create(req, res) {
  * @param {object} req.files
  */
 export function update(req, res) {
-  const { title, content, tags, draft = false } = req.body
   const { image } = req.files || {}
-  const currentTime = Math.round(new Date().getTime() / 1000)
-  const _id = ObjectId(req.params.id)
-
-  const postdata = {
-    title,
-    content,
-    tags,
-    draft,
-    updated_on: currentTime
+  if (image) {
+    // upload image
+    const filename = file.encName(image)
+    const upload_path = `oopsreview/${new Date().getFullYear()}/${filename}`
+    cloudinary.upload(image.path, upload_path, (err, result) => {
+      if (err) {
+        console.log("cloudinary error", err)
+        res.send(
+          201,
+          response(201, "Terjadi Masalah Ketika Upload di Cloudinary")
+        )
+      } else {
+        req.body.image = result.secure_url
+        return post.updatePost(req, res)
+      }
+    })
+  } else {
+    return post.updatePost(req, res)
   }
-
-  mongo().then(db => {
-    // is post available
-    db.collection("posts")
-      .aggregate([
-        {
-          $match: { _id }
-        },
-        {
-          // select from specific key: https://stackoverflow.com/a/45738049/2780875
-          $project: {
-            _id: 1
-          }
-        }
-      ])
-      .toArray((err, result) => {
-        if (err) {
-          console.log(err)
-          return res.send(500, response(500, "something wrong with mongo"))
-        }
-
-        if (result.length > 0) {
-          // if set image, upload to cloudinary
-          if (image) {
-          }
-
-          // update data on mongo
-          db.collection("posts").update({ _id }, { $set: postdata })
-
-          res.send(201, response(201, "Post Updated"))
-        } else {
-          // post not available
-          res.send(204, response(204, "Post not found"))
-        }
-      })
-  })
 }
 
 /**
@@ -322,7 +309,6 @@ export function testUploadCloudinary(req, res) {
   } else {
     // create new name
     const filename = file.encName(image)
-    console.log(filename)
 
     const sample_image =
       "https://res.cloudinary.com/demo/image/upload/v1371282172/sample.jpg"
