@@ -14,14 +14,26 @@
           type='text'
           :data='formdata'
           :validation='formvalidate'
-          :onchange='handleChangeText'
+          :onchange='changeTextHandler'
+        )
+
+        //- input post image
+        input-file(
+          name='image'
+          label="Image"
+          description="Image size width 800px"
+          :preview=" id ? post.detail[id] && post.detail[id].status == 200 ? post.detail[id].image[600] : '' : ''"
+          :required="false"
+          :data='formdata'
+          :validation='formvalidate'
+          :onchange='changeFileHandler'
         )
 
         //- input post content
         quill-editor#post-form(
           :content="formdata.content || ''"
           :options="editorOptions"
-          @change="handleChangeQuill($event)"
+          @change="changeQuillHandler($event)"
         )
 
         //- input post tags
@@ -33,14 +45,14 @@
           type='text'
           :data='formdata'
           :validation='formvalidate'
-          :onchange='handleChangeText'
+          :onchange='changeTextHandler'
         )
 
         //- buttons to submit
         div(style='padding:1em 0')
           oops-button(
             :loading='loading'
-            :onclick='handleSubmit'
+            :onclick='submitHandler'
             type='submit'
             :value='id ? "Update and publish" : "Publish this Post"'
             style='margin-right:10px'
@@ -49,7 +61,7 @@
           //- only show if form not loading state
           oops-button(
             v-if="!loading"
-            :onclick='() => handleSubmit(true)'
+            :onclick='() => submitHandler(true)'
             type='submit'
             value='Save to Draft'
           )
@@ -59,7 +71,8 @@
 import Vue from "vue"
 import VueQuillEditor, { quillEditor } from "vue-quill-editor"
 import header from "../../../components/cards/header-tag.vue"
-import text from "../../../components/form/input-text.vue"
+import inputText from "../../../components/form/input-text.vue"
+import inputFile from "../../../components/form/input-file.vue"
 import button from "../../../components/form/button.vue"
 import toast from "../../../modules/toast"
 import { injectCss, injectScript } from "../../../modules/dom"
@@ -72,16 +85,9 @@ import "quill/dist/quill.core.css"
 import "quill/dist/quill.snow.css"
 import "quill/dist/quill.bubble.css"
 
-const editorOptions = {
-  modules: {
-    toolbar: [[{ header: [2, 3, 4] }], ["bold", "italic"], ["link", "image"]]
-  },
-  placeholder: "Write here...",
-  theme: "snow"
-}
-
 Vue.component("header-tag", header)
-Vue.component("input-text", text)
+Vue.component("input-text", inputText)
+Vue.component("input-file", inputFile)
 Vue.component("oops-button", button)
 Vue.component("quill-editor", quillEditor)
 
@@ -99,7 +105,20 @@ export default Vue.extend({
   name: "super-posts-form",
 
   data() {
-    const { id }: any = this
+    const { id, imageHandler }: any = this
+    const editorOptions = {
+      modules: {
+        toolbar: [
+          [{ header: [2, 3, 4] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["link", "image", "video"],
+          ["clean"]
+        ]
+      },
+      placeholder: "Write content here...",
+      theme: "snow"
+    }
 
     return {
       editorOptions,
@@ -113,7 +132,11 @@ export default Vue.extend({
   },
 
   methods: {
-    handleChangeText(e: any) {
+    imageHandler(image, callback) {
+      console.log("quill image handler", image)
+    },
+
+    changeTextHandler(e: any) {
       const { name, value } = e.target
 
       let nextformdata: any = this.formdata
@@ -122,32 +145,40 @@ export default Vue.extend({
 
       this.formdata = Object.assign({}, nextformdata)
       this.formvalidate = validate
-
-      console.log("formvalidate", this.formvalidate)
     },
 
-    handleChangeQuill({ quill, html, text }) {
+    changeFileHandler(e: any) {
+      const { name, files } = e.target
+
+      let nextformdata: any = this.formdata
+      nextformdata[name] = files[0]
+      const validate = this.validation.validate(this.formdata)
+
+      this.formdata = Object.assign({}, nextformdata)
+      this.formvalidate = validate
+    },
+
+    changeQuillHandler({ quill, html, text }) {
       this.editorHtml = html
     },
 
-    handleSubmit(draft=false) {
-
+    submitHandler(draft = false) {
       this.formvalidate = this.validation.validate(this.formdata)
+
       if (this.formvalidate.is_valid) {
         console.log("publishing post...")
-        const params: any = {
+        let params: any = {
           title: this.formdata.title,
           content: this.editorHtml,
           tags: this.formdata.tags,
           draft
         }
         if (this.id) params.id = this.id
+        if (this.formdata.image) params.image = this.formdata.image
         console.log("params to submit", params)
         this.$store.dispatch(TYPES.SUBMIT_POST, params)
       }
-    },
-
-    handleDraft() {}
+    }
   },
 
   props: ["id"],
@@ -174,12 +205,12 @@ export default Vue.extend({
 
       // button submit is read only if submit waiting response or response success
       if (response.loading || response.status === 201) {
-        if(response.status === 201) {
+        if (response.status === 201) {
           // success to create / update post
           toast("Post submited", "success")
           setTimeout(() => {
             location.href = "/super/posts"
-          },1500)
+          }, 1500)
         }
         this.loading = true
       } else {
