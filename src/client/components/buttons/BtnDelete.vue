@@ -8,7 +8,7 @@
 
   export default Vue.extend({
     name: "btn_delete",
-    props: ["action", "text"],
+    props: ["action", "text", "className"],
     methods: {
       handleClick() {
         swal("Are you sure you want to do this?", {

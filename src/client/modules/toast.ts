@@ -10,7 +10,7 @@ export default (text: string = '', status: string = 'success', fixed: boolean = 
     if(!fixed) {
       timeout = setTimeout(() => {
         toast.style.bottom = "-100px"
-      }, 2000)
+      }, 5000)
     }
   }
 }

@@ -90,6 +90,8 @@ export default Vue.extend({
   &.error 
     input 
       border: 1px solid $color-red-main
+  label 
+    cursor: pointer
   input
     padding: .5em
     font-size: 1.5em

@@ -2,6 +2,7 @@
   button.button(
     :disabled="loading"
     :class='button_type'
+    :style='customStyle'
     v-on:click='onclick'
     type='button') 
     | {{ loading ? 'loading...' : value }}
@@ -18,6 +19,10 @@ const props = {
   button_type: {
     type: String,
     default: 'blue'
+  },
+  customStyle: {
+    type: String,
+    default: ''
   },
   loading: {
     type: Boolean,
@@ -40,7 +45,7 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 @import '../../../design/sass/color'
 
 .button 
@@ -51,6 +56,11 @@ export default Vue.extend({
   &:disabled, &[disabled] 
     cursor: default
     background-color: $color-gray-soft !important
+  &.red
+    color: $color-white-main
+    background-color: $color-red-main
+    &:hover
+      background-color: $color-red-dark
   &.blue
     color: $color-white-main
     background-color: $color-blue-main

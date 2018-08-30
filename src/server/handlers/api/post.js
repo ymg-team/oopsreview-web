@@ -190,7 +190,7 @@ export function create(req, res) {
 
   // not upload main image
   if (!image)
-    return res.send(400, response(400, "Failed to post, image is required"))
+    return res.send(200, response(400, "Failed to post, image is required"))
 
   // upload image
   const filename = file.encName(image)

@@ -22,7 +22,7 @@
           name='image'
           label="Image"
           description="Image size width 800px"
-          :preview=" id ? post.detail[id] && post.detail[id].status == 200 ? post.detail[id].image[600] : '' : ''"
+          :preview=" id && post.detail[id] && post.detail[id].status == 200 ? post.detail[id].image[600] : ''"
           :required="false"
           :data='formdata'
           :validation='formvalidate'
@@ -63,6 +63,7 @@
             v-if="!loading"
             :onclick='() => submitHandler(true)'
             type='submit'
+            button_type='white'
             value='Save to Draft'
           )
 </template>
@@ -108,6 +109,9 @@ export default Vue.extend({
     const { id, imageHandler }: any = this
     const editorOptions = {
       modules: {
+        clipboard: {
+          matchVisual: false
+        },
         toolbar: [
           [{ header: [2, 3, 4] }],
           ["bold", "italic", "underline"],
@@ -132,6 +136,16 @@ export default Vue.extend({
   },
 
   methods: {
+
+    resetForm() {
+      this.loading = false 
+      this.editorHtml = ""
+      this.title = this.id ? "Update Post" : "New Post"
+      this.formdata = {} 
+      this.formvalidate = {}
+      this.validation = new validation(rules)
+    },
+
     imageHandler(image, callback) {
       console.log("quill image handler", image)
     },
@@ -195,24 +209,36 @@ export default Vue.extend({
     loadQuillJS()
   },
 
+  // unmount event
+  beforeDestroy() {
+    this.resetForm()
+  },
+
   watch: {
+    id() {
+      // move from edit form to create form
+      if(!this.id) this.resetForm()
+    },
     ["post.detail"]() {
       console.log("get postdata from store...")
       const post = this.post.detail[this.id] || {}
       const response = this.post.detail.response || {}
 
-      console.log("response", response)
-
       // button submit is read only if submit waiting response or response success
-      if (response.loading || response.status === 201) {
-        if (response.status === 201) {
-          // success to create / update post
-          toast("Post submited", "success")
-          setTimeout(() => {
-            location.href = "/super/posts"
-          }, 1500)
-        }
+      if (response.loading || response.status) {
         this.loading = true
+        if (typeof response.status !== "undefined") {
+          if (response.status === 201) {
+            // success to create / update post
+            toast("Post submited", "success")
+            setTimeout(() => {
+              location.href = "/super/posts"
+            }, 1500)
+          } else {
+            this.loading = false
+            toast(response.message, "error")
+          }
+        }
       } else {
         if (post.status !== 200) {
           // give alert and redirect to post list
@@ -239,12 +265,14 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 @import '../../../../design/sass/color'
 #post-form
-  height: 550px
-  overflow-y: auto
   font-size: 1em
   color: $color-gray-medium
   margin-bottom: 1em
+
+  // quill direct styling
+  .ql-editor
+    max-height: 500px !important
 </style>
