@@ -1,5 +1,5 @@
 <template lang="pug">
-  .comment
+  .comment#comment
     h2.title-menu Read Comments
     #disqus_thread 
 </template>
