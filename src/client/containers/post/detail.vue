@@ -15,7 +15,16 @@
 
           .grid 
             .col-12.post-detail-mainimage
+
+              //- if have video show iframe
+              .post-detail-video(v-if="post.detail[id].video") 
+                iframe(:src="post.detail[id].video")
+              //- end of iframe
+
+              //- main image
               img(:src="post.detail[id].image.original")
+              //- end of main image
+
             .col-8_md-12(data-push-left="off-2_md-0")
               article.post-detail-content
                 div(v-html="post.detail[id].content")
@@ -161,7 +170,19 @@ export default Vue.extend({
     text-align: center
     img 
       max-width: 100%
+  .post-detail-video
+    background: $color-black-main
+    margin-bottom: 50px
+    padding: 0
+    height: 500px
+    iframe 
+      border: none
+      margin: 0
+      height: 100% 
+      width: -webkit-fill-available
+      width: -moz-available
   article.post-detail-content 
+
     h2
       margin-top: 50px
       border-top: 1px solid gray

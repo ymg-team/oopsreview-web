@@ -1,7 +1,8 @@
 <template lang="pug">
   .col-12.card-post
     .thumb
-      router-link(:to="'/post/' + data.nospace_title + '-' + data._id")
+      router-link.link-thumb(:to="'/post/' + data.nospace_title + '-' + data._id")
+        BtnPlay(v-if="data.video")
         img(:src="data.image.small" :alt="data.title")
     .title
       router-link(:to="'/post/' + data.nospace_title + '-' + data._id")
@@ -19,7 +20,10 @@
 
 <script lang="ts">
 import Vue from "vue"
-import { epochToRelative } from '../../modules/datetime'
+import BtnPlay from "../buttons/BtnVideoPlay.vue"
+import { epochToRelative } from "../../modules/datetime"
+
+Vue.component('BtnPlay', BtnPlay)
 
 export default Vue.extend({
   props: ["data"],
@@ -28,7 +32,7 @@ export default Vue.extend({
     epochToRelative(epochtime) {
       return epochToRelative(epochtime)
     }
-  },
+  }
 })
 </script>
 
@@ -36,11 +40,14 @@ export default Vue.extend({
   @import '../../../design/sass/color'
 
   .card-post 
-    border-top: 1px solid $color-gray-soft 
+    border-top: 1px solid $color-gray-soft
     padding: 0 0 1em 0
     display: inline-flex
     padding-bottom: 0
     margin-bottom: 1em
+    a.link-thumb 
+      display:  block 
+      position: relative
     .thumb
       img 
         width: 200px
@@ -53,9 +60,9 @@ export default Vue.extend({
         font-weight: bold
         color: $color-black-medium
       .meta 
-          font-size: .8em
-          a 
-            font-size: 1em
-            color: $color-gray-medium
+        font-size: .8em
+        a 
+          font-size: 1em
           color: $color-gray-medium
+        color: $color-gray-medium
 </style>
