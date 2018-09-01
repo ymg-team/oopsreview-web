@@ -3,6 +3,7 @@
     .thumb
       router-link(:to="'/post/' + data.nospace_title + '-' + data._id")
         .thumb-image(:style="`background-image:url(${data.image[600]})`")
+          BtnPlay(v-if="data.video" size="big")
     .title
       router-link(:to="'/post/' + data.nospace_title + '-' + data._id")
         h2 {{ data.title }}
@@ -12,6 +13,7 @@
 
 <script lang="ts">
 import Vue from "vue"
+import BtnPlay from "../buttons/BtnVideoPlay.vue"
 
 export default Vue.extend({
   name: "card-post-small",
@@ -19,3 +21,8 @@ export default Vue.extend({
   props: ["data"]
 })
 </script>
+
+<style lang="sass">
+  .thumb-image 
+    position: relative
+</style>

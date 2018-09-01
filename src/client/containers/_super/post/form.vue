@@ -23,10 +23,20 @@
           label="Image"
           description="Image size width 800px"
           :preview=" id && post.detail[id] && post.detail[id].status == 200 ? post.detail[id].image[600] : ''"
-          :required="false"
           :data='formdata'
           :validation='formvalidate'
           :onchange='changeFileHandler'
+        )
+
+        //- input video embed url
+        input-text(
+          name='video'
+          label="Video Embed URL"
+          description="Sample from Youtube: https://www.youtube.com/embed/_KOzKQfiYHE"
+          type='text'
+          :data='formdata'
+          :validation='formvalidate'
+          :onchange='changeTextHandler'
         )
 
         //- input post content
@@ -35,14 +45,15 @@
           :options="editorOptions"
           @change="changeQuillHandler($event)"
         )
+        input(id="quill-upload-image" type="file" accept="image/*" style="display:none" @change="changelQuillImageHandler")
 
         //- input post tags
         input-text(
           name='tags'
+          type='text'
           label="Tags"
           description="Tags are used for group posts based on content"
           placeholder= ""
-          type='text'
           :data='formdata'
           :validation='formvalidate'
           :onchange='changeTextHandler'
@@ -70,7 +81,7 @@
 
 <script lang="ts">
 import Vue from "vue"
-import VueQuillEditor, { quillEditor } from "vue-quill-editor"
+import { quillEditor, Quill } from "vue-quill-editor"
 import header from "../../../components/cards/header-tag.vue"
 import inputText from "../../../components/form/input-text.vue"
 import inputFile from "../../../components/form/input-file.vue"
@@ -112,13 +123,24 @@ export default Vue.extend({
         clipboard: {
           matchVisual: false
         },
-        toolbar: [
-          [{ header: [2, 3, 4] }],
-          ["bold", "italic", "underline"],
-          [{ list: "ordered" }, { list: "bullet" }],
-          ["link", "image", "video"],
-          ["clean"]
-        ]
+        // ref : https://stackoverflow.com/a/44152344/2780875
+        toolbar: {
+          handlers: {
+            image() {
+              const ImageUpload: any = document.getElementById(
+                "quill-upload-image"
+              )
+              ImageUpload.click()
+            }
+          },
+          container: [
+            [{ header: [2, 3, 4] }],
+            ["bold", "italic", "underline"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["link", "image", "video"],
+            ["clean"]
+          ]
+        }
       },
       placeholder: "Write content here...",
       theme: "snow"
@@ -136,18 +158,13 @@ export default Vue.extend({
   },
 
   methods: {
-
     resetForm() {
-      this.loading = false 
+      this.loading = false
       this.editorHtml = ""
       this.title = this.id ? "Update Post" : "New Post"
-      this.formdata = {} 
+      this.formdata = {}
       this.formvalidate = {}
       this.validation = new validation(rules)
-    },
-
-    imageHandler(image, callback) {
-      console.log("quill image handler", image)
     },
 
     changeTextHandler(e: any) {
@@ -176,6 +193,15 @@ export default Vue.extend({
       this.editorHtml = html
     },
 
+    changelQuillImageHandler(e: any) {
+      const file = e.target.files[0]
+      if (file) {
+        const imageUrl = window.URL.createObjectURL(file)
+        console.log("image", imageUrl)
+        //push text to current cursor
+      }
+    },
+
     submitHandler(draft = false) {
       this.formvalidate = this.validation.validate(this.formdata)
 
@@ -189,6 +215,7 @@ export default Vue.extend({
         }
         if (this.id) params.id = this.id
         if (this.formdata.image) params.image = this.formdata.image
+        if (this.formdata.video) params.video = this.formdata.video
         console.log("params to submit", params)
         this.$store.dispatch(TYPES.SUBMIT_POST, params)
       }
@@ -217,7 +244,7 @@ export default Vue.extend({
   watch: {
     id() {
       // move from edit form to create form
-      if(!this.id) this.resetForm()
+      if (!this.id) this.resetForm()
     },
     ["post.detail"]() {
       console.log("get postdata from store...")
@@ -249,7 +276,8 @@ export default Vue.extend({
           this.formdata = {
             title: post.title,
             tags: post.tags,
-            content: post.content
+            content: post.content,
+            video: post.video
           }
           this.editorHtml = post.content
           this.loading = false

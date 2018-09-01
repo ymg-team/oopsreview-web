@@ -183,7 +183,7 @@ export function list(req, res) {
 export function create(req, res) {
   // get all post data
 
-  const { title, content, tags = "", draft = false } = req.body
+  const { title, content, tags = "", draft = false, video = '' } = req.body
   const { image } = req.files || {}
   const currentTime = Math.round(new Date().getTime() / 1000)
   const user_id = cookies.get(req, res, "oopsreview_session")._id
@@ -216,7 +216,8 @@ export function create(req, res) {
         created_on: currentTime,
         updated_on: currentTime,
         draft: Boolean(draft == "true" || draft == true),
-        user_id: ObjectId(user_id)
+        user_id: ObjectId(user_id),
+        video
       }
 
       mongo().then(db => {

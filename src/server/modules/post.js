@@ -7,7 +7,7 @@ import response from "../modules/response"
  *
  */
 export const updatePost = (req, res) => {
-  const { title, content, tags, draft = false, image } = req.body
+  const { title, content, tags, draft = false, image, video = '' } = req.body
   const currentTime = Math.round(new Date().getTime() / 1000)
   const _id = ObjectId(req.params.id)
   const postdata = {
@@ -15,7 +15,8 @@ export const updatePost = (req, res) => {
     content,
     tags,
     draft: Boolean(draft == 'true' || draft == true),
-    updated_on: currentTime
+    updated_on: currentTime,
+    video
   }
 
   if(image) postdata.image = image
