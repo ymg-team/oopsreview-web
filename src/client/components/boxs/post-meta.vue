@@ -9,8 +9,10 @@
         time {{ epochToRelative(data.created_on) }}
     .stats 
       span.stats-item
-        span.icono-commentEmpty 
-        | {{ data.comments || 0 }}  
+        a(href="javascript:;" @click="viewComments")
+          span.icono-commentEmpty 
+          span.disqus-comment-count(:data-disqus-identifier="'https://oopsreview.com' + link" :data-disqus-url="'https://oopsreview.com' + link") 0
+          | &nbsp;
       span.stats-item
         span.icono-eye 
         | {{ data.views || 0 }} 
@@ -24,13 +26,23 @@
 
 <script lang="ts">
 import Vue from "vue"
+import { injectScript } from "../../modules/dom"
 import { epochToRelative } from "../../modules/datetime"
 import { toCamelCase } from "string-manager"
+
+// render disqus count
+function renderDisqus(target: string='') {
+  console.log("render DISQUSWIDGETS :", target)
+  setTimeout(() => {
+    const {DISQUSWIDGETS}:any = window
+    if (DISQUSWIDGETS) DISQUSWIDGETS.getCount({ reset: true })
+  }, 1500)
+}
 
 export default Vue.extend({
   name: "post-meta",
 
-  props: ["data"],
+  props: ["data", "link"],
 
   methods: {
     toCamelCase(str) {
@@ -38,6 +50,27 @@ export default Vue.extend({
     },
     epochToRelative(epoch) {
       return epochToRelative(epoch)
+    },
+    viewComments(){
+      const commentEl: any = document.getElementById("comment")
+      commentEl.scrollIntoView({block: "end", behavior: "smooth"})
+    }
+  },
+
+  watch: {
+    link() {
+      renderDisqus(`https://oopsreview.com${this.link}`)
+    }
+  },
+
+  created() {
+    if(!(<any>window).DISQUSWIDGETS) {
+      injectScript('//oopsreview.disqus.com/count.js', () => {
+        // waiting for DISQUS initialized
+        renderDisqus(`https://oopsreview.com${this.link}`)
+      })
+    } else {
+      renderDisqus(`https://oopsreview.com${this.link}`)
     }
   }
 })

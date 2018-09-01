@@ -7,7 +7,7 @@
           .grid
             .col-8_md-12(data-push-left="off-2_md-0")
               h1 {{ toCamelCase(post.detail[id].title) }}
-              box-meta(:data="post.detail[id]")
+              box-meta(:data="post.detail[id]" :link='link')
           
           .grid 
             .col-8_md-12(data-push-left="off-2_md-0")
@@ -17,8 +17,8 @@
             .col-12.post-detail-mainimage
 
               //- if have video show iframe
-              .post-detail-video(v-if="post.detail[id].video") 
-                iframe(:src="post.detail[id].video")
+              //- .post-detail-video(v-if="post.detail[id].video") 
+              //-   iframe(:src="post.detail[id].video")
               //- end of iframe
 
               //- main image
