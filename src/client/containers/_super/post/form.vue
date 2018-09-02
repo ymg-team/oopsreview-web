@@ -324,6 +324,7 @@ export default Vue.extend({
   color: $color-gray-verysoft
   background: $color-black-main
   margin-bottom: 1em
+  min-height: 300px
   max-height: 500px !important
   border: 1px solid $color-gray-medium 
   width: calc(100% - 1.5rem)
