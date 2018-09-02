@@ -1,6 +1,6 @@
 export default {
   development: {
-    front: 'https://localhost:19090'
+    front: 'https://oopsreview.local'
   },
   production: {
     front: 'https://oopsreview.com'

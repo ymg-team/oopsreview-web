@@ -17,8 +17,8 @@
             .col-12.post-detail-mainimage
 
               //- if have video show iframe
-              //- .post-detail-video(v-if="post.detail[id].video") 
-              //-   iframe(:src="post.detail[id].video")
+              .post-detail-video(v-if="post.detail[id].video") 
+                iframe(:src="post.detail[id].video")
               //- end of iframe
 
               //- main image
