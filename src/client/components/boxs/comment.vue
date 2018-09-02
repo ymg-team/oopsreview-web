@@ -40,9 +40,11 @@ export default Vue.extend({
 
   created() {
     if (!(<any>window).DISQUS)
-      injectScript("//oopsreview.disqus.com/embed.js", () => {
+      injectScript("//oopsreview.disqus.com/embed.js", {
+        cb: () => {
         // waiting for DISQUS initialized
         renderDisqus(`https://oopsreview.com${this.link}`)
+      }
       })
     else renderDisqus(`https://oopsreview.com${this.link}`)
   }

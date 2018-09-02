@@ -9,12 +9,13 @@ export function injectCss(href: string, cb: Function | null) {
   }
 }
 
-export function injectScript(src: string, cb: Function | null) {
+export function injectScript(src: string, args: any) {
   if(!isScriptLoaded(src)) {
     const s: HTMLElement | null = document.createElement('script')
     s.setAttribute('src', src)
-    if(cb)
-      s.onload = cb()
+    if(args.id) s.setAttribute('id', args.id)
+    if(args.cb)
+      s.onload = args.cb()
     document.body.appendChild(s)
   }
 }

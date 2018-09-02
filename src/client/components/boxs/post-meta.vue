@@ -31,10 +31,11 @@ import { epochToRelative } from "../../modules/datetime"
 import { toCamelCase } from "string-manager"
 
 // render disqus count
-function renderDisqus(target: string='') {
+// see: https://help.disqus.com/developer/adding-comment-count-links-to-your-home-page
+function renderDisqus(target: string = "") {
   console.log("render DISQUSWIDGETS :", target)
   setTimeout(() => {
-    const {DISQUSWIDGETS}:any = window
+    const { DISQUSWIDGETS }: any = window
     if (DISQUSWIDGETS) DISQUSWIDGETS.getCount({ reset: true })
   }, 1500)
 }
@@ -51,9 +52,9 @@ export default Vue.extend({
     epochToRelative(epoch) {
       return epochToRelative(epoch)
     },
-    viewComments(){
+    viewComments() {
       const commentEl: any = document.getElementById("comment")
-      commentEl.scrollIntoView({block: "end", behavior: "smooth"})
+      commentEl.scrollIntoView({ behavior: "smooth" })
     }
   },
 
@@ -64,10 +65,13 @@ export default Vue.extend({
   },
 
   created() {
-    if(!(<any>window).DISQUSWIDGETS) {
-      injectScript('//oopsreview.disqus.com/count.js', () => {
-        // waiting for DISQUS initialized
-        renderDisqus(`https://oopsreview.com${this.link}`)
+    if (!(<any>window).DISQUSWIDGETS) {
+      injectScript("//oopsreview.disqus.com/count.js", {
+        id: "dsq-count-scr",
+        cb: () => {
+          // waiting for DISQUS initialized
+          renderDisqus(`https://oopsreview.com${this.link}`)
+        }
       })
     } else {
       renderDisqus(`https://oopsreview.com${this.link}`)
