@@ -39,13 +39,21 @@
           :onchange='changeTextHandler'
         )
 
+        //- tab to toggel editor and html view
+        a.editor-tab(:class="editorTab == 'editor' ? 'active' : ''" href="javascript:;" @click="() => toggleEditorTab('editor')") Editor View 
+        a.editor-tab(:class="editorTab == 'html' ? 'active' : ''" href="javascript:;" @click="() => toggleEditorTab('html')") HTML View 
+
         //- input post content
-        quill-editor#post-form(
-          :content="formdata.content || ''"
-          :options="editorOptions"
-          @change="changeQuillHandler($event)"
-        )
-        input(id="quill-upload-image" type="file" accept="image/*" style="display:none" @change="changelQuillImageHandler")
+        div(v-if="editorTab == 'editor'")
+          quill-editor#post-form(
+            :content="editorHtml || ''"
+            :options="editorOptions"
+            @change="changeQuillHandler($event)"
+          )
+          input(id="quill-upload-image" type="file" accept="image/*" style="display:none" @change="changelQuillImageHandler")
+
+        div.form-input(v-if="editorTab == 'html'")
+          textarea#html-form(:value="editorHtml || ''" @change="(e) => this.editorHtml = e.target.value")
 
         //- input post tags
         input-text(
@@ -138,7 +146,8 @@ export default Vue.extend({
             ["bold", "italic", "underline"],
             [{ list: "ordered" }, { list: "bullet" }],
             ["link", "image", "video"],
-            ["clean"]
+            ["clean"],
+            ["showHtml"]
           ]
         }
       },
@@ -150,6 +159,7 @@ export default Vue.extend({
       editorOptions,
       loading: true,
       editorHtml: "",
+      editorTab: "editor",
       title: id ? "Update Post" : "New Post",
       formdata: <any>{},
       formvalidate: <any>{},
@@ -219,6 +229,10 @@ export default Vue.extend({
         console.log("params to submit", params)
         this.$store.dispatch(TYPES.SUBMIT_POST, params)
       }
+    },
+
+    toggleEditorTab(tab) {
+      this.editorTab = tab
     }
   },
 
@@ -303,4 +317,28 @@ export default Vue.extend({
   // quill direct styling
   .ql-editor
     max-height: 500px !important
+
+#html-form 
+  font-size: .75em
+  padding: 10px
+  color: $color-gray-verysoft
+  background: $color-black-main
+  margin-bottom: 1em
+  max-height: 500px !important
+  border: 1px solid $color-gray-medium 
+  width: calc(100% - 1.5rem)
+
+a.editor-tab 
+  transition: background .5s ease
+  color: $color-white-main
+  background: $color-gray-soft 
+  padding: 5px 10px 
+  border-radius: 10px
+  display: inline-block 
+  margin-bottom: 10px 
+  margin-right: 10px 
+  &.active
+    background: $color-blue-main
+  &:hover 
+    background: $color-blue-dark
 </style>

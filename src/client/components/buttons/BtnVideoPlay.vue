@@ -24,11 +24,11 @@ export default Vue.extend({
       .icono-play
         transform: scale(2) 
     &:hover 
-      background: $color-gray-dark
+      background: $color-blue-main
     position: absolute
     top: 50%
     padding: 4px 8px 4px
-    background: $color-blue-main
+    background: $color-gray-dark
     border-radius: 8px
     width: 40px
     height: 32px
