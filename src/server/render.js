@@ -45,12 +45,12 @@ const html = `<!DOCTYPE html>
 function getScript() {
   const webpackAssets = require("../../internals/webpack-assets.json")
   return `
-    <script src="/build/${
-      NODE_ENV == "production" ? webpackAssets.vendor.js : "vendor.js"
+    <script src="${
+      NODE_ENV == "production" ? webpackAssets.vendor.js : "/build/vendor.js"
     }"></script>
     
-    <script src="/build/${
-      NODE_ENV == "production" ? webpackAssets.app.js : "app.js"
+    <script src="${
+      NODE_ENV == "production" ? webpackAssets.app.js : "/build/app.js"
     }"></script>
     
 ${
