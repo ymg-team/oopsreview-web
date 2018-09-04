@@ -56,19 +56,26 @@ import { toCamelCase, truncate, stripTags } from "string-manager"
 import { epochToRelative } from "../../modules/datetime"
 
 // components
-import sidebar from "../../components/sidebar.vue"
 import comment from "../../components/boxs/comment.vue"
 import meta from "../../components/boxs/post-meta.vue"
 import post from "../../components/boxs/post.vue"
-import appCard from "../../components/cards/post-app.vue"
+// import appCard from "../../components/cards/post-app.vue"
 import Preloader from "../../components/cards/global-loader.vue"
 import ErrorBox from "../../containers/error/index.vue"
+import Loading from "../../components/cards/global-loader.vue"
 
-Vue.component("sidebar", sidebar)
+// Vue.component("comment", () => ({
+//   component: import("../../components/boxs/comment.vue"),
+//   loading: Loading
+// }))
+Vue.component("app-card", resolve =>
+  import("../../components/cards/post-app.vue")
+)
+
+// Vue.component("app-card", appCard)
 Vue.component("comment", comment)
 Vue.component("box-post", post)
 Vue.component("box-meta", meta)
-Vue.component("app-card", appCard)
 Vue.component("error-box", ErrorBox)
 Vue.component("preloader", Preloader)
 
