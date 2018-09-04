@@ -5,7 +5,7 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-  name: 'label',
+  name: 'label-oopsreview',
   props: ['text', 'custom_style']
 })
 </script>

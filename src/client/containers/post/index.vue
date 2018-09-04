@@ -34,17 +34,9 @@ import post from "../../components/boxs/post.vue"
 Vue.component("header-tag", headerTag)
 
 // async components
-// ref: https://vuejsdevelopers.com/2017/07/03/vue-js-code-splitting-webpack/
-Vue.component("sidebar", resolve => {
-  import("../../components/sidebar.vue").then(AsyncComponent => {
-    resolve(AsyncComponent.default)
-  })
-})
-Vue.component("button-big", resolve => {
-  import("../../components/form/button-big.vue").then(AsyncComponent => {
-    resolve(AsyncComponent.default)
-  })
-})
+// ref: https://vuejs.org/v2/guide/components-dynamic-async.html
+Vue.component("sidebar", () => import("../../components/sidebar.vue"))
+Vue.component("button-big", () => import("../../components/form/button-big.vue"))
 Vue.component("box-post", post)
 
 export default Vue.extend({

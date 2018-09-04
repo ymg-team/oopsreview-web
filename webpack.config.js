@@ -43,8 +43,10 @@ module.exports = {
   output: {
     filename:
       process.env.NODE_ENV === "production" ? "[name].[hash].js" : "[name].js",
+    chunkFilename:
+      process.env.NODE_ENV === "production" ? "[name].[hash].js" : "[name].js",
     path: outputPath,
-    publicPath: "/"
+    publicPath: "/build/"
   },
 
   module: {
