@@ -4,10 +4,6 @@ import Post from "./containers/post/index.vue"
 import PostDetail from "./containers/post/detail.vue"
 import StaticDetail from "./containers/static/index.vue"
 
-import Auth from "./containers/auth/index.vue"
-// import SuperPost from './containers/_super/post/index.vue'
-// import FormPost from './containers/_super/post/form.vue'
-
 import SuperLayout from "./layouts/super.vue"
 import DefaultLayout from "./layouts/default.vue"
 import ErrorLayout from "./layouts/error.vue"
@@ -31,7 +27,9 @@ export default [
   {
     path: "/super",
     component: DefaultLayout,
-    children: [{ path: "/", component: Auth }]
+    children: [
+      { path: "/", component: () => import("./containers/auth/index.vue") }
+    ]
   },
   {
     path: "/super",

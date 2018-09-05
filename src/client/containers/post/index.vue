@@ -132,7 +132,8 @@ export default Vue.extend({
     let params = this.generateParams()
 
     // first fetch data of post list
-    this.$store.dispatch(TYPES.GET_POSTS, params)
+
+    if(!this.post.list[this.filter]) this.$store.dispatch(TYPES.GET_POSTS, params)
     if (this.tag_name) this.$store.dispatch(TYPES.GET_TAG, this.tag_name)
   },
 
