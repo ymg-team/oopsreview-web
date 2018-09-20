@@ -45,8 +45,8 @@ if (NODE_ENV == "development") {
 // render vuejs
 server.get(/\/super\/*/, authMiddleware, render)
 
-server.get("/post/:title", frontMiddleware.generateMetaPost, render)
-server.get("/author/:username", frontMiddleware.generateMetaUser, render)
+// server.get("/post/:title", frontMiddleware.generateMetaPost, render)
+// server.get("/author/:username", frontMiddleware.generateMetaUser, render)
 
 // serve static file from public directory
 server.get(
