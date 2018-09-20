@@ -50,6 +50,13 @@ server.get("/author/:username", frontMiddleware.generateMetaUser, render)
 
 // serve static file from public directory
 server.get(
+  /\/build\/*/,
+  restify.plugins.serveStatic({
+    directory: `${__dirname}/../../public`,
+    maxAge: 0
+  })
+)
+server.get(
   /\/?.*\//,
   restify.plugins.serveStatic({
     directory: `${__dirname}/../../public`,
