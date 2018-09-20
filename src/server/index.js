@@ -59,7 +59,7 @@ server.get(
 
 // render vuejs
 
-// server.on("NotFound", render)
+server.on("NotFound", render)
 // server.on("NotFound", (req, res) => {
 //   renderVue({ url: req.url }).then(app => {
 //     //context to use as data source
