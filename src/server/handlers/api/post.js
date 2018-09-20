@@ -17,55 +17,11 @@ import userTransformer from "../../transformers/user"
  * @param {number} req.params.id id of post
  */
 export function detail(req, res) {
-  const { id } = req.params || {}
-  if (id.length != 24) return res.send(200, response(204, "post not found"))
-
-  mongo().then(db => {
-    db.collection("posts")
-      .aggregate([
-        {
-          $match: { _id: ObjectId(id) }
-        },
-        {
-          $lookup: {
-            from: "users",
-            localField: "user_id",
-            foreignField: "_id",
-            as: "author"
-          }
-        },
-        {
-          $lookup: {
-            from: "apps",
-            localField: "app_id",
-            foreignField: "_id",
-            as: "app"
-          }
-        }
-      ])
-      .toArray((err, result) => {
-        // error from database
-        if (err) {
-          console.log(err)
-          return res.send(500, response(500, "something wrong with mongo"))
-        }
-
-        if (result.length < 1)
-          return res.send(200, response(204, "post not found"))
-
-        // transform result
-        const author = userTransformer(result[0].author[0])
-        result = postTransformer(result[0])
-        result.author = author
-
-        // update: increment views
-        db.collection("posts").update(
-          { _id: ObjectId(result._id) },
-          { $set: { views: result.views + 1 } }
-        )
-
-        res.send(200, response(200, "success", result))
-      })
+  post.detailPost(req, res, {
+    id: req.params.id,
+    callback: json => {
+      return res.send(200, response(200, "success", json))
+    }
   })
 }
 
@@ -183,7 +139,7 @@ export function list(req, res) {
 export function create(req, res) {
   // get all post data
 
-  const { title, content, tags = "", draft = false, video = '' } = req.body
+  const { title, content, tags = "", draft = false, video = "" } = req.body
   const { image } = req.files || {}
   const currentTime = Math.round(new Date().getTime() / 1000)
   const user_id = cookies.get(req, res, "oopsreview_session")._id
