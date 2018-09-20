@@ -2,15 +2,32 @@ import MetaInfo from "../config/metainfo.js"
 
 const { NODE_ENV } = process.env
 
-const html = `<!DOCTYPE html>   
+const generateHtml = ({ meta = {} }) => {
+  return `<!DOCTYPE html>   
 <html lang="en">
   <head>
       <meta charset="utf-8">
-      <title>${MetaInfo.title}</title>
+      <title>${meta.title || MetaInfo.title}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
       <meta data-vmid="description" data-vue-meta="true" name="description" content="${
-        MetaInfo.description
+        meta.desc || MetaInfo.description
       }" />
+      ${
+        meta.title ?
+        `
+        <meta name="twitter:card" content="summary"/>,
+        <meta name="twitter:image" content="${meta.image}"/>
+        <meta name="twitter:title" content="${meta.title}"/>
+        <meta name="twitter:description" content="${meta.desc}" />
+
+        <meta property="og:title" content="${meta.title}" />
+        <meta property="og:type" content="${meta.type || "blog"}" />
+        <meta property="og:url" content="${meta.url || "https://kompetisi.id"}" />
+        <meta property="og:image" content="${meta.image}" />
+        <meta property="og:description" content="${meta.desc}" />
+        `
+        : ''
+      }
       <link rel="manifest" href="/manifest.json" />
       <link rel="icon" href="/images/icons/icon-72x72.png" />
       <link href="${
@@ -41,6 +58,7 @@ const html = `<!DOCTYPE html>
       ${getScript()}
   </body>
 </html>`
+}
 
 function getScript() {
   const webpackAssets = require("../../internals/webpack-assets.json")
@@ -54,8 +72,8 @@ function getScript() {
     }"></script>
     
 ${
-      NODE_ENV === "production"
-        ? `
+    NODE_ENV === "production"
+      ? `
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87936512-1"></script>
         <script>
           window.dataLayer = window.dataLayer || [];
@@ -64,14 +82,17 @@ ${
           gtag('config', 'UA-87936512-1');
         </script>
       `
-        : ""
-    }
+      : ""
+  }
   `
 }
 
 export default (req, res, next) => {
   res.writeHead(200, {
     "Content-Type": "text/html"
+  })
+  const html = generateHtml({
+    meta: req.meta
   })
   res.write(html)
   res.end()

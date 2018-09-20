@@ -3,22 +3,13 @@ import cookies from "restify-cookies"
 import render from "./render"
 import debug from "debug"
 import routes from "./routes"
-// import fs from "fs"
-// import path from "path"
-// import { renderVue } from "../../dist/server.bundle.js"
-// import { createRenderer } from "vue-server-renderer"
-// import prerenderNode from "prerender-node"
-
-// create SSR
-// const renderer = createRenderer({
-//   template: fs.readFileSync("internals/index.html", "utf-8")
-// })
 
 // handlers
 import handlerSeal from "./handlers/seal"
 
 // middlewares
 import authMiddleware from "./middlewares/authMiddleware"
+import * as frontMiddleware from "./middlewares/frontMiddleware"
 
 const { NODE_ENV } = process.env
 
@@ -54,6 +45,9 @@ if (NODE_ENV == "development") {
 // render vuejs
 server.get(/\/super\/*/, authMiddleware, render)
 
+server.get("/post/:title", frontMiddleware.generateMetaPost, render)
+server.get("/author/:username", frontMiddleware.generateMetaUser, render)
+
 // serve static file from public directory
 server.get(
   /\/?.*\//,
@@ -64,7 +58,8 @@ server.get(
 )
 
 // render vuejs
-server.on("NotFound", render)
+
+// server.on("NotFound", render)
 // server.on("NotFound", (req, res) => {
 //   renderVue({ url: req.url }).then(app => {
 //     //context to use as data source
