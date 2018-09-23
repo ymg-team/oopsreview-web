@@ -1,4 +1,6 @@
 import * as postModule from "../modules/post"
+import { stripTags } from "string-manager/dist/modules/html"
+import { truncate } from "string-manager/dist/modules/truncate"
 
 export const generateMetaPost = (req, res, next) => {
   const title_arr = req.params.title.split("-")
@@ -10,7 +12,11 @@ export const generateMetaPost = (req, res, next) => {
       if(json && json._id) {
         req.meta = {
           title: json.title,
-          desc: json.title,
+          desc: truncate(
+            stripTags(json.content),
+            500,
+            "..."
+          ),
           url: `https://oopsreview.com/post/${req.params.title}`,
           image: json.image.original
         }
