@@ -134,8 +134,10 @@ export default Vue.extend({
 
   created() {
     const title_arr = this.$route.params.title.split("-")
-    this.$store.dispatch(TYPES.GET_POSTS, { filter: "latest_detail", limit: 3 })
-    this.fetchPostDetail(title_arr[title_arr.length - 1])
+    const id = title_arr[title_arr.length - 1]
+    this.fetchPostDetail(id)
+    this.fetchPostRelated(id)
+    
   },
 
   methods: {
@@ -148,13 +150,18 @@ export default Vue.extend({
     fetchPostDetail(id) {
       this.id = id
       this.$store.dispatch(TYPES.GET_POST, id)
+    },
+    fetchPostRelated(id) {
+      this.$store.dispatch(TYPES.GET_POSTS, { filter: "latest_detail", limit: 6, draft: false, notid: id })
     }
   },
 
   beforeRouteUpdate(to, from, next) {
     // request post detail
     const title_arr = to.params.title.split("-")
-    this.fetchPostDetail(title_arr[title_arr.length - 1])
+    const id = title_arr[title_arr.length - 1]
+    this.fetchPostDetail(id)
+    this.fetchPostRelated(id)
     this.link = `/post/${to.params.title}`
 
     next()

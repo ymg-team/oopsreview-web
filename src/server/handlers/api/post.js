@@ -36,6 +36,7 @@ export function list(req, res) {
     username,
     featured,
     lastid,
+    notid,
     lastcreatedon,
     tag,
     keyword,
@@ -52,6 +53,14 @@ export function list(req, res) {
       }
     }
   ]
+
+  // don't get post by id
+  // ref: https://stackoverflow.com/a/26118110/2780875
+  if (notid) {
+    aggregate.push({
+      $match: { _id: { $nin: [ObjectId(notid)] } }
+    })
+  }
 
   // filter post by author username
   if (username) {
