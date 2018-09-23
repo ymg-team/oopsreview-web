@@ -11,4 +11,5 @@ export default route => {
   auth(route)
   tag(route)
   sitemap(route)
+  users(route)
 }

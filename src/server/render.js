@@ -7,26 +7,30 @@ const generateHtml = ({ meta = {} }) => {
 <html lang="en">
   <head>
       <meta charset="utf-8">
-      <title>${meta.title || MetaInfo.title}</title>
+      <title>${
+        meta.title ? `${meta.title} - Oopsreview` : MetaInfo.title
+      }</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-      <meta data-vmid="description" data-vue-meta="true" name="description" content="${
-        meta.desc || MetaInfo.description
-      }" />
+      <meta data-vmid="description" data-vue-meta="true" name="description" content="${meta.desc ||
+        MetaInfo.description}" />
       ${
-        meta.title ?
-        `
+        meta.title
+          ? `
         <meta name="twitter:card" content="summary"/>,
-        <meta name="twitter:image" content="${meta.image}"/>
-        <meta name="twitter:title" content="${meta.title}"/>
+        <meta name="twitter:image" content="${meta.image ||
+          "https://res.cloudinary.com/dhjkktmal/image/upload/v1535163093/oopsreview/2018/default_post_image.png"}"/>
+        <meta name="twitter:title" content="${meta.title} - Oopsreview"/>
         <meta name="twitter:description" content="${meta.desc}" />
 
-        <meta property="og:title" content="${meta.title}" />
+        <meta property="og:title" content="${meta.title} - Oopsreview" />
         <meta property="og:type" content="${meta.type || "blog"}" />
-        <meta property="og:url" content="${meta.url || "https://kompetisi.id"}" />
-        <meta property="og:image" content="${meta.image}" />
+        <meta property="og:url" content="${meta.url ||
+          "https://oopsreview.com"}" />
+        <meta property="og:image" content="${meta.image ||
+          "https://res.cloudinary.com/dhjkktmal/image/upload/v1535163093/oopsreview/2018/default_post_image.png"}" />
         <meta property="og:description" content="${meta.desc}" />
         `
-        : ''
+          : ""
       }
       <link rel="manifest" href="/manifest.json" />
       <link rel="icon" href="/images/icons/icon-72x72.png" />
