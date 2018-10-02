@@ -17,7 +17,9 @@
     "remove:build-server": "yarn rimraf dist",
     "update-changelog": "conventional-changelog >> CHANGELOG.md",
     "lint": "eslint src",
-    "test": "yarn test"
+    "test": "yarn test",
+    "release": "standard-version",
+    "release:beta": "standard-version -p beta"
   },
   "repository": {
     "type": "git",

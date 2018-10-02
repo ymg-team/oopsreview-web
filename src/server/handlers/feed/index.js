@@ -43,6 +43,8 @@ export function getFeed(req, res) {
           res.end("error get feed")
         } else {
           result.map(n => {
+            // ref: remove &nbsp; from string https://stackoverflow.com/a/6452789/2780875
+            n.content = n.content.replace(/&nbsp;/gi, "")
             items += `
             <item>
               <title>${n.title}</title>
