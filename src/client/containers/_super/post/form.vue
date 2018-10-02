@@ -265,6 +265,7 @@ export default Vue.extend({
 
   // unmount event
   beforeDestroy() {
+    window.onbeforeunload = function(){}
     this.resetForm()
   },
 
