@@ -196,7 +196,9 @@ export default Vue.extend({
       width: -webkit-fill-available
       width: -moz-available
   article.post-detail-content 
-
+    a 
+      color: $color-gray-soft 
+      text-decoration: underline
     h2
       margin-top: 50px
       border-top: 1px solid gray
