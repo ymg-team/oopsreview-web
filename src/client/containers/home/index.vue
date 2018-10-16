@@ -5,6 +5,7 @@
       .grid 
         .col-8_sm-12
           div(style='padding-top: .5em')
+          h2 Latest Post
           box-post(:data='post.list.latest || {}') 
         .col-4_sm-12
           div(style="padding-top:10px")
