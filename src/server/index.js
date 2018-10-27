@@ -45,6 +45,8 @@ if (NODE_ENV == "development") {
 // render vuejs
 server.get(/\/super\/*/, authMiddleware, render)
 
+server.get("/posts", frontMiddleware.generateMetaPostList, render)
+server.get("/tag/:tag", frontMiddleware.generateMetaPostList, render)
 server.get("/post/:title", frontMiddleware.generateMetaPost, render)
 server.get("/author/:username", frontMiddleware.generateMetaUser, render)
 
