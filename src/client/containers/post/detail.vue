@@ -22,7 +22,7 @@
               //- end of iframe
 
               //- main image
-              img(:src="post.detail[id].image.original")
+              img(v-if="!post.detail[id].video" :src="post.detail[id].image.original")
               //- end of main image
 
             .col-8_md-12(data-push-left="off-2_md-0")
