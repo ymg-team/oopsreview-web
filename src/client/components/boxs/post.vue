@@ -4,7 +4,7 @@
     post-card(v-for="(n,key) in data.result" :key="key" :data="n")
 
   p.align-center.text-muted(v-if="data.status && data.status !== 200")
-    | {{ data.message || 'Post not available' }}
+    | {{ data.status == 204 ? 'Post not available' : 'Something wrong' }}
 
   preloader(v-if="!data.status || data.loading")
 
