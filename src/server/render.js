@@ -2,13 +2,13 @@ import MetaInfo from "../config/metainfo.js"
 
 const { NODE_ENV } = process.env
 
-const generateHtml = ({ meta = {} }) => {
+const generateHtml = ({ meta = MetaInfo }) => {
   return `<!DOCTYPE html>   
 <html lang="en">
   <head>
       <meta charset="utf-8">
       <title>${
-        meta.title ? `${meta.title} - Oopsreview` : MetaInfo.title
+        `${meta.title || MetaInfo.title} - Oopsreview`
       }</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
       <meta data-vmid="description" data-vue-meta="true" name="description" content="${meta.desc ||
