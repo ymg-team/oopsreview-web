@@ -2,14 +2,12 @@ import MetaInfo from "../config/metainfo.js"
 
 const { NODE_ENV } = process.env
 
-const generateHtml = ({ meta = MetaInfo }) => {
+const generateHtml = ({ meta = MetaInfo, initialHTML }) => {
   return `<!DOCTYPE html>   
 <html lang="en">
   <head>
       <meta charset="utf-8">
-      <title>${
-        `${meta.title || MetaInfo.title} - Oopsreview`
-      }</title>
+      <title>${`${meta.title || MetaInfo.title} - Oopsreview`}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
       <meta data-vmid="description" data-vue-meta="true" name="description" content="${meta.desc ||
         MetaInfo.description}" />
@@ -48,7 +46,7 @@ const generateHtml = ({ meta = MetaInfo }) => {
       </style>
   </head>
   <body>
-      <div id="app">oopsreview rendering...</div>
+      <div id="app">${initialHTML || ""}</div>
       <script>
         //global inline script
         document.addEventListener('click', function(e){
@@ -76,8 +74,8 @@ function getScript() {
     }"></script>
     
 ${
-    NODE_ENV === "production"
-      ? `
+  NODE_ENV === "production"
+    ? `
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87936512-1"></script>
         <script>
           window.dataLayer = window.dataLayer || [];
@@ -86,8 +84,8 @@ ${
           gtag('config', 'UA-87936512-1');
         </script>
       `
-      : ""
-  }
+    : ""
+}
   `
 }
 
@@ -96,7 +94,8 @@ export default (req, res, next) => {
     "Content-Type": "text/html"
   })
   const html = generateHtml({
-    meta: req.meta
+    meta: req.meta,
+    initialHTML: req.html
   })
   res.write(html)
   res.end()
