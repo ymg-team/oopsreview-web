@@ -1,4 +1,3 @@
-import { ObjectID } from "mongodb"
 import mongo from "../../modules/mongo"
 import response from "../../modules/response"
 import { encString, decString, hashPassword } from "../../modules/password"
