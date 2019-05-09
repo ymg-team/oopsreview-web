@@ -1,5 +1,5 @@
 echo "update code from gitlab branch master..."
-git pull origin master
+cd /home/webdev/Web/oopsreview-web && git pull origin master
 
 echo "update deps"
 yarn install
