@@ -184,6 +184,8 @@ export function create(req, res) {
         video
       }
 
+      console.log("postdata", postdata)
+
       mongo().then(db => {
         // check is same title available
         db.collection("posts")

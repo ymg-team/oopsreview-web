@@ -4,7 +4,7 @@ const { NODE_ENV } = process.env
 export function set(req, res, key, val) {
   const options = {
     path: "/",
-    domain: NODE_ENV === "development" ? "oopsreview.local" : "oopsreview.com",
+    domain: NODE_ENV === "development" ? "localhost" : "oopsreview.com",
     secure: false,
     httpOnly: true
   }

@@ -20,9 +20,11 @@ export function login(req, res) {
         } else {
           // login success and save userdata to session
           console.log("logged in success, save userdata to session")
-          const encCookies = encString(JSON.stringify(result[0]))
+          const userdata = result[0]
+          console.log("userdata", userdata)
+          const encCookies = encString(JSON.stringify(userdata))
           cookies.set(req, res, "oopsreview_session", encCookies)
-          return res.send(201, response(201, "login success", result[0]))
+          return res.send(201, response(201, "login success", userdata))
         }
       })
   })

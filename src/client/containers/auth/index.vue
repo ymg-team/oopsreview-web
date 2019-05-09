@@ -101,7 +101,7 @@ export default Vue.extend({
         if (this.auth.response.status === 201) {
           toast("Login success", "success")
           setTimeout(() => {
-            router.push({ path: "/super/posts" })
+            location.href= "/super/posts"
           }, 1000)
         } else {
           toast("username and password not match, please try again", "error")

@@ -35,7 +35,7 @@ export default Vue.extend({
     text-align: center
     left: 50%
     margin-left: -26px
-    margin-top: -29px
+    margin-top: -20px
     cursor: pointer
     transition: background .5s ease
 </style>
