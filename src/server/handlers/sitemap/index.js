@@ -17,13 +17,16 @@ export function getSitemapTags(req, res) {
     }
   })
 
-  mongo().then(db => {
+  mongo().then(({db, client}) => {
     db.collection("tags")
       .aggregate(aggregate)
       .toArray((err, result) => {
         if (err) {
           res.end("error get sitemap")
         } else {
+
+          client.close()
+
           // generate xml
           result.map(n => {
             items += `
@@ -57,13 +60,16 @@ export function getSitemapUsers(req, res) {
     }
   })
 
-  mongo().then(db => {
+  mongo().then(({db, client}) => {
     db.collection("users")
       .aggregate(aggregate)
       .toArray((err, result) => {
         if (err) {
           res.end("error get sitemap")
         } else {
+
+          client.close()
+
           // generate xml
           result.map(n => {
             items += `
@@ -97,13 +103,16 @@ export function getSitemapPosts(req, res) {
     }
   })
 
-  mongo().then(db => {
+  mongo().then(({db, client}) => {
     db.collection("posts")
       .aggregate(aggregate)
       .toArray((err, result) => {
         if (err) {
           res.end("error get sitemap")
         } else {
+
+          client.close()
+
           // generate xml
           result.map(n => {
             items += `

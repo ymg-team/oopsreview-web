@@ -32,7 +32,7 @@ export function getFeed(req, res) {
     $match: { draft: false }
   })
 
-  mongo().then(db => {
+  mongo().then(({db, client}) => {
     // ref guid : https://www.w3schools.com/xml/rss_tag_guid.asp
     db.collection("posts")
       .aggregate(aggregate)
@@ -42,6 +42,9 @@ export function getFeed(req, res) {
         if (err) {
           res.end("error get feed")
         } else {
+
+          client.close()
+
           result.map(n => {
             // ref: remove &nbsp; from string https://stackoverflow.com/a/6452789/2780875
             n.content = n.content.replace(/&nbsp;/gi, "")
@@ -59,9 +62,9 @@ export function getFeed(req, res) {
               <guid>https://oopsreview.com/post/${toSlug(n.title)}-${
               n._id
             }</guid>
-              <category domain="https://oopsreview.com">${n.tags
+              <category domain="https://oopsreview.com">${n.tags ? n.tags
                 .split(",")
-                .join("/")}</category>
+                .join("/") : "oopsreview"}</category>
               <pubDate>${new Date(n.created_on * 1000).toUTCString()}</pubDate>
             </item>
             `

@@ -7,7 +7,7 @@ import userTransformer from "../transformers/user"
  * @param {string} req.params.username
  */
 export const profileUser = (req, res, {username, callback}) => {
-  mongo().then(db => {
+  mongo().then(({db, client}) => {
     db.collection("users").aggregate([
       {
         $match: { username }
@@ -18,6 +18,8 @@ export const profileUser = (req, res, {username, callback}) => {
         console.log(err)
         return res.send(500, response(500, "something wrong with mongo"))
       }
+
+      client.close()
 
       if (result.length < 1) {
         return res.send(200, response(204, "user not found"))

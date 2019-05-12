@@ -23,7 +23,7 @@ export const updatePost = (req, res) => {
 
   if(image) postdata.image = image
 
-  mongo().then(db => {
+  mongo().then(({db, client}) => {
     // is post available
     db.collection("posts")
       .aggregate([
@@ -42,6 +42,8 @@ export const updatePost = (req, res) => {
           console.log(err)
           return res.send(500, response(500, "something wrong with mongo"))
         }
+
+        client.close()
 
         if (result.length > 0) {
           // update data on mongo
@@ -62,7 +64,7 @@ export const detailPost = (req, res, {id, callback}) => {
     return res.send(200, response(204, "post not found"))
   }
 
-  mongo().then(db => {
+  mongo().then(({db, client}) => {
     db.collection("posts")
       .aggregate([
         {
@@ -91,6 +93,8 @@ export const detailPost = (req, res, {id, callback}) => {
           console.log(err)
           return res.send(500, response(500, "something wrong with mongo"))
         }
+
+        client.close()
 
         if (result.length < 1) {
           if(req.no_count) return callback()

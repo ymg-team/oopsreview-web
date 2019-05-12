@@ -115,7 +115,7 @@ export function list(req, res) {
     })
   }
 
-  mongo().then(db => {
+  mongo().then(({db, client}) => {
     db.collection("posts")
       .aggregate(aggregate)
       .skip(parseInt(page) || 0)
@@ -126,6 +126,8 @@ export function list(req, res) {
           console.log(err)
           return res.send(500, response(500, "something wrong with mongo"))
         }
+
+        client.close()
 
         if (result.length > 0) {
           // transform data
@@ -186,7 +188,7 @@ export function create(req, res) {
 
       console.log("postdata", postdata)
 
-      mongo().then(db => {
+      mongo().then(({db, client}) => {
         // check is same title available
         db.collection("posts")
           .aggregate([
@@ -205,6 +207,8 @@ export function create(req, res) {
               console.log(err)
               return res.send(500, response(500, "something wrong with mongo"))
             }
+
+            client.close()
 
             if (results.length > 0) {
               // post available
@@ -257,8 +261,11 @@ export function deletePost(req, res) {
   const { id } = req.params
 
   // mongodb query execution
-  mongo().then(db => {
+  mongo().then(({db, client}) => {
     db.collection("post").remove({ _id: id })
+
+    client.close()
+    
     // api response
     res.send(200, response(200, "Post deleted"))
   })

@@ -18,7 +18,7 @@ export default () => {
       } else {
         debugMongo("[success] connected mongo server")
         const db = client.db(MONGO_DB)
-        resolve(db)
+        resolve({db, client})
       }
     })
   }).catch(e => {

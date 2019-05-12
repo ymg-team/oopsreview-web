@@ -6,7 +6,7 @@ import * as cookies from "../../modules/cookies"
 export function login(req, res) {
   const { email, password } = req.body
   const passHash = hashPassword(password)
-  mongo().then(db => {
+  mongo().then(({db, client}) => {
     db.collection("users")
       .find({ email, password: passHash })
       .toArray((err, result) => {
@@ -15,6 +15,9 @@ export function login(req, res) {
           console.log(err)
           return res.send(500, response(500, "something wrong with mongo"))
         }
+
+        client.close()
+
         if (result.length < 1) {
           return res.send(204, "email dan password tidak valid")
         } else {
