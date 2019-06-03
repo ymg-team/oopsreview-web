@@ -208,14 +208,14 @@ export function create(req, res) {
               return res.send(500, response(500, "something wrong with mongo"))
             }
 
-            client.close()
-
             if (results.length > 0) {
               // post available
+              client.close()
               res.send(400, response(400, "Failed to post, duplicated title"))
             } else {
               // insert to mongodb
               db.collection("posts").insert(postdata)
+              client.close()
               res.send(201, response(201, "Post Created"))
             }
           })
