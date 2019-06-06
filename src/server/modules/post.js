@@ -43,15 +43,13 @@ export const updatePost = (req, res) => {
           return res.send(500, response(500, "something wrong with mongo"))
         }
 
-        client.close()
-
         if (result.length > 0) {
           // update data on mongo
           db.collection("posts").update({ _id }, { $set: postdata })
-
+          client.close()
           res.send(201, response(201, "Post Updated"))
         } else {
-          // post not available
+          client.close()
           res.send(204, response(204, "Post not found"))
         }
       })
@@ -94,8 +92,6 @@ export const detailPost = (req, res, {id, callback}) => {
           return res.send(500, response(500, "something wrong with mongo"))
         }
 
-        client.close()
-
         if (result.length < 1) {
           if(req.no_count) return callback()
           return res.send(200, response(204, "post not found"))
@@ -112,6 +108,9 @@ export const detailPost = (req, res, {id, callback}) => {
             { _id: ObjectId(result._id) },
             { $set: { views: result.views + 1 } }
           )
+          
+        client.close()
+
         return callback(result)
       })
   })
