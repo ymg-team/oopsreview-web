@@ -49,13 +49,13 @@ const generateHtml = ({ meta = MetaInfo, initialHTML }) => {
       <div id="app">${initialHTML || ""}</div>
       <script>
         //global inline script
-        document.addEventListener('click', function(e){
-          // if(e.target.className === 'icono-caretDown') {}
-          const dropdownEl = document.getElementsByClassName('dropdown');
-          for(let n=0;n<dropdownEl.length;n++){
-            dropdownEl[n].classList.remove('show')
-          }
-        })
+        // document.addEventListener('click', function(e){
+        //   // if(e.target.className === 'icono-caretDown') {}
+        //   const dropdownEl = document.getElementsByClassName('dropdown');
+        //   for(let n=0;n<dropdownEl.length;n++){
+        //     dropdownEl[n].classList.remove('show')
+        //   }
+        // })
       </script>
       ${getScript()}
   </body>

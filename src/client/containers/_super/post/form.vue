@@ -96,7 +96,6 @@
 
 <script lang="ts">
 import Vue from "vue"
-// import { quillEditor, Quill } from "vue-quill-editor"
 import tinyMceEditor from "../../../components/form/tinymce-editor.vue"
 import header from "../../../components/cards/header-tag.vue"
 import inputText from "../../../components/form/input-text.vue"
@@ -109,21 +108,11 @@ import * as TYPES from "../../../vuex/types"
 import { mapState } from "vuex"
 import { router } from "../../../index"
 
-// import "quill/dist/quill.core.css"
-// import "quill/dist/quill.snow.css"
-// import "quill/dist/quill.bubble.css"
-
 Vue.component("header-tag", header)
 Vue.component("input-text", inputText)
 Vue.component("input-file", inputFile)
 Vue.component("oops-button", button)
-// Vue.component("quill-editor", quillEditor)
 Vue.component("tinymce-editor", tinyMceEditor)
-
-// function loadQuillJS() {
-//   injectCss("/quilljs/quill.core.css", null)
-//   injectCss("/quilljs/quill.snow.css", null)
-// }
 
 const rules = {
   title: "required",
@@ -210,19 +199,6 @@ export default Vue.extend({
       this.formdata = Object.assign({}, nextformdata)
       this.formvalidate = validate
     },
-
-    // changeQuillHandler({ quill, html, text }) {
-    //   this.editorHtml = html
-    // },
-
-    // changelQuillImageHandler(e: any) {
-    //   const file = e.target.files[0]
-    //   if (file) {
-    //     const imageUrl = window.URL.createObjectURL(file)
-    //     console.log("image", imageUrl)
-    //     //push text to current cursor
-    //   }
-    // },
 
     submitHandler(draft = false) {
       this.formvalidate = this.validation.validate(this.formdata)

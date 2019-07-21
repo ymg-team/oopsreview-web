@@ -1,5 +1,5 @@
 <template lang="pug">
-  .dropdown(:class="show ? 'show' : ''")
+  .dropdown(:class="show ? 'show' : '' ")
     button(type="javascript:;" v-on:click="() => toggleDropdown()")
       i(class="icono-caretDown")
     div.dropdown-content
@@ -13,7 +13,7 @@
 import Vue from "vue"
 import BtnDelete from "./BtnDelete.vue"
 
-Vue.component('BtnDelete', BtnDelete)
+Vue.component("BtnDelete", BtnDelete)
 
 const propTypes = {
   items: {
@@ -24,7 +24,7 @@ const propTypes = {
   },
   type: {
     type: String,
-    default: 'self'
+    default: "self"
   }
 }
 
@@ -38,6 +38,7 @@ export default Vue.extend({
   props: propTypes,
   methods: {
     toggleDropdown() {
+      console.log("toggle dropdown")
       this.show = !this.show
     }
   }
